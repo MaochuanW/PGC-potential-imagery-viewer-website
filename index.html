@@ -1,18 +1,46 @@
 <!DOCTYPE html>
 <html lang="en">
-<html>
+  <html>
+    <head>
+      <meta charset="utf-8" />
+      <meta name="viewport" content="initial-scale=1, maximum-scale=1, user-scalable=no" />
+      <title>ArcGIS Maps SDK for JavaScript Tutorials: Display a map</title>
+  
+      <style>
+        html,
+        body,
+        #viewDiv {
+          padding: 0;
+          margin: 0;
+          height: 100%;
+          width: 100%;
+        }
+        .popular-place-icon {
+          width: 50px;
+          height: 50px;
+        }
+        .popular-place-list {
+          display: none;
+          position: absolute;
+          top: 10px;
+          left: 10px;
+          background-color: white;
+          border: 1px solid gray;
+          padding: 10px;
+        }
+      </style>
+      <link rel="stylesheet" href="https://js.arcgis.com/4.26/esri/themes/light/main.css">
+      <script src="https://js.arcgis.com/4.26/"></script>
+  
+      <script src="scripts/scripts.js"></script>
+  
+  
+    </head>
+    <body>
+      <div id="viewDiv"></div>
 
-<head>
-    <meta charset="utf-8" />
-    <title>ArcGIS Maps SDK for JavaScript Tutorials: Display a map</title>
-    <script src="./scripts/global.js"></script>
-    <script src="./scripts/arcgis.js"></script>
-</head>
+      <div id="popularPlaceList" class="popular-place-list">
 
-<body>
-    <div id="viewDiv"></div>
-
-    <div id="popularPlaceList" class="popular-place-list">
         <div>
             <img src="big-ben-icon.png" class="popular-place-icon" alt="Big Ben Icon">
             <button onclick="zoomToPopularPlace([-0.1278, 51.5074])">Big Ben</button>
