@@ -1,0 +1,21 @@
+html,
+body,
+#viewDiv {
+  padding: 0;
+  margin: 0;
+  height: 100%;
+  width: 100%;
+}
+.popular-place-icon {
+  width: 50px;
+  height: 50px;
+}
+.popular-place-list {
+  display: none;
+  position: absolute;
+  top: 10px;
+  left: 10px;
+  background-color: white;
+  border: 1px solid gray;
+  padding: 10px;
+}
