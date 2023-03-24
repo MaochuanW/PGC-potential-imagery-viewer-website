@@ -19,14 +19,14 @@ function printLog() {
     // arcgisJS.defer = true;
 
     // arcgis CSS
-    let arcCSS = document.createElement("link");
-    arcCSS.onload = function () {
+    let arcgisCSS = document.createElement("link");
+    arcgisCSS.onload = function () {
         if (printLog() == true) {
             console.log("Loaded arcCSS");
         };
     };
-    arcCSS.rel = "stylesheet";
-    arcCSS.href = "https://js.arcgis.com/4.26/esri/themes/light/main.css";
+    arcgisCSS.rel = "stylesheet";
+    arcgisCSS.href = "https://js.arcgis.com/4.26/esri/themes/light/main.css";
 
     // arcgis SCRIPT
     let arcgisScript = document.createElement("script");
