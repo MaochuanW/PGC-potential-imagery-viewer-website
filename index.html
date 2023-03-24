@@ -1,3 +1,4 @@
+<!DOCTYPE html>
 <html lang="en">
   <html>
     <head>
@@ -39,27 +40,27 @@
       <div id="viewDiv"></div>
 
       <div id="popularPlaceList" class="popular-place-list">
-        <div>
-          <img src="big-ben-icon.png" class="popular-place-icon" alt="Big Ben Icon">
-          <button onclick="zoomToPopularPlace([-0.1278, 51.5074])">Big Ben</button>
 
+        <div>
+            <img src="big-ben-icon.png" class="popular-place-icon" alt="Big Ben Icon">
+            <button onclick="zoomToPopularPlace([-0.1278, 51.5074])">Big Ben</button>
         </div>
         <div>
-          <img src="buckingham-palace-icon.png" class="popular-place-icon" alt="Buckingham Palace Icon">
-          <button id="buck" >Buckingham Palace</button>
+            <img src="buckingham-palace-icon.png" class="popular-place-icon" alt="Buckingham Palace Icon">
+            <button id="buck">Buckingham Palace</button>
         </div>
         <div>
-          <img src="great-wall-icon.png" class="popular-place-icon" alt="The Great Wall Icon">
-          <button onclick="zoomToPopularPlace([116.5977, 40.4406])">The Great Wall</button>
+            <img src="great-wall-icon.png" class="popular-place-icon" alt="The Great Wall Icon">
+            <button onclick="zoomToPopularPlace([116.5977, 40.4406])">The Great Wall</button>
         </div>
-      </div>
+    </div>
 
-      <div style="position: absolute; top: 10px; left: 10px;">
+    <div style="position: absolute; top: 10px; left: 10px;">
         <input type="text" id="longitude" placeholder="Longitude">
         <input type="text" id="latitude" placeholder="Latitude">
         <button id="zoomBtn">Zoom to Coordinates</button>
         <button id="zoomToPopularPlaceBtn">Zoom to Popular Place</button>
-      </div>
-    </body>
-  </html>
+    </div>
+</body>
 
+</html>
