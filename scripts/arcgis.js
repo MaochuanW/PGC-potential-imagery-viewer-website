@@ -22,7 +22,7 @@ function printLog() {
     let arcgisCSS = document.createElement("link");
     arcgisCSS.onload = function () {
         if (printLog() == true) {
-            console.log("Loaded arcCSS");
+            console.log("Loaded arcgisCSS");
         };
     };
     arcgisCSS.rel = "stylesheet";
@@ -30,6 +30,12 @@ function printLog() {
 
     // arcgis SCRIPT
     let arcgisScript = document.createElement("script");
+    arcgisScript.onload = function () {
+        if (printLog() == true) {
+            console.log("Loaded arcgisScript");
+        };
+    };
+    arcgisScript.defer = true;
     arcgisScript.innerHTML = `require([
         "esri/config", 
         "esri/Map", 
