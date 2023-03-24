@@ -1,5 +1,3 @@
-const sitePrefix = `/PGC-potential-imagery-viewer-website/`;
-
 function printLog() {
     return true;
 };
