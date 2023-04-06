@@ -9,22 +9,26 @@ require([
     esriConfig.apiKey = "AAPK5b378c5a659a47668b94785aee29f811CspcF_qvBERUKbwD9AiaNB94Ie4mbJyNQAgY6gskPznuqWXfm7PU_M1CZJdpDT3i";
 
     const map = new Map({
-      basemap: "arcgis-topographic" // Basemap layer service
+      
     });
 
 
 
     const usgsLayer = new TileLayer({
-      url: "https://basemap.nationalmap.gov/arcgis/rest/services/USGSImageryTopo/MapServer",
-      title: "USGS Topographic Map"
+      url: "https://overlord.pgc.umn.edu/arcgis/rest/services/imagery/ant_pgc_composite_mosaic/MapServer",
+      title: "PGC Imagery Layer",
+      spatialReference: {
+        wkid: 3031}
     });
-    // map.add(usgsLayer);
+     map.add(usgsLayer);
 
     const view = new MapView({
       map: map,
-      center: [92.762425, 11.67583], // Longitude, latitude
+      center: [166.666664, -77.8499966], // Longitude, latitude
       zoom: 13, // Zoom level
-      container: "viewDiv" // Div element
+      container: "viewDiv" ,// Div element
+      spatialReference: {
+        wkid: 3031}
     });
 
     const layerList = new LayerList({
@@ -72,7 +76,25 @@ require([
     const zoomToCoordinatesbutton = document.getElementById("zoomBtn")
     zoomToCoordinatesbutton.addEventListener("click", zoomToCoordinates)
 
+    //not working!!!!
+    function login(){
+        const keycloak = new Keycloak({
+            "realm": "pgc",
+            "auth-server-url": "https://account.dev.pgc.umn.edu/auth",
+            "ssl-required": "external",
+            "resource": "imagery-viewers",
+            "public-client": true,
+            "enable-cors": true,
+            "cors-allowed-methods" : "POST, PUT, DELETE, GET, HEAD",
+            "cors-allowed-headers" : "Access-Control-Allow-Origin, Origin, Accept, X-Requested-With, Content-Type, Access-Control-Request-Method, Access-Control-Request-Headers, Authorization",
+            "confidential-port": 0
+          })
+          console.log(keycloak)
+    }
       
+    login()
+
+
     // Attach toggle popular place list function to button click event
     document.getElementById("zoomToPopularPlaceBtn").addEventListener("click", togglePopularPlaceList);
     const buck = document.getElementById("buck")
