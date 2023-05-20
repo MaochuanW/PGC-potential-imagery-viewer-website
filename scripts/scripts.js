@@ -22,6 +22,10 @@ require([
     });
      map.add(usgsLayer);
 
+
+
+    
+
     const view = new MapView({
       map: map,
       center: [166.666664, -77.8499966], // Longitude, latitude
@@ -30,6 +34,20 @@ require([
       spatialReference: {
         wkid: 3031}
     });
+    // Remove Zoom widget from the view
+      view.ui.remove("zoom");
+    // Wait for the view to finish loading
+    view.when(function() {
+      // After the view has loaded, add listeners to the zoom buttons
+      document.getElementById("zoomInBtn").addEventListener("click", function() {
+        view.zoom += 1;
+      });
+    
+      document.getElementById("zoomOutBtn").addEventListener("click", function() {
+        view.zoom -= 1;
+      });
+    });
+      
 
     const layerList = new LayerList({
       view: view
@@ -102,3 +120,5 @@ require([
       zoomToPopularPlace([-0.1411, 51.501])
     });
   });
+
+  

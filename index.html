@@ -4,7 +4,7 @@
     <head>
       <meta charset="utf-8" />
       <meta name="viewport" content="initial-scale=1, maximum-scale=1, user-scalable=no" />
-      <title>ArcGIS Maps SDK for JavaScript Tutorials: Display a map</title>
+
   
       <style>
         html,
@@ -14,6 +14,7 @@
           margin: 0;
           height: 100%;
           width: 100%;
+          padding-left: 16px;
         }
         .popular-place-icon {
           width: 50px;
@@ -31,24 +32,139 @@
         .esri-icon-visible{
           color: blue;
         }
+
+        .sidebar {
+          height: 100%;
+          width: 50px;
+          position: absolute;
+          left: 0;
+          top: 0;
+          padding-top: 40px;
+          background: linear-gradient(to bottom, #B2EEF1 0%, #FEE7C4 100%);
+        }
+
+        .sidebar div {
+          padding: 8px;
+          font-size: 24px;
+          display: block;
+        }
+        .sidebar img {
+          width: 50px;  
+          height: 50px;  
+          margin-top: -30px;
+        }
+        #imagery {
+          position: absolute;
+          top: 82px;  
+          left: -10px;  
+          writing-mode: vertical-rl;
+          transform: rotate(180deg);
+          font-family: 'Sensation Light', sans-serif;
+          text-shadow: 2px 2px 4px rgba(0,0,0,0.5);
+        }
+
+        #viewer {
+          position: absolute;
+          top: 90px;  
+          left: 15px;  
+          writing-mode: vertical-rl;
+          transform: rotate(180deg);
+          font-family: 'Sensation Light', sans-serif;
+          text-shadow: 2px 2px 4px rgba(0,0,0,0.5);
+        }
+        @font-face {
+          font-family: 'Sensation Light';
+          src: url('Sansation_Light.ttf') format('truetype');
+        }
+        hr.line1 {
+          
+          width: 40px;  
+          height: 1.5px; 
+          top: 90px;  
+          left: 0px;  
+          border: 0;
+          color: #333;
+          background-color: #333;
+        }
+
+        #zoomInBtn, #zoomOutBtn {
+          position: absolute;
+          left: 7px; /* Adjust as needed */
+          background: none; /* Removes background color */
+          border: none; /* Removes border */
+          padding: 0; /* Removes padding */
+          margin: 5px; /* Removes margin */
+          outline: none; /* Removes outline (shown when button is focused) */
+        }
+
+        #zoomInBtn {
+          top: 250px; /* Adjust as needed */
+        }
+
+        #zoomOutBtn {
+          top: 300px; /* Adjust as needed */
+        }
+
+
+        #zoomInBtn img, #zoomOutBtn img {
+          display: block; /* Ensures the image takes up the entire space of the button */
+          width: 100%; /* Makes the image scale to the width of the button */
+          height: auto; /* Ensures the aspect ratio of the image is maintained */
+        }
+
+        #zoomInBtn img:hover, #zoomOutBtn img:hover {
+          outline: 2px solid #5A5A5A; /* replace #000 with the color of your choice */
+        }
+
+        hr.line2 {
+          position: absolute;
+          width: 50px;  
+          height: 1px; 
+          top: 255px;  
+          left: 0px;  
+          border: 0;
+          color: #333;
+          background-color: #333;
+        }
+
       </style>
 
       <link rel="stylesheet" href="https://js.arcgis.com/4.26/esri/themes/light/main.css">
       <script src="lib/keycloak.js"> </script>
       <script src="https://js.arcgis.com/4.26/"></script>
-  
-
-
       <script src="scripts/scripts.js"></script>
 
-      <script>    
-      
-      
-    </script>
     </head>
     <body>
+
+      
       <div id="viewDiv"></div>
 
+      <div class="sidebar">
+
+      <a href="http://pgc.umn.edu" target="_blank">
+        <img src="pgc.png" alt="Descriptive text">
+      </a>
+
+      
+      <div id="imagery" class="vertical-text">Imagery</div>
+      <div id="viewer" class="vertical-text">Viewer</div>
+      <hr class="line1">
+
+      <button id="zoomInBtn">
+        <img src="PLUS.png" alt="Zoom In">
+      </button>
+      <hr class="line2">
+      <button id="zoomOutBtn">
+        <img src="MINUS.png" alt="Zoom Out">
+      </button>
+    
+
+      </div>
+        <div></div>
+        <div></div>
+      </div>
+      
       <div id="popularPlaceList" class="popular-place-list">
 
         <div>
@@ -63,9 +179,9 @@
             <img src="great-wall-icon.png" class="popular-place-icon" alt="The Great Wall Icon">
             <button onclick="zoomToPopularPlace([116.5977, 40.4406])">The Great Wall</button>
         </div>
-    </div>
+      </div>
 
-    <div style="position: absolute; top: 10px; left: 10px;">
+    <div style="position: absolute; top: 10px; left: 600px;">
         <input type="text" id="longitude" placeholder="Longitude">
         <input type="text" id="latitude" placeholder="Latitude">
         <button id="zoomBtn">Zoom to Coordinates</button>
