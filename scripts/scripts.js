@@ -21,27 +21,22 @@ require([
     map.add(pgcLayer);
     
     
-    let layer1Shown = false;
     let layer1;
 
-    document.getElementById("layer1").addEventListener("click", function () {
-        if (layer1Shown) {
-            // If the layer is currently shown, remove it
-            map.remove(layer1);
-            layer1Shown = false;
-        } else {
-            // If the layer is currently hidden, show it
-            layer1 = new TileLayer({
-                url: "https://overlord.pgc.umn.edu/arcgis/rest/services/maps/ant_usgs_50k_topos/MapServer", // Insert your tile layer URL here
-                title: "usgs_50k_topos",
-                spatialReference: {
-                    wkid: 3031
-                }
-            });
-            map.add(layer1);
-            layer1Shown = true;
-        }
-    });
+document.getElementById("layer1Checkbox").addEventListener("change", function () {
+    if (this.checked) {
+        // If the checkbox is checked, show the layer
+        layer1 = new TileLayer({
+            url: "https://overlord.pgc.umn.edu/arcgis/rest/services/maps/ant_usgs_50k_topos/MapServer", // Insert your tile layer URL here
+            title: "Layer 1"
+        });
+        map.add(layer1);
+    } else {
+        // If the checkbox is not checked, remove the layer
+        map.remove(layer1);
+    }
+});
+
 
     
 

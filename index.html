@@ -315,22 +315,33 @@
         }
 
         #layerDropdown {
-  display: none;
-  position: absolute;
-  background-color: #f9f9f9;
-  min-width: 160px;
-  box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
-  z-index: 1;
-  left: 60px;
-  top: 360px; 
-}
+            display: none;
+            position: absolute;
+            background-color: #f9f9f9;
+            min-width: 200px;
+            box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+            z-index: 1;
+            left: 60px;
+            top: 360px; 
 
-#layerDropdown a {
-  color: black;
-  padding: 12px 16px;
-  text-decoration: none;
-  display: block;
-}
+        }
+
+        .layer-option {
+            padding: 12px 16px;
+            border-bottom: 1px solid #ddd; /* Optional: add a border between options */
+            font-size: 16px;
+        }
+        .layer-option label {
+            font-size: 18px;
+        }
+        .layer-option:last-child {
+            border-bottom: none; /* Optional: remove the border from the last option */
+        }
+
+        .layer-option input[type="checkbox"] {
+            margin-right: 10px;
+        }
+
 
       </style>
 
@@ -401,11 +412,18 @@
         <div class="tooltip-text">Layers</div>
       </div>
       <div id="layerDropdown">
-        <a href="#" id="layer1">usgs_50k_topos</a>
-        <a href="#" id="layer2">Layer 2</a>
-        <a href="#" id="layer3">Layer 3</a>
-        <!-- Add more layer options as needed -->
+        <div class="layer-option">
+            <input type="checkbox" id="layer1Checkbox"> <label for="layer1Checkbox">USGS Topo Map</label>
+        </div>
+        <div class="layer-option">
+            <input type="checkbox" id="layer2Checkbox"> <label for="layer2Checkbox">Layer 2</label>
+        </div>
+        <div class="layer-option">
+            <input type="checkbox" id="layer3Checkbox"> <label for="layer3Checkbox">Layer 3</label>
+        </div>
+        
     </div>
+    
       <hr class="line3">
       <div id="maglass" class="tooltip">
         <img src="mag_glass.png" alt="Layer">
