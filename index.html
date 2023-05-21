@@ -53,6 +53,7 @@
           background: linear-gradient(to bottom, #B2EEF1 0%, #FEE7C4 100%);
           grid-column: 1;
           overflow-y: auto;
+          overflow: visible;
         }
 
         .sidebar div {
@@ -255,8 +256,8 @@
         .tooltip .tooltip-text {
           visibility: hidden;
           width: 120px;
-          background-color: #555;
-          color: #fff;
+          background-color: #eaf0b4; 
+          color: #333; 
           text-align: center;
           border-radius: 6px;
           padding: 5px 0;
@@ -264,15 +265,57 @@
           z-index: 1;
           bottom: 125%; 
           left: 50%;
-          margin-left: 30px;
+          margin-left: -60px; 
           opacity: 0;
           transition: opacity 0.3s;
-        }
+          box-shadow: 0px 0px 10px rgba(0,0,0,0.1); 
+          font-family: 'Sensation Light', sans-serif; 
+          border: 1px solid #B2EEF1; 
+      }
 
         .tooltip:hover .tooltip-text {
           visibility: visible;
           opacity: 1;
         }
+
+        #zoomInBtn .tooltip-text {
+          bottom: 16%;
+          left: 230%;
+          margin-left: -10px;
+        }
+
+        #zoomOutBtn .tooltip-text {
+          bottom: 16%;
+          left: 230%;
+          margin-left: -10px;
+        }
+
+        #layerBtn .tooltip-text {
+          bottom: 16%;
+          left: 140%;
+          margin-left: -10px;
+        }
+        #maglass .tooltip-text {
+          bottom: 20%;
+          left: 140%;
+          margin-left: -10px;
+        }
+        #link .tooltip-text {
+          bottom: 20%;
+          left: 140%;
+          margin-left: -10px;
+        }
+        #share .tooltip-text {
+          bottom: 10%;
+          left: 140%;
+          margin-left: -10px;
+        }
+        #help .tooltip-text {
+          bottom: 20%;
+          left: 140%;
+          margin-left: -10px;
+        }
+
 
       </style>
 
@@ -312,10 +355,11 @@
         <img src="Layer.png" alt="Layer">
         <div class="tooltip-text">Layers</div>
       </div>
+      
       <hr class="line3">
       <div id="maglass" class="tooltip">
         <img src="mag_glass.png" alt="Layer">
-        <div class="tooltip-text">Look up places</div>
+        <div class="tooltip-text">Zoom to</div>
       </div>
       <hr class="line4">
       <div id="link" class="tooltip">
