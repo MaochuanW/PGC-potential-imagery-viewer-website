@@ -37,9 +37,6 @@ document.getElementById("layer1Checkbox").addEventListener("change", function ()
     }
 });
 
-
-    
-
     const view = new MapView({
         map: map,
         center: [
@@ -69,6 +66,10 @@ document.getElementById("layer1Checkbox").addEventListener("change", function ()
 
     const layerList = new LayerList({view: view});
     view.ui.add(layerList, "top-right");
+
+    // Remove the LayerList widget from the UI
+    view.ui.remove(layerList);
+
 
     // Function to zoom to popular place
     function zoomToPopularPlace(coordinates) {
