@@ -1,10 +1,8 @@
 <!DOCTYPE html>
 <html lang="en">
-  <html>
     <head>
       <meta charset="utf-8" />
       <meta name="viewport" content="initial-scale=1, maximum-scale=1, user-scalable=no" />
-
   
       <style>
         html,
@@ -316,14 +314,61 @@
           margin-left: -10px;
         }
 
+        #layerDropdown {
+  display: none;
+  position: absolute;
+  background-color: #f9f9f9;
+  min-width: 160px;
+  box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+  z-index: 1;
+  left: 60px;
+  top: 360px; 
+}
+
+#layerDropdown a {
+  color: black;
+  padding: 12px 16px;
+  text-decoration: none;
+  display: block;
+}
 
       </style>
 
       <link rel="stylesheet" href="https://js.arcgis.com/4.26/esri/themes/light/main.css">
-      <script src="lib/keycloak.js"> </script>
+      <script src="lib/keycloak.js"></script>
+
+      <script>
+        function login() {
+          const keycloak = new Keycloak({
+            "realm": "pgc",
+            "auth-server-url": "https://account.dev.pgc.umn.edu/auth",
+            "ssl-required": "external",
+            "resource": "imagery-viewers",
+            "public-client": true,
+            "enable-cors": true,
+            "cors-allowed-methods" : "POST, PUT, DELETE, GET, HEAD",
+            "cors-allowed-headers" : "Access-Control-Allow-Origin, Origin, Accept, X-Requested-With, Content-Type, Access-Control-Request-Method, Access-Control-Request-Headers, Authorization",
+            "confidential-port": 0
+          });
+      
+          keycloak.init({ onLoad: 'login-required' }).success(function (authenticated) {
+            if (authenticated) {
+              console.log("User is authenticated");
+            } else {
+              console.log("User is not authenticated");
+            }
+          }).error(function () {
+            console.log("Error initializing Keycloak");
+          });
+        }
+      
+        login();
+
+      </script>
       <script src="https://js.arcgis.com/4.26/"></script>
       <script src="scripts/scripts.js"></script>
 
+      
     </head>
     <body>
 
@@ -355,7 +400,12 @@
         <img src="Layer.png" alt="Layer">
         <div class="tooltip-text">Layers</div>
       </div>
-      
+      <div id="layerDropdown">
+        <a href="#" id="layer1">usgs_50k_topos</a>
+        <a href="#" id="layer2">Layer 2</a>
+        <a href="#" id="layer3">Layer 3</a>
+        <!-- Add more layer options as needed -->
+    </div>
       <hr class="line3">
       <div id="maglass" class="tooltip">
         <img src="mag_glass.png" alt="Layer">
