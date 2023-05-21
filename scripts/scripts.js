@@ -23,19 +23,19 @@ require([
     
     let layer1;
 
-document.getElementById("layer1Checkbox").addEventListener("change", function () {
-    if (this.checked) {
-        // If the checkbox is checked, show the layer
-        layer1 = new TileLayer({
-            url: "https://overlord.pgc.umn.edu/arcgis/rest/services/maps/ant_usgs_50k_topos/MapServer", // Insert your tile layer URL here
-            title: "Layer 1"
-        });
-        map.add(layer1);
-    } else {
-        // If the checkbox is not checked, remove the layer
-        map.remove(layer1);
-    }
-});
+    document.getElementById("layer1Checkbox").addEventListener("change", function () {
+        if (this.checked) {
+            // If the checkbox is checked, show the layer
+            layer1 = new TileLayer({
+                url: "https://overlord.pgc.umn.edu/arcgis/rest/services/maps/ant_usgs_50k_topos/MapServer", // Insert your tile layer URL here
+                title: "Layer 1"
+            });
+            map.add(layer1);
+        } else {
+            // If the checkbox is not checked, remove the layer
+            map.remove(layer1);
+            }
+    });
 
     const view = new MapView({
         map: map,
@@ -133,4 +133,14 @@ window.onload = function() {
       dropdown.style.display = dropdown.style.display === 'none' ? 'block' : 'none';
     });
   }
-  
+
+  window.onload = function() {
+    // Ensure dropdown is hidden when page loads
+    var dropdown = document.getElementById('layerDropdown');
+    dropdown.style.display = 'none';
+
+    // Event listener for the button click
+    document.getElementById('layerBtn').addEventListener('click', function() {
+      dropdown.style.display = dropdown.style.display === 'none' ? 'block' : 'none';
+    });
+}
