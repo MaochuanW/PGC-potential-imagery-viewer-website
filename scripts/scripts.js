@@ -146,6 +146,7 @@ require([
             dropdown.style.display = dropdown.style.display === 'none' ? 'block' : 'none';
         });
 
+    // This gives zoom in/out a smooth effect
     document.getElementById("zoomInBtn").addEventListener("click", function () {
         let zoomLevel = view.zoom + 1;
         view.goTo({ zoom: zoomLevel });
