@@ -145,5 +145,16 @@ require([
         document.getElementById('layerBtn').addEventListener('click', function () {
             dropdown.style.display = dropdown.style.display === 'none' ? 'block' : 'none';
         });
+
+    document.getElementById("zoomInBtn").addEventListener("click", function () {
+        let zoomLevel = view.zoom + 1;
+        view.goTo({ zoom: zoomLevel });
+    });
+        
+    document.getElementById("zoomOutBtn").addEventListener("click", function () {
+        let zoomLevel = view.zoom - 1;
+        view.goTo({ zoom: zoomLevel });
+    });
+        
     };
 });
