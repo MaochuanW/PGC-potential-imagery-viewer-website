@@ -5,8 +5,8 @@ require([
     "esri/layers/TileLayer",
     "esri/widgets/LayerList",
     "esri/widgets/Search",
-
-], function (esriConfig, Map, MapView, TileLayer, LayerList, Search) {
+    "esri/widgets/ScaleBar"
+], function (esriConfig, Map, MapView, TileLayer, LayerList, Search, ScaleBar) {
     esriConfig.apiKey = "AAPK5b378c5a659a47668b94785aee29f811CspcF_qvBERUKbwD9AiaNB94Ie4mbJyNQAgY6gskPznuqWXfm7PU_M1CZJdpDT3i";
 
     const map = new Map({});
@@ -49,7 +49,17 @@ require([
         }
     });
 
-    
+    // Create a ScaleBar widget
+    const scaleBar = new ScaleBar({
+        view: view,
+        unit: "dual" // Specify the desired unit (metric, imperial, etc.)
+    });
+  
+    // Add the ScaleBar widget to the bottom left of the view
+    view.ui.add(scaleBar, {
+        position: "bottom-left"
+    });
+
     // Remove Zoom widget from the view
     view.ui.remove("zoom");
 
@@ -114,7 +124,12 @@ require([
     buck.addEventListener("click", function () {
         zoomToPopularPlace([-0.1411, 51.501])
     });
+
 });
+
+
+
+
 
 
 const tooltipButtons = document.querySelectorAll('.tooltip');
@@ -134,6 +149,8 @@ window.onload = function() {
     });
   }
 
+
+  // This code fix the click problem for buttons (click twice to toggle dropdown...wtf)
   window.onload = function() {
     // Ensure dropdown is hidden when page loads
     var dropdown = document.getElementById('layerDropdown');
@@ -144,3 +161,4 @@ window.onload = function() {
       dropdown.style.display = dropdown.style.display === 'none' ? 'block' : 'none';
     });
 }
+
