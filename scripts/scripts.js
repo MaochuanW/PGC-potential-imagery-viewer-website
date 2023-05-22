@@ -38,7 +38,7 @@ require([
 
     const view = new MapView({
         map: map,
-        center: [166.666664, -77.8499966],
+        center: [166.666664, -90.8499966],
         zoom: 2,
         container: "viewDiv",
         spatialReference: {
