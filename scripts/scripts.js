@@ -6,8 +6,8 @@ function login() {
         "clientId": "imagery-viewers",
         "public-client": true,
         "enable-cors": true,
-        "cors-allowed-methods" : "POST, PUT, DELETE, GET, HEAD",
-        "cors-allowed-headers" : "Access-Control-Allow-Origin, Origin, Accept, X-Requested-With, Content-Type, Access-Control-Request-Method, Access-Control-Request-Headers, Authorization",
+        "cors-allowed-methods": "POST, PUT, DELETE, GET, HEAD",
+        "cors-allowed-headers": "Access-Control-Allow-Origin, Origin, Accept, X-Requested-With, Content-Type, Access-Control-Request-Method, Access-Control-Request-Headers, Authorization",
         "confidential-port": 0
     });
 
@@ -16,7 +16,10 @@ function login() {
     }).catch(() => {
         console.log('failed to initialize');
     });
+
+    window.keycloak = keycloak; // Assign keycloak to a global variable so it can be accessed later.
 }
+
 login();
 
 require([
@@ -42,7 +45,7 @@ require([
     });
     map.add(pgcLayer);
 
-    let layer1;
+    let layer1, layer2;
 
     document.getElementById("layer1Checkbox").addEventListener("change", function () {
         if (this.checked) {
@@ -55,6 +58,39 @@ require([
         } else {
             // If the checkbox is not checked, remove the layer
             map.remove(layer1);
+        }
+    });
+
+    document.getElementById("layer2Checkbox").addEventListener("change", function () {
+        if (this.checked) {
+            // If the checkbox is checked, show the layer
+            layer2 = new ImageryTileLayer({
+                url: "https://web.overlord.pgc.umn.edu/arcgis/rest/services/fridge/md_pgc_comm_opt_mono_mosaic_pan_ant/ImageServer",
+                title: "Layer 2",
+                preFetch: function(url) {
+                    if(window.keycloak.isTokenExpired()) {
+                        return window.keycloak.updateToken(30).then(function (refreshed) {
+                            return {
+                                url: url,
+                                headers: {
+                                    "Authorization": "Bearer " + window.keycloak.token
+                                }
+                            };
+                        });
+                    } else {
+                        return {
+                            url: url,
+                            headers: {
+                                "Authorization": "Bearer " + window.keycloak.token
+                            }
+                        };
+                    }
+                }
+            });
+            map.add(layer2);
+        } else {
+            // If the checkbox is not checked, remove the layer
+            map.remove(layer2);
         }
     });
 
