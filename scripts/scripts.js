@@ -11,16 +11,21 @@ function login() {
         "confidential-port": 0
     });
 
-    keycloak.init({ onLoad: 'login-required' }).then(authenticated => {
-        console.log(authenticated ? 'authenticated' : 'not authenticated');
+    keycloak.init({ checkLoginIframe: false }).then(authenticated => {
+        if (!authenticated) {
+            keycloak.login();
+        } else {
+            window.keycloak = keycloak; // Assign keycloak to a global variable so it can be accessed later.
+            console.log(authenticated ? 'authenticated' : 'not authenticated');
+        }
     }).catch(() => {
         console.log('failed to initialize');
     });
-
-    window.keycloak = keycloak; // Assign keycloak to a global variable so it can be accessed later.
 }
 
 login();
+
+
 
 require([
     "esri/config",
@@ -33,6 +38,32 @@ require([
     "esri/layers/ImageryTileLayer"
 ], function (esriConfig, Map, MapView, TileLayer, LayerList, Search, ScaleBar, ImageryTileLayer) {
     esriConfig.apiKey = "AAPK5b378c5a659a47668b94785aee29f811CspcF_qvBERUKbwD9AiaNB94Ie4mbJyNQAgY6gskPznuqWXfm7PU_M1CZJdpDT3i";
+    
+    esriConfig.request.interceptors.push({
+        
+        urls: ["https://web.overlord.pgc.umn.edu/arcgis/rest/services/fridge/md_pgc_comm_opt_mono_mosaic_pan_ant/ImageServer"],
+      
+        // use the Before method to add token to query
+        before: function(params) {
+          // Check if the token is expired or not
+          if(window.keycloak.isTokenExpired()) {
+              // Update the token
+              window.keycloak.updateToken(30).then(function(refreshed) {
+                  params.requestOptions.headers = {
+                      
+                      "Authorization": "Bearer " + window.keycloak.token
+                  }
+              }).catch(function() {
+                  console.log("Error updating token");
+              });
+          } else {
+              params.requestOptions.headers = {
+                  
+                  "Authorization": "Bearer " + window.keycloak.token
+              }
+          }
+        }
+      });
 
     const map = new Map({});
 
@@ -61,31 +92,13 @@ require([
         }
     });
 
+
     document.getElementById("layer2Checkbox").addEventListener("change", function () {
         if (this.checked) {
             // If the checkbox is checked, show the layer
             layer2 = new ImageryTileLayer({
                 url: "https://web.overlord.pgc.umn.edu/arcgis/rest/services/fridge/md_pgc_comm_opt_mono_mosaic_pan_ant/ImageServer",
-                title: "Layer 2",
-                preFetch: function(url) {
-                    if(window.keycloak.isTokenExpired()) {
-                        return window.keycloak.updateToken(30).then(function (refreshed) {
-                            return {
-                                url: url,
-                                headers: {
-                                    "Authorization": "Bearer " + window.keycloak.token
-                                }
-                            };
-                        });
-                    } else {
-                        return {
-                            url: url,
-                            headers: {
-                                "Authorization": "Bearer " + window.keycloak.token
-                            }
-                        };
-                    }
-                }
+                title: "Layer 2"
             });
             map.add(layer2);
         } else {
@@ -95,7 +108,6 @@ require([
     });
 
         
-    
     const view = new MapView({
         map: map,
         center: [166.666664, -90.8499966],
@@ -133,6 +145,9 @@ require([
 
     const layerList = new LayerList({ view: view });
     view.ui.add(layerList, "top-right");
+
+    
+    
 
     // Function to zoom to popular place
     function zoomToPopularPlace(coordinates) {
@@ -218,6 +233,7 @@ require([
     });
         
     };
+    
 });
 
 
