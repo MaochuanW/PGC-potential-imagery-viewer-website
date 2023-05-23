@@ -1,3 +1,24 @@
+function login() {
+    const keycloak = new Keycloak({
+        "realm": "pgc",
+        "auth-server-url": "https://account.pgc.umn.edu/auth",
+        "ssl-required": "external",
+        "clientId": "imagery-viewers",
+        "public-client": true,
+        "enable-cors": true,
+        "cors-allowed-methods" : "POST, PUT, DELETE, GET, HEAD",
+        "cors-allowed-headers" : "Access-Control-Allow-Origin, Origin, Accept, X-Requested-With, Content-Type, Access-Control-Request-Method, Access-Control-Request-Headers, Authorization",
+        "confidential-port": 0
+    });
+
+    keycloak.init({ onLoad: 'login-required' }).then(authenticated => {
+        console.log(authenticated ? 'authenticated' : 'not authenticated');
+    }).catch(() => {
+        console.log('failed to initialize');
+    });
+}
+login();
+
 require([
     "esri/config",
     "esri/Map",
