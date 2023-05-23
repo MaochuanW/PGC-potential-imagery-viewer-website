@@ -209,7 +209,7 @@
         }
         #share {
           position: absolute;
-          top: 883px; 
+          bottom: 9%;
           left: 6px; 
           width: 30px; 
           height: 30px; 
@@ -226,7 +226,7 @@
           position: absolute;
           width: 50px;  
           height: 1.5px; 
-          top: 920px;  
+          bottom: 8%; 
           left: 0px;  
           border: 0;
           color: #333;
@@ -234,7 +234,7 @@
         }
         #help {
           position: absolute;
-          top: 940px; 
+          bottom: 3.3%;
           left: 3px; 
           width: 30px; 
           height: 30px; 
@@ -347,31 +347,36 @@
       </style>
 
       <link rel="stylesheet" href="https://js.arcgis.com/4.26/esri/themes/light/main.css">
-      <script src="https://account.pgc.umn.edu/auth/js/keycloak.js"></script>
+      <script src="lib/keycloak.js"></script>
 
       <script>
         function login() {
-            const keycloak = new Keycloak({
-                "realm": "pgc",
-                "auth-server-url": "https://account.pgc.umn.edu/auth",
-                "ssl-required": "external",
-                "clientId": "imagery-viewers",
-                "public-client": true,
-                "enable-cors": true,
-                "cors-allowed-methods" : "POST, PUT, DELETE, GET, HEAD",
-                "cors-allowed-headers" : "Access-Control-Allow-Origin, Origin, Accept, X-Requested-With, Content-Type, Access-Control-Request-Method, Access-Control-Request-Headers, Authorization",
-                "confidential-port": 0
-            });
-    
-            keycloak.init({ onLoad: 'login-required' }).then(authenticated => {
-                console.log(authenticated ? 'authenticated' : 'not authenticated');
-            }).catch(() => {
-                console.log('failed to initialize');
-            });
+          const keycloak = new Keycloak({
+            "realm": "pgc",
+            "auth-server-url": "https://account.dev.pgc.umn.edu/auth",
+            "ssl-required": "external",
+            "resource": "imagery-viewers",
+            "public-client": true,
+            "enable-cors": true,
+            "cors-allowed-methods" : "POST, PUT, DELETE, GET, HEAD",
+            "cors-allowed-headers" : "Access-Control-Allow-Origin, Origin, Accept, X-Requested-With, Content-Type, Access-Control-Request-Method, Access-Control-Request-Headers, Authorization",
+            "confidential-port": 0
+          });
+      
+          keycloak.init({ onLoad: 'login-required' }).success(function (authenticated) {
+            if (authenticated) {
+              console.log("User is authenticated");
+            } else {
+              console.log("User is not authenticated");
+            }
+          }).error(function () {
+            console.log("Error initializing Keycloak");
+          });
         }
+      
         login();
-    </script>
-    
+
+      </script>
       <script src="https://js.arcgis.com/4.26/"></script>
       <script src="scripts/scripts.js"></script>
 
