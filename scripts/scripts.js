@@ -25,8 +25,6 @@ function login() {
 
 login();
 
-
-
 require([
     "esri/config",
     "esri/Map",
