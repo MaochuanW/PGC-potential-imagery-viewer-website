@@ -347,36 +347,30 @@
       </style>
 
       <link rel="stylesheet" href="https://js.arcgis.com/4.26/esri/themes/light/main.css">
-      <script src="lib/keycloak.js"></script>
+      <script src="https://account.pgc.umn.edu/auth/js/keycloak.js"></script>
 
       <script>
         function login() {
-          const keycloak = new Keycloak({
-            "realm": "pgc",
-            "auth-server-url": "https://account.dev.pgc.umn.edu/auth",
-            "ssl-required": "external",
-            "resource": "imagery-viewers",
-            "public-client": true,
-            "enable-cors": true,
-            "cors-allowed-methods" : "POST, PUT, DELETE, GET, HEAD",
-            "cors-allowed-headers" : "Access-Control-Allow-Origin, Origin, Accept, X-Requested-With, Content-Type, Access-Control-Request-Method, Access-Control-Request-Headers, Authorization",
-            "confidential-port": 0
-          });
-      
-          keycloak.init({ onLoad: 'login-required' }).success(function (authenticated) {
-            if (authenticated) {
-              console.log("User is authenticated");
-            } else {
-              console.log("User is not authenticated");
-            }
-          }).error(function () {
-            console.log("Error initializing Keycloak");
-          });
+            const keycloak = new Keycloak({
+                "realm": "pgc",
+                "auth-server-url": "https://account.pgc.umn.edu/auth",
+                "ssl-required": "external",
+                "clientId": "imagery-viewers",
+                "public-client": true,
+                "enable-cors": true,
+                "cors-allowed-methods" : "POST, PUT, DELETE, GET, HEAD",
+                "cors-allowed-headers" : "Access-Control-Allow-Origin, Origin, Accept, X-Requested-With, Content-Type, Access-Control-Request-Method, Access-Control-Request-Headers, Authorization",
+                "confidential-port": 0
+            });
+    
+            keycloak.init({ onLoad: 'login-required' }).then(authenticated => {
+                console.log(authenticated ? 'authenticated' : 'not authenticated');
+            }).catch(() => {
+                console.log('failed to initialize');
+            });
         }
-      
         login();
-
-      </script>
+    </script>
       <script src="https://js.arcgis.com/4.26/"></script>
       <script src="scripts/scripts.js"></script>
 
