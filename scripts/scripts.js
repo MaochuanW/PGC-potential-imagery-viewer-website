@@ -33,13 +33,15 @@ require([
     "esri/widgets/LayerList",
     "esri/widgets/Search",
     "esri/widgets/ScaleBar",
-    "esri/layers/ImageryTileLayer"
-], function (esriConfig, Map, MapView, TileLayer, LayerList, Search, ScaleBar, ImageryTileLayer) {
+    "esri/layers/ImageryTileLayer",
+    "esri/layers/ImageryLayer"
+], function (esriConfig, Map, MapView, TileLayer, LayerList, Search, ScaleBar, ImageryTileLayer, ImageryLayer) {
     esriConfig.apiKey = "AAPK5b378c5a659a47668b94785aee29f811CspcF_qvBERUKbwD9AiaNB94Ie4mbJyNQAgY6gskPznuqWXfm7PU_M1CZJdpDT3i";
     
     esriConfig.request.interceptors.push({
         
-        urls: ["https://web.overlord.pgc.umn.edu/arcgis/rest/services/fridge/md_pgc_comm_opt_mono_mosaic_pan_ant/ImageServer"],
+        urls: ["https://web.overlord.pgc.umn.edu/arcgis/rest/services/fridge/md_pgc_comm_opt_mono_mosaic_pan_ant/ImageServer",
+        "https://web.overlord.pgc.umn.edu/arcgis/rest/services/fridge/md_pgc_comm_opt_mono_mosaic_mul_ant/ImageServer"],
       
         // use the Before method to add token to query
         before: function(params) {
@@ -102,6 +104,22 @@ require([
         } else {
             // If the checkbox is not checked, remove the layer
             map.remove(layer2);
+        }
+    });
+
+    document.getElementById("layer3Checkbox").addEventListener("change", function () {
+        if (this.checked) {
+            // If the checkbox is checked, show the layer
+            layer3 = new ImageryLayer({
+                url: "https://web.overlord.pgc.umn.edu/arcgis/rest/services/fridge/md_pgc_comm_opt_mono_mosaic_mul_ant/ImageServer",
+                title: "Layer 3",
+                
+            });
+            layer3.bandIds=[2,1,0],
+            map.add(layer3);
+        } else {
+            // If the checkbox is not checked, remove the layer
+            map.remove(layer3);
         }
     });
 
@@ -235,104 +253,3 @@ require([
 });
 
 
-
-
-
-
-
-
-/* let keycloak = null;
-function login() {
-    keycloak = new Keycloak({
-        "realm": "pgc",
-        "auth-server-url": "https://account.pgc.umn.edu/auth",
-        "ssl-required": "external",
-        "clientId": "imagery-viewers",
-        "public-client": true,
-        "enable-cors": true,
-        "cors-allowed-methods" : "POST, PUT, DELETE, GET, HEAD",
-        "cors-allowed-headers" : "Access-Control-Allow-Origin, Origin, Accept, X-Requested-With, Content-Type, Access-Control-Request-Method, Access-Control-Request-Headers, Authorization",
-        "confidential-port": 0
-    });
-
-    keycloak.init({ onLoad: 'login-required' }).then(authenticated => {
-        console.log(authenticated ? 'authenticated' : 'not authenticated');
-
-        keycloak.updateToken(5).then(refreshed => {
-            if (refreshed) {
-                console.log('Token was successfully refreshed');
-            } else {
-                console.log('Token is still valid');
-            }
-        }).catch(() => {
-            console.log('Failed to refresh the token, or the session has expired');
-        });
-
-    }).catch(() => {
-        console.log('failed to initialize');
-    });
-}
-
-login();
-
-require([
-    "esri/config",
-    "esri/Map",
-    "esri/views/MapView",
-    "esri/layers/TileLayer",
-    "esri/widgets/LayerList",
-    "esri/widgets/Search",
-    "esri/layers/ImageryTileLayer",
-    "esri/widgets/ScaleBar"
-], function (esriConfig, Map, MapView, TileLayer, LayerList, Search, ScaleBar, ImageryTileLayer) {
-    esriConfig.apiKey = "AAPK5b378c5a659a47668b94785aee29f811CspcF_qvBERUKbwD9AiaNB94Ie4mbJyNQAgY6gskPznuqWXfm7PU_M1CZJdpDT3i";
-
-    const map = new Map({});
-
-    const pgcLayer = new TileLayer({
-        url: "https://overlord.pgc.umn.edu/arcgis/rest/services/imagery/ant_pgc_composite_mosaic/MapServer",
-        title: "PGC Imagery Layer",
-        spatialReference: {
-            wkid: 3031
-        }
-    });
-    map.add(pgcLayer);
-
-    let layer1;
-
-    document.getElementById("layer1Checkbox").addEventListener("change", function () {
-        if (this.checked) {
-            // If the checkbox is checked, show the layer
-            layer1 = new TileLayer({
-                url: "https://overlord.pgc.umn.edu/arcgis/rest/services/maps/ant_usgs_50k_topos/MapServer",
-                title: "Layer 1"
-            });
-            map.add(layer1);
-        } else {
-            // If the checkbox is not checked, remove the layer
-            map.remove(layer1);
-        }
-    });
-
-    esriConfig.request.interceptors.push({
-        urls: "https://web.overlord.pgc.umn.edu/arcgis/rest/services/fridge/md_pgc_comm_opt_mono_mosaic_pan_ant/ImageServer",
-        headers: {
-            Authorization: "Bearer " + keycloak.token
-        }
-    });
-
-    const layer2 = new ImageryTileLayer({
-        url: "https://web.overlord.pgc.umn.edu/arcgis/rest/services/fridge/md_pgc_comm_opt_mono_mosaic_pan_ant/ImageServer",
-        title: "Layer 2",
-        // Add additional properties if needed.
-    });
-
-    document.getElementById("layer2Checkbox").addEventListener("change", function () {
-        if (this.checked) {
-            // If the checkbox is checked, show the layer
-            map.add(layer2);
-        } else {
-            // If the checkbox is not checked, remove the layer
-            map.remove(layer2);
-        }
-    }); */
