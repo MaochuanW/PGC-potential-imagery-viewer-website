@@ -351,3 +351,25 @@ html,
           font-weight: bold;
           color: #555555; /* Custom color */
         }
+
+        #toolbarDiv {
+          position: absolute;
+          top: 15px;
+          right: 300px;
+          cursor: default;
+          display: flex;
+          flex-direction: row;
+          flex-wrap: nowrap;
+        }
+
+        .esri-widget--button.active,
+      .esri-widget--button.active:hover,
+      .esri-widget--button.active:focus {
+        cursor: default;
+        background-color: #999696;
+      }
+      .esri-widget--button.active path,
+      .esri-widget--button.active:hover path,
+      .esri-widget--button.active:focus path {
+        fill: #E4E4E4;
+      }
