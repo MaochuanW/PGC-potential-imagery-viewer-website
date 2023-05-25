@@ -163,8 +163,6 @@ require([
     view.ui.add(layerList, "top-right");
 
     
-    
-
     // Function to zoom to popular place
     function zoomToPopularPlace(coordinates) {
         console.log(coordinates)
@@ -219,9 +217,12 @@ require([
     });
 
     // Event listener to hide the dropdown menu when clicking anywhere on the map
-    view.container.addEventListener("click", function (event) {
+    document.addEventListener("click", function (event) {
         const dropdown = document.getElementById('layerDropdown');
-        if (event.target !== dropdown && event.target !== document.getElementById('layerBtn')) {
+        const button = document.getElementById('layerBtn');
+        
+        // make sure the dropdown and button themselves can be clicked without hiding the dropdown
+        if (!dropdown.contains(event.target) && !button.contains(event.target)) {
             dropdown.style.display = 'none';
         }
     });
@@ -249,6 +250,13 @@ require([
     });
         
     };
+    
+
+
+    
+    
+    
+
     
 });
 
