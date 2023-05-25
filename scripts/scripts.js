@@ -155,27 +155,18 @@ require([
         }
     });
 
-    // Create new instance of the Measurement widget
-    const measurement = new Measurement();
+   
 
     const distanceButton = document.getElementById('distance');
     const areaButton = document.getElementById('area');
     const clearButton = document.getElementById('clear');
 
-    distanceButton.addEventListener("click", () => {
-        distanceMeasurement();
-      });
-      areaButton.addEventListener("click", () => {
-        areaMeasurement();
-      });
-      clearButton.addEventListener("click", () => {
-        clearMeasurements();
-      });
+
 
       // Create a new instance of the Measurement widget
     const measurementWidget = new Measurement({
-    view: view
-    });
+        view: view
+        });
   
     // Add the Measurement widget to the top-right corner of the view
     view.ui.add(measurementWidget, "top-left");
@@ -203,7 +194,7 @@ require([
     areaButton.addEventListener("click", areaMeasurement);
     clearButton.addEventListener("click", clearMeasurements);
 
-    
+
     // Create a ScaleBar widget
     const scaleBar = new ScaleBar({
         view: view,
