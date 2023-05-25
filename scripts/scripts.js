@@ -205,16 +205,6 @@ require([
     // Remove Zoom widget from the view
     view.ui.remove("zoom");
 
-    // Wait for the view to finish loading
-    view.when(function () {
-        document.getElementById("zoomInBtn").addEventListener("click", function () {
-            view.zoom += 1;
-        });
-
-        document.getElementById("zoomOutBtn").addEventListener("click", function () {
-            view.zoom -= 1;
-        });
-    });
 
     const layerList = new LayerList({ view: view });
     view.ui.add(layerList, "top-right");
