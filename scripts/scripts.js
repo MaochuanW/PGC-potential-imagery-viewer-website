@@ -25,6 +25,29 @@ function login() {
 
 login();
 
+
+function toggleSubDropdown() {
+    var subDropdown = document.getElementById("subDropdown");
+    var masterCheckbox = document.getElementById("masterCheckbox");
+  
+    if (masterCheckbox.checked) {
+      subDropdown.style.display = "block";
+    } else {
+      subDropdown.style.display = "none";
+    }
+  }
+
+  function toggleSubDropdown2() {
+    var dataOverlaySubDropdown = document.getElementById("dataOverlaySubDropdown");
+    var dataOverlayCheckbox = document.getElementById("dataOverlayCheckbox");
+  
+    if (dataOverlayCheckbox.checked) {
+        dataOverlaySubDropdown.style.display = "block";
+    } else {
+        dataOverlaySubDropdown.style.display = "none";
+    }
+  }
+
 require([
     "esri/config",
     "esri/Map",
@@ -250,14 +273,15 @@ require([
     });
         
     };
-    
 
 
-    
-    
-    
+    // Hide sub-dropdown initially
+    toggleSubDropdown();
+    toggleSubDropdown2();
+
 
     
 });
+
 
 

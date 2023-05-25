@@ -312,7 +312,7 @@ html,
             display: none;
             position: absolute;
             background-color: #f9f9f9;
-            min-width: 200px;
+            min-width: 400px;
             box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
             z-index: 1;
             left: 60px;
@@ -326,7 +326,7 @@ html,
             font-size: 16px;
         }
         .layer-option label {
-            font-size: 18px;
+            font-size: 15px;
         }
         .layer-option:last-child {
             border-bottom: none; /* Optional: remove the border from the last option */
@@ -335,3 +335,5 @@ html,
         .layer-option input[type="checkbox"] {
             margin-right: 10px;
         }
+        
+        
