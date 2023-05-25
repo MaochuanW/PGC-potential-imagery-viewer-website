@@ -45,6 +45,7 @@ function toggleSubDropdown() {
         dataOverlaySubDropdown.style.display = "none";
     }
   }
+
 require([
     "esri/config",
     "esri/Map",
@@ -306,6 +307,7 @@ require([
     });
         
     };
+    
     // Hide sub-dropdown initially
     toggleSubDropdown();
     toggleSubDropdown2();

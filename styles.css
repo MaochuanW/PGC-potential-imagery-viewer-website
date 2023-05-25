@@ -129,7 +129,17 @@ html,
           position: absolute;
           width: 50px;  
           height: 1.5px; 
-          top: 255px;  
+          top: 200px;  
+          left: 0px;  
+          border: 0;
+          color: #333;
+          background-color: #333;
+        }
+        hr.line2-5 {
+          position: absolute;
+          width: 50px;  
+          height: 1.5px; 
+          top: 300px;  
           left: 0px;  
           border: 0;
           color: #333;
@@ -187,7 +197,7 @@ html,
         }
         #link {
           position: absolute;
-          top: 480px; 
+          top: 530px; 
           left: 3px; 
           width: 30px; 
           height: 30px; 
@@ -200,6 +210,31 @@ html,
         #link img:hover{
           outline: 2px solid #5A5A5A;
         }
+        hr.line4-5 {
+          position: absolute;
+          width: 50px;  
+          height: 1.5px; 
+          top: 509px;  
+          left: 0px;  
+          border: 0;
+          color: #333;
+          background-color: #333;
+        }
+        #ruler {
+          position: absolute;
+          top: 475px; 
+          left: 2px; 
+          width: 30px; 
+          height: 30px; 
+        }
+        #ruler img {
+          width: 100%;
+          height: 100%;
+        }
+        #ruler img:hover{
+          outline: 2px solid #5A5A5A;
+        }
+        
         #share {
           position: absolute;
           bottom: 9%;
@@ -286,6 +321,7 @@ html,
           bottom: 16%;
           left: 140%;
           margin-left: -10px;
+          width: 80px;
         }
         #maglass .tooltip-text {
           bottom: 20%;
@@ -296,16 +332,26 @@ html,
           bottom: 20%;
           left: 140%;
           margin-left: -10px;
+          width: 80px;
         }
+        #ruler .tooltip-text {
+          bottom: 20%; 
+          left: 140%; 
+          margin-left: -10px;
+          width: 160px;
+        }
+
         #share .tooltip-text {
           bottom: 10%;
           left: 140%;
           margin-left: -10px;
+          width: 80px;
         }
         #help .tooltip-text {
           bottom: 20%;
           left: 140%;
           margin-left: -10px;
+          width: 80px;
         }
 
         #layerDropdown {
