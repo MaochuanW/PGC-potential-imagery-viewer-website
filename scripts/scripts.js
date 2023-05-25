@@ -17,13 +17,20 @@ function login() {
         } else {
             window.keycloak = keycloak; // Assign keycloak to a global variable so it can be accessed later.
             console.log(authenticated ? 'authenticated' : 'not authenticated');
+
+            // Update the token within the keycloak.init
+            window.keycloak.updateToken(30).then(function(refreshed) {
+                console.log('Token refreshed successfully');
+            }).catch(function() {
+                console.log("Error updating token");
+            });
         }
     }).catch(() => {
         console.log('failed to initialize');
     });
 }
 
-login();
+login();  
 function toggleSubDropdown() {
     var subDropdown = document.getElementById("subDropdown");
     var masterCheckbox = document.getElementById("masterCheckbox");
@@ -61,31 +68,24 @@ require([
     esriConfig.apiKey = "AAPK5b378c5a659a47668b94785aee29f811CspcF_qvBERUKbwD9AiaNB94Ie4mbJyNQAgY6gskPznuqWXfm7PU_M1CZJdpDT3i";
     
     esriConfig.request.interceptors.push({
-        
-        urls: ["https://web.overlord.pgc.umn.edu/arcgis/rest/services/fridge/md_pgc_comm_opt_mono_mosaic_pan_ant/ImageServer",
-        "https://web.overlord.pgc.umn.edu/arcgis/rest/services/fridge/md_pgc_comm_opt_mono_mosaic_mul_ant/ImageServer"],
+    
+        urls: [
+            "https://web.overlord.pgc.umn.edu/arcgis/rest/services/fridge/md_pgc_comm_opt_mono_mosaic_pan_ant/ImageServer",
+            "https://web.overlord.pgc.umn.edu/arcgis/rest/services/fridge/md_pgc_comm_opt_mono_mosaic_mul_ant/ImageServer"
+        ],
       
         // use the Before method to add token to query
         before: function(params) {
           // Check if the token is expired or not
           if(window.keycloak.isTokenExpired()) {
-              // Update the token
-              window.keycloak.updateToken(30).then(function(refreshed) {
-                  params.requestOptions.headers = {
-                      
-                      "Authorization": "Bearer " + window.keycloak.token
-                  }
-              }).catch(function() {
-                  console.log("Error updating token");
-              });
+              console.log("Token is expired");
           } else {
               params.requestOptions.headers = {
-                  
                   "Authorization": "Bearer " + window.keycloak.token
-              }
+              };
           }
         }
-      });
+    });
 
     const map = new Map({});
 
