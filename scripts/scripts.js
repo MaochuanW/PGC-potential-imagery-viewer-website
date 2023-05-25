@@ -156,38 +156,33 @@ require([
     });
 
    
-
+    // Function to create a measurement tool
     const distanceButton = document.getElementById('distance');
     const areaButton = document.getElementById('area');
     const clearButton = document.getElementById('clear');
 
-
-
-      // Create a new instance of the Measurement widget
+    // Create a new instance of the Measurement widget
     const measurementWidget = new Measurement({
         view: view
-        });
+    });
   
-    // Add the Measurement widget to the top-right corner of the view
+    // Add the Measurement widget to the top-left corner of the view
     view.ui.add(measurementWidget, "top-left");
   
     // Function to enable the measurement of distance
     function distanceMeasurement() {
-        // Set the measurement widget's active tool to "distance"
         measurementWidget.activeTool = "distance";
     }
   
     // Function to enable the measurement of area
     function areaMeasurement() {
-    // Set the measurement widget's active tool to "area"
         measurementWidget.activeTool = "area";
     }
   
     // Function to clear measurements
     function clearMeasurements() {
-    // Clear the measurement widget's active measurements
         measurementWidget.clear();
-        }
+    }
   
     // Attach these functions to the click events of the buttons
     distanceButton.addEventListener("click", distanceMeasurement);
