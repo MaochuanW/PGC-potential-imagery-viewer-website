@@ -312,7 +312,7 @@ html,
             display: none;
             position: absolute;
             background-color: #f9f9f9;
-            min-width: 400px;
+            min-width: 250px;
             box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
             z-index: 1;
             left: 60px;
@@ -327,6 +327,7 @@ html,
         }
         .layer-option label {
             font-size: 15px;
+            font-family: 'Sensation Light', sans-serif; 
         }
         .layer-option:last-child {
             border-bottom: none; /* Optional: remove the border from the last option */
@@ -335,5 +336,18 @@ html,
         .layer-option input[type="checkbox"] {
             margin-right: 10px;
         }
+
+        .rainbow-text {
+          background-image: linear-gradient(to right, violet, indigo, blue, green, rgb(168, 168, 75), orange, red);
+          -webkit-background-clip: text;
+          -webkit-text-fill-color: transparent;
+        }
+
+        .rainbow-text strong {
+          font-weight: bold;
+        }
         
-        
+        .panchromatic-text {
+          font-weight: bold;
+          color: #555555; /* Custom color */
+        }
