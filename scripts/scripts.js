@@ -150,7 +150,7 @@ require([
     var cutlinesLayer = new FeatureLayer({
         url: "https://web.overlord.pgc.umn.edu/arcgis/rest/services/fridge/cut_pgc_comm_opt_mono_mosaic_pan_ant/FeatureServer/0"
     });
-    map.add(cutlinesLayer);
+    //map.add(cutlinesLayer);
 
     // Add event listener to capture map clicks
     view.on("click", function(event) {
