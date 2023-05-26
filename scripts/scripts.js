@@ -150,7 +150,6 @@ require([
     var cutlinesLayer = new FeatureLayer({
         url: "https://web.overlord.pgc.umn.edu/arcgis/rest/services/fridge/cut_pgc_comm_opt_mono_mosaic_pan_ant/FeatureServer/0"
     });
-    //map.add(cutlinesLayer);
 
     // Add event listener to capture map clicks
     view.on("click", function(event) {
@@ -161,13 +160,13 @@ require([
     function cutline(mapPoint) {
         // Create cutline symbol
         var cutlinePoly = new SimpleFillSymbol({
-        style: "solid",
-        color: [0, 0, 0, 0],
-        outline: new SimpleLineSymbol({
             style: "solid",
-            color: [0, 0, 0],
-            width: 1
-        })
+            color: [0, 0, 0, 0],
+            outline: new SimpleLineSymbol({
+                style: "solid",
+                color: [0, 0, 0],
+                width: 1
+            })
         });
 
         // Create the query
@@ -176,20 +175,62 @@ require([
         query.outFields = ["*"];
         query.returnGeometry = true;
 
+        // Create the popup template
+        var popupTemplate = {
+            title: "Imagery Information",
+            content: function (feature) {
+                // Get the field values
+                var attributes = feature.graphic.attributes;
+
+                // Map sensor values to labels
+                var sensorLabels = {
+                    "WV01": "WorldView-1",
+                    "WV02": "WorldView-2",
+                    "WV03": "WorldView-3",
+                    "QB02": "QuickBird",
+                    "GE01": "GeoEye-1"
+                };
+                var sensorLabel = sensorLabels[attributes.sensor];
+
+                // Build the content string
+                var content = `
+                <div style="font-size: 16px; color: black;">
+                <p><b>Catalog ID:</b> <a href="${attributes.browseurl}" target="_blank" style="color: blue;">${attributes.cat_id}</a></p>
+                <p><b>Sensor:</b> ${sensorLabel}</p>
+                <p><b>Date:</b> ${attributes.acqdate}</p>
+                <p><b>Sun Elevation:</b> ${attributes.sun_elev}</p>
+                <p><b>Off-Nadir Angle:</b> ${attributes.off_nadir}</p>
+                </div>
+                `;
+
+                return content;
+            }
+        };
+
         // Execute the query
         cutlinesLayer.queryFeatures(query).then(function(result) {
-        // Loop through the returned features and add them to the map as graphics
-        result.features.forEach(function(feature) {
-            feature.symbol = cutlinePoly;
-            var graphic = new Graphic({
-            geometry: feature.geometry,
-            symbol: feature.symbol,
-            attributes: feature.attributes
-            });
-            view.graphics.add(graphic);
-        });
+            if (result.features.length > 0) {
+                // Clear existing graphics before adding new ones
+                view.graphics.removeAll();
+                result.features.forEach(function(feature) {
+                    feature.symbol = cutlinePoly;
+                    var graphic = new Graphic({
+                        geometry: feature.geometry,
+                        symbol: feature.symbol,
+                        attributes: feature.attributes,
+                        popupTemplate: popupTemplate
+                    });
+                    view.graphics.add(graphic);
+                });
+                // Open the popup at the clicked location and set its content to be the content of the first graphic
+                view.popup.open({
+                    features: view.graphics.items,  // Pass in the graphics to display in the popup
+                    location: mapPoint  // Set the location of the popup to the mapPoint
+                });
+            }
         });
     }
+
     
 
     // Function to create a measurement tool
@@ -243,6 +284,7 @@ require([
 
     const layerList = new LayerList({ view: view });
     view.ui.add(layerList, "top-right");
+    view.ui.remove(layerList);
 
     
     // Function to zoom to popular place
