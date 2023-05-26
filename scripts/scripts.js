@@ -31,27 +31,7 @@ function login() {
 }
 
 login();  
-function toggleSubDropdown() {
-    var subDropdown = document.getElementById("subDropdown");
-    var masterCheckbox = document.getElementById("masterCheckbox");
-  
-    if (masterCheckbox.checked) {
-      subDropdown.style.display = "block";
-    } else {
-      subDropdown.style.display = "none";
-    }
-  }
 
-  function toggleSubDropdown2() {
-    var dataOverlaySubDropdown = document.getElementById("dataOverlaySubDropdown");
-    var dataOverlayCheckbox = document.getElementById("dataOverlayCheckbox");
-  
-    if (dataOverlayCheckbox.checked) {
-        dataOverlaySubDropdown.style.display = "block";
-    } else {
-        dataOverlaySubDropdown.style.display = "none";
-    }
-  }
 
 require([
     "esri/config",
@@ -63,15 +43,24 @@ require([
     "esri/widgets/ScaleBar",
     "esri/layers/ImageryTileLayer",
     "esri/layers/ImageryLayer",
-    "esri/widgets/Measurement"
-], function (esriConfig, Map, MapView, TileLayer, LayerList, Search, ScaleBar, ImageryTileLayer, ImageryLayer, Measurement) {
+    "esri/widgets/Measurement",
+    "esri/layers/FeatureLayer", 
+    "esri/PopupTemplate",
+    "esri/symbols/SimpleFillSymbol",
+    "esri/symbols/SimpleLineSymbol", 
+    "esri/Color",
+    "esri/Graphic",
+    "esri/rest/support/Query",
+    "esri/layers/GraphicsLayer"
+], function (esriConfig, Map, MapView, TileLayer, LayerList, Search, ScaleBar, ImageryTileLayer, ImageryLayer, Measurement,FeatureLayer, PopupTemplate,SimpleFillSymbol, SimpleLineSymbol, Color, Graphic,GraphicsLayer, Query) {
     esriConfig.apiKey = "AAPK5b378c5a659a47668b94785aee29f811CspcF_qvBERUKbwD9AiaNB94Ie4mbJyNQAgY6gskPznuqWXfm7PU_M1CZJdpDT3i";
     
     esriConfig.request.interceptors.push({
     
         urls: [
             "https://web.overlord.pgc.umn.edu/arcgis/rest/services/fridge/md_pgc_comm_opt_mono_mosaic_pan_ant/ImageServer",
-            "https://web.overlord.pgc.umn.edu/arcgis/rest/services/fridge/md_pgc_comm_opt_mono_mosaic_mul_ant/ImageServer"
+            "https://web.overlord.pgc.umn.edu/arcgis/rest/services/fridge/md_pgc_comm_opt_mono_mosaic_mul_ant/ImageServer",
+            "https://web.overlord.pgc.umn.edu/arcgis/rest/services/fridge/cut_pgc_comm_opt_mono_mosaic_pan_ant/FeatureServer/0"
         ],
       
         // use the Before method to add token to query
@@ -156,7 +145,53 @@ require([
         }
     });
 
-   
+
+    // Create the cutlines graphics layer
+    var cutlinesLayer = new FeatureLayer({
+        url: "https://web.overlord.pgc.umn.edu/arcgis/rest/services/fridge/cut_pgc_comm_opt_mono_mosaic_pan_ant/FeatureServer/0"
+    });
+    map.add(cutlinesLayer);
+
+    // Add event listener to capture map clicks
+    view.on("click", function(event) {
+        // Call cutline function with the clicked feature
+        cutline(event.mapPoint);
+    });
+
+    function cutline(mapPoint) {
+        // Create cutline symbol
+        var cutlinePoly = new SimpleFillSymbol({
+        style: "solid",
+        color: [0, 0, 0, 0],
+        outline: new SimpleLineSymbol({
+            style: "solid",
+            color: [0, 0, 0],
+            width: 1
+        })
+        });
+
+        // Create the query
+        var query = cutlinesLayer.createQuery();
+        query.geometry = mapPoint;
+        query.outFields = ["*"];
+        query.returnGeometry = true;
+
+        // Execute the query
+        cutlinesLayer.queryFeatures(query).then(function(result) {
+        // Loop through the returned features and add them to the map as graphics
+        result.features.forEach(function(feature) {
+            feature.symbol = cutlinePoly;
+            var graphic = new Graphic({
+            geometry: feature.geometry,
+            symbol: feature.symbol,
+            attributes: feature.attributes
+            });
+            view.graphics.add(graphic);
+        });
+        });
+    }
+    
+
     // Function to create a measurement tool
     const distanceButton = document.getElementById('distance');
     const areaButton = document.getElementById('area');
@@ -220,7 +255,7 @@ require([
     const searchWidget = new Search({ view: view });
     view.ui.add(searchWidget, { position: "top-right" });
     // Remove the LayerList widget from the UI
-    view.ui.remove(layerList);
+    //view.ui.remove(layerList);
 
     // Function to toggle popular place list
     function togglePopularPlaceList() {
@@ -298,10 +333,40 @@ require([
         
     };
     
+});
+
+
+
+   /*  function toggleSubDropdown() {
+        var subDropdown = document.getElementById("subDropdown");
+        var masterCheckbox = document.getElementById("masterCheckbox");
+      
+        if (masterCheckbox.checked) {
+          subDropdown.style.display = "block";
+        } else {
+          subDropdown.style.display = "none";
+        }
+      }
+    
+      function toggleSubDropdown2() {
+        var dataOverlaySubDropdown = document.getElementById("dataOverlaySubDropdown");
+        var dataOverlayCheckbox = document.getElementById("dataOverlayCheckbox");
+      
+        if (dataOverlayCheckbox.checked) {
+            dataOverlaySubDropdown.style.display = "block";
+        } else {
+            dataOverlaySubDropdown.style.display = "none";
+        }
+      }
     // Hide sub-dropdown initially
     toggleSubDropdown();
     toggleSubDropdown2();
-
+ */
 
     
-});
+
+
+
+
+
+
