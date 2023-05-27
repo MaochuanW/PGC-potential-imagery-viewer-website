@@ -113,22 +113,35 @@ require([
                 title: "Layer 2"
             });
             map.add(layer2);
+    
+            // Uncheck and remove layer3 if it's currently displayed
+            var layer3Checkbox = document.getElementById("layer3Checkbox");
+            if (layer3Checkbox.checked) {
+                layer3Checkbox.checked = false;
+                map.remove(layer3);
+            }
         } else {
             // If the checkbox is not checked, remove the layer
             map.remove(layer2);
         }
     });
-
+    
     document.getElementById("layer3Checkbox").addEventListener("change", function () {
         if (this.checked) {
             // If the checkbox is checked, show the layer
             layer3 = new ImageryLayer({
                 url: "https://web.overlord.pgc.umn.edu/arcgis/rest/services/fridge/md_pgc_comm_opt_mono_mosaic_mul_ant/ImageServer",
                 title: "Layer 3",
-                
             });
-            layer3.bandIds=[2,1,0],
+            layer3.bandIds = [2,1,0];
             map.add(layer3);
+    
+            // Uncheck and remove layer2 if it's currently displayed
+            var layer2Checkbox = document.getElementById("layer2Checkbox");
+            if (layer2Checkbox.checked) {
+                layer2Checkbox.checked = false;
+                map.remove(layer2);
+            }
         } else {
             // If the checkbox is not checked, remove the layer
             map.remove(layer3);
@@ -155,7 +168,6 @@ require([
     // Create the multispectral cutline layer
     var multispectralCutlineLayer = new FeatureLayer({
         url: "https://web.overlord.pgc.umn.edu/arcgis/rest/services/fridge/cut_pgc_comm_opt_mono_mosaic_mul_ant/FeatureServer/0", // replace with actual URL
-        
     });
 
     // Variable to keep track of currently selected layer. Initially, it's the panchromaticCutlineLayer
