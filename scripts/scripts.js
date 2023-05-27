@@ -60,7 +60,8 @@ require([
         urls: [
             "https://web.overlord.pgc.umn.edu/arcgis/rest/services/fridge/md_pgc_comm_opt_mono_mosaic_pan_ant/ImageServer",
             "https://web.overlord.pgc.umn.edu/arcgis/rest/services/fridge/md_pgc_comm_opt_mono_mosaic_mul_ant/ImageServer",
-            "https://web.overlord.pgc.umn.edu/arcgis/rest/services/fridge/cut_pgc_comm_opt_mono_mosaic_pan_ant/FeatureServer/0"
+            "https://web.overlord.pgc.umn.edu/arcgis/rest/services/fridge/cut_pgc_comm_opt_mono_mosaic_pan_ant/FeatureServer/0",
+            "https://web.overlord.pgc.umn.edu/arcgis/rest/services/fridge/cut_pgc_comm_opt_mono_mosaic_mul_ant/FeatureServer/0"
         ],
       
         // use the Before method to add token to query
@@ -146,18 +147,67 @@ require([
     });
 
 
-    // Create the cutlines graphics layer
-    var cutlinesLayer = new FeatureLayer({
+    // Create the panchromatic cutline layer
+    var panchromaticCutlineLayer = new FeatureLayer({
         url: "https://web.overlord.pgc.umn.edu/arcgis/rest/services/fridge/cut_pgc_comm_opt_mono_mosaic_pan_ant/FeatureServer/0"
+    });
+
+    // Create the multispectral cutline layer
+    var multispectralCutlineLayer = new FeatureLayer({
+        url: "https://web.overlord.pgc.umn.edu/arcgis/rest/services/fridge/cut_pgc_comm_opt_mono_mosaic_mul_ant/FeatureServer/0", // replace with actual URL
+        
+    });
+
+    // Variable to keep track of currently selected layer. Initially, it's the panchromaticCutlineLayer
+    var currentLayer = panchromaticCutlineLayer;
+
+    // Get checkboxes for layer selection
+    var layer2Checkbox = document.getElementById("layer2Checkbox");
+    var layer3Checkbox = document.getElementById("layer3Checkbox");
+
+    // Event listener for layer2Checkbox (Panchromatic)
+    layer2Checkbox.addEventListener("change", function() {
+        if (this.checked) {
+            // If layer2Checkbox is checked, select panchromatic layer and uncheck layer3Checkbox
+            currentLayer = panchromaticCutlineLayer;
+            layer3Checkbox.checked = false;
+        }
+        else {
+            // If layer2Checkbox is unchecked, deselect the layer
+            currentLayer = null;
+        }
+
+        // Update layer visibility
+        panchromaticCutlineLayer.visible = this.checked;
+        multispectralCutlineLayer.visible = layer3Checkbox.checked;
+    });
+
+    // Event listener for layer3Checkbox (Multispectral)
+    layer3Checkbox.addEventListener("change", function() {
+        if (this.checked) {
+            // If layer3Checkbox is checked, select multispectral layer and uncheck layer2Checkbox
+            currentLayer = multispectralCutlineLayer;
+            layer2Checkbox.checked = false;
+        }
+        else {
+            // If layer3Checkbox is unchecked, deselect the layer
+            currentLayer = null;
+        }
+
+        // Update layer visibility
+        panchromaticCutlineLayer.visible = layer2Checkbox.checked;
+        multispectralCutlineLayer.visible = this.checked;
     });
 
     // Add event listener to capture map clicks
     view.on("click", function(event) {
-        // Call cutline function with the clicked feature
-        cutline(event.mapPoint);
+        // Call cutline function with the clicked feature and currentLayer
+        if (currentLayer) { // Only call cutline if a layer is selected
+            cutline(event.mapPoint, currentLayer);
+        }
     });
 
-    function cutline(mapPoint) {
+    function cutline(mapPoint, currentLayer) {
         // Create cutline symbol
         var cutlinePoly = new SimpleFillSymbol({
             style: "solid",
@@ -170,7 +220,7 @@ require([
         });
 
         // Create the query
-        var query = cutlinesLayer.createQuery();
+        var query = currentLayer.createQuery();
         query.geometry = mapPoint;
         query.outFields = ["*"];
         query.returnGeometry = true;
@@ -208,7 +258,7 @@ require([
         };
 
         // Execute the query
-        cutlinesLayer.queryFeatures(query).then(function(result) {
+        currentLayer.queryFeatures(query).then(function(result) {
             if (result.features.length > 0) {
                 // Clear existing graphics before adding new ones
                 view.graphics.removeAll();
