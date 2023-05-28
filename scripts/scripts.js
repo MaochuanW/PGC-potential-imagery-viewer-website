@@ -216,10 +216,15 @@ require([
         multispectralCutlineLayer.visible = this.checked;
     });
 
+
     // Add event listener to capture map clicks
     view.on("click", function(event) {
+        // Check if the measurement tool is active
+        var isMeasurementToolActive = measurementWidget.activeTool !== null;
+        
         // Call cutline function with the clicked feature and currentLayer
-        if (currentLayer) { // Only call cutline if a layer is selected
+        // ONLY IF the measurement tool is not active
+        if (!isMeasurementToolActive && currentLayer) { 
             cutline(event.mapPoint, currentLayer);
         }
     });
@@ -242,6 +247,7 @@ require([
         }
     });
 
+   
 
     function cutline(mapPoint, currentLayer) {
         // Create cutline symbol
