@@ -18,19 +18,24 @@ function login() {
             window.keycloak = keycloak; // Assign keycloak to a global variable so it can be accessed later.
             console.log(authenticated ? 'authenticated' : 'not authenticated');
 
-            // Update the token within the keycloak.init
-            window.keycloak.updateToken(30).then(function(refreshed) {
-                console.log('Token refreshed successfully');
-            }).catch(function() {
-                console.log("Error updating token");
-            });
+            // Refresh the token every minute if it's valid
+            setInterval(() => {
+                if (!window.keycloak.isTokenExpired()) {
+                    window.keycloak.updateToken(30).then(refreshed => {
+                        console.log('Token refreshed successfully');
+                    }).catch(() => {
+                        console.log("Error updating token");
+                    });
+                }
+            }, 60000); // 60000 milliseconds = 1 minute
         }
     }).catch(() => {
         console.log('failed to initialize');
     });
 }
 
-login();  
+login();
+  
 
 
 require([
