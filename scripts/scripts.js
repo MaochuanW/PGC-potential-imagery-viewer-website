@@ -172,7 +172,7 @@ require([
 
     // Create the multispectral cutline layer
     var multispectralCutlineLayer = new FeatureLayer({
-        url: "https://web.overlord.pgc.umn.edu/arcgis/rest/services/fridge/cut_pgc_comm_opt_mono_mosaic_mul_ant/FeatureServer/0", // replace with actual URL
+        url: "https://web.overlord.pgc.umn.edu/arcgis/rest/services/fridge/cut_pgc_comm_opt_mono_mosaic_mul_ant/FeatureServer/0", 
     });
 
     // Variable to keep track of currently selected layer. Initially, it's the panchromaticCutlineLayer
@@ -225,7 +225,6 @@ require([
     });
 
 
-    
     // Function that delete cutline and popup window when user click outside map frame
     var viewContainer = view.container;
 
@@ -242,7 +241,7 @@ require([
             view.graphics.removeAll();  // Remove all graphics from the view
         }
     });
-    
+
 
     function cutline(mapPoint, currentLayer) {
         // Create cutline symbol
