@@ -224,6 +224,26 @@ require([
         }
     });
 
+
+    
+    // Function that delete cutline and popup window when user click outside map frame
+    var viewContainer = view.container;
+
+    document.addEventListener('click', function(event) {
+        var isClickInside = viewContainer.contains(event.target);
+    
+        if (!isClickInside) {
+            view.popup.close();
+        }
+    });
+
+    view.popup.watch("visible", function(newValue) {
+        if (!newValue) {  // If the popup is not visible...
+            view.graphics.removeAll();  // Remove all graphics from the view
+        }
+    });
+    
+
     function cutline(mapPoint, currentLayer) {
         // Create cutline symbol
         var cutlinePoly = new SimpleFillSymbol({
@@ -235,6 +255,7 @@ require([
                 width: 1
             })
         });
+
 
         // Create the query
         var query = currentLayer.createQuery();
