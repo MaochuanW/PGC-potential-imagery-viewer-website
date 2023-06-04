@@ -401,8 +401,8 @@ html,
 
         #toolbarDiv {
           position: absolute;
-          top: 475px;
-          right: 1880px;
+          top: 475px; /* Adjust according to your layout */
+          left: calc(50px + 10px); /* 50px is the assumed width of the #rulerBtn, and 10px is the gap between #rulerBtn and #toolbarDiv. Adjust these values based on your actual layout */
           cursor: default;
           display: flex;
           flex-direction: row;
