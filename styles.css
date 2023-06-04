@@ -401,8 +401,8 @@ html,
 
         #toolbarDiv {
           position: absolute;
-          top: 15px;
-          right: 300px;
+          top: 475px;
+          right: 1880px;
           cursor: default;
           display: flex;
           flex-direction: row;
@@ -437,5 +437,19 @@ html,
           max-height: none !important;
         }
         
-      
+
+        #toolbarDiv {
+          display: none;
+        }
+        
+        #toolbarDiv.show {
+          display: block;
+        }
+        
+        #toolbarDiv .esri-widget--button {
+          display: inline-block;
+          margin-right: 0px;
+        }
+        
+
         

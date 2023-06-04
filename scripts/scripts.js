@@ -353,11 +353,34 @@ require([
     function clearMeasurements() {
         measurementWidget.clear();
     }
-  
-    // Attach these functions to the click events of the buttons
-    distanceButton.addEventListener("click", distanceMeasurement);
-    areaButton.addEventListener("click", areaMeasurement);
-    clearButton.addEventListener("click", clearMeasurements);
+
+    distanceButton.addEventListener('click', function() {
+        distanceMeasurement();
+    });
+    
+    areaButton.addEventListener('click', function() {
+        areaMeasurement();
+    });
+    
+    clearButton.addEventListener('click', function() {
+        clearMeasurements();
+    });
+
+    // Get references to the ruler button and the toolbar div
+    var rulerButton = document.getElementById('ruler');
+    var toolbarDiv = document.getElementById('toolbarDiv');
+
+    // Add a click event listener to the ruler button
+    rulerButton.addEventListener('click', function() {
+    // Toggle the visibility of the toolbar div
+    toolbarDiv.classList.toggle('show');
+    });
+
+    document.querySelector('#ruler').addEventListener('click', function() {
+        let tooltipText = this.querySelector('.tooltip-text');
+        tooltipText.style.visibility = 'hidden';
+      });
+      
 
 
     // Create a ScaleBar widget
