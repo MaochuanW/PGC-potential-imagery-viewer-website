@@ -110,7 +110,7 @@ require([
 
     const AntCompBaseMap = new TileLayer({
         url: "https://overlord.pgc.umn.edu/arcgis/rest/services/imagery/ant_pgc_composite_mosaic/MapServer",
-        title: "PGC Imagery Layer",
+        title: "Antarctica Composite Basemap",
         spatialReference: {
             wkid: 3031
         }
@@ -152,7 +152,7 @@ require([
     document.getElementById("layer2Checkbox").addEventListener("change", function () {
         if (this.checked) {
             // If the checkbox is checked, show the layer
-            layer2 = new ImageryTileLayer({
+            layer2 = new ImageryLayer({
                 url: "https://web.overlord.pgc.umn.edu/arcgis/rest/services/fridge/md_pgc_comm_opt_mono_mosaic_pan_ant/ImageServer",
                 title: "Layer 2"
             });
