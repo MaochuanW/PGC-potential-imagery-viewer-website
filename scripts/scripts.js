@@ -56,8 +56,32 @@ require([
     "esri/Color",
     "esri/Graphic",
     "esri/rest/support/Query",
-    "esri/layers/GraphicsLayer"
-], function (esriConfig, Map, MapView, TileLayer, LayerList, Search, ScaleBar, ImageryTileLayer, ImageryLayer, Measurement,FeatureLayer, PopupTemplate,SimpleFillSymbol, SimpleLineSymbol, Color, Graphic,GraphicsLayer, Query) {
+    "esri/layers/GraphicsLayer",
+    "esri/geometry/SpatialReference",
+    "esri/layers/support/TileInfo"
+
+], function (
+    esriConfig, 
+    Map, 
+    MapView,
+    TileLayer,
+    LayerList, 
+    Search, 
+    ScaleBar, 
+    ImageryTileLayer, 
+    ImageryLayer, 
+    Measurement,
+    FeatureLayer, 
+    PopupTemplate,
+    SimpleFillSymbol, 
+    SimpleLineSymbol, 
+    Color, 
+    Graphic,
+    Query,
+    GraphicsLayer,
+    SpatialReference,
+    TileInfo
+) {
     esriConfig.apiKey = "AAPK5b378c5a659a47668b94785aee29f811CspcF_qvBERUKbwD9AiaNB94Ie4mbJyNQAgY6gskPznuqWXfm7PU_M1CZJdpDT3i";
     
     esriConfig.request.interceptors.push({
@@ -84,15 +108,30 @@ require([
 
     const map = new Map({});
 
-    const pgcLayer = new TileLayer({
+    const AntCompBaseMap = new TileLayer({
         url: "https://overlord.pgc.umn.edu/arcgis/rest/services/imagery/ant_pgc_composite_mosaic/MapServer",
         title: "PGC Imagery Layer",
         spatialReference: {
             wkid: 3031
         }
     });
-    map.add(pgcLayer);
+    map.add(AntCompBaseMap);
 
+
+    document.getElementById("AntCompBaseMapCheckbox").addEventListener("change", function () {
+        if (this.checked) {
+            // If the checkbox is checked, show the layer
+            AntCompBaseMap.visible = true;
+        } else {
+            // If the checkbox is not checked, hide the layer
+            AntCompBaseMap.visible = false;
+        }
+    });
+
+    // Set the checkbox to be checked by default
+    document.getElementById("AntCompBaseMapCheckbox").checked = true;
+    AntCompBaseMap.visible = true;
+    
     let layer1, layer2;
 
     document.getElementById("layer1Checkbox").addEventListener("change", function () {
@@ -154,16 +193,72 @@ require([
     });
 
         
+    const spatialReference = new SpatialReference({
+        wkid: 3031 
+    });
+    
+    // Create LODs from level 0 to 24
+    const tileInfo = TileInfo.create({
+        spatialReference,
+        numLODs: 24
+    });
+    
+    const lods = tileInfo.lods;
+    
     const view = new MapView({
         map: map,
         center: [166.666664, -90.8499966],
-        zoom: 2,
+        zoom: 4,
         container: "viewDiv",
-        spatialReference: {
-            wkid: 3031
+        spatialReference,
+        constraints: {
+            lods: lods,
+            snapToZoom: false
         }
     });
 
+    // Smooth zoom effect using mouse scroll
+    let accumulatedDeltaY = 0;
+    let zooming = false;
+    const zoomThreshold = 50; // Adjust the scroll delta threshold for zoom action
+
+    view.on("mouse-wheel", function (event) {
+    event.stopPropagation();
+    event.preventDefault();
+
+    const deltaY = event.deltaY;
+    const zoomFactor = 1; // Adjust the zoom speed (smaller value for slower zoom-in)
+
+    accumulatedDeltaY += deltaY;
+
+    if (!zooming && Math.abs(accumulatedDeltaY) >= zoomThreshold) {
+        zooming = true;
+        const zoomDirection = accumulatedDeltaY > 0 ? -1 : 1;
+        const zoomLevel = view.zoom + zoomDirection * zoomFactor;
+
+        view.goTo({
+        zoom: zoomLevel,
+        duration: 250, // Adjust the animation duration as needed
+        easing: "linear", // Use linear easing for smoother zoom
+        signal: null, // Remove signal if you don't need to cancel ongoing zoom actions
+        }).then(() => {
+        zooming = false;
+        });
+
+        accumulatedDeltaY = 0;
+    }
+    });
+    
+    document.getElementById("zoomInBtn").addEventListener("click", function () {
+        let zoomLevel = view.zoom + 1;
+        view.goTo({ zoom: zoomLevel });
+    });
+        
+    document.getElementById("zoomOutBtn").addEventListener("click", function () {
+        let zoomLevel = view.zoom - 1;
+        view.goTo({ zoom: zoomLevel });
+    });
+    
 
     // Create the panchromatic cutline layer
     var panchromaticCutlineLayer = new FeatureLayer({
@@ -478,17 +573,6 @@ require([
             dropdown.style.display = dropdown.style.display === 'none' ? 'block' : 'none';
         });
 
-    // This gives zoom in/out a smooth effect
-    document.getElementById("zoomInBtn").addEventListener("click", function () {
-        let zoomLevel = view.zoom + 1;
-        view.goTo({ zoom: zoomLevel });
-    });
-        
-    document.getElementById("zoomOutBtn").addEventListener("click", function () {
-        let zoomLevel = view.zoom - 1;
-        view.goTo({ zoom: zoomLevel });
-    });
-        
     };
     
 });
