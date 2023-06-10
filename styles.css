@@ -366,6 +366,7 @@ html,
             top: 360px; 
 
         }
+      
         
         .layer-option {
             padding: 12px 16px;
@@ -382,6 +383,34 @@ html,
 
         .layer-option input[type="checkbox"] {
             margin-right: 10px;
+        }
+
+        #maglassDropdown {
+          display: none;
+          position: absolute;
+          background-color: #f9f9f9;
+          min-width: 220px;
+          box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+          z-index: 1;
+          left: 60px;
+          top: 410px; 
+
+        }
+        .zoom-option {
+          padding: 12px 16px;
+          border-bottom: 1px solid #ddd; /* Optional: add a border between options */
+          font-size: 16px;
+        }
+        .zoom-option label {
+          font-size: 15px;
+          font-family: 'Sensation Light', sans-serif; 
+        }
+        .zoom-option:last-child {
+          border-bottom: none; /* Optional: remove the border from the last option */
+        }
+
+        .zoom-option input[type="checkbox"] {
+          margin-right: 10px;
         }
 
         .rainbow-text {
@@ -450,6 +479,7 @@ html,
           display: inline-block;
           margin-right: 0px;
         }
+        
         
 
         

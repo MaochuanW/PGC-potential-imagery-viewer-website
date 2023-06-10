@@ -551,31 +551,47 @@ require([
         });
     });
 
-    // Event listener to hide the dropdown menu when clicking anywhere on the map
+    // This code fixes the click problem for both sets of buttons and dropdown menus
+
+    window.onload = function () {
+        // Ensure dropdowns are hidden when page loads
+        var layerDropdown = document.getElementById('layerDropdown');
+        var maglassDropdown = document.getElementById('maglassDropdown');
+
+        layerDropdown.style.display = 'none';
+        maglassDropdown.style.display = 'none';
+
+        // Event listener for the layer button click
+        document.getElementById('layerBtn').addEventListener('click', function () {
+            layerDropdown.style.display = layerDropdown.style.display === 'none' ? 'block' : 'none';
+        });
+
+        // Event listener for the maglass button click
+        document.getElementById('maglass').addEventListener('click', function () {
+            maglassDropdown.style.display = maglassDropdown.style.display === 'none' ? 'block' : 'none';
+        });
+    }
+
+    // Event listener to hide the dropdown menus when clicking anywhere on the map
     document.addEventListener("click", function (event) {
-        const dropdown = document.getElementById('layerDropdown');
-        const button = document.getElementById('layerBtn');
-        
-        // make sure the dropdown and button themselves can be clicked without hiding the dropdown
-        if (!dropdown.contains(event.target) && !button.contains(event.target)) {
-            dropdown.style.display = 'none';
+        var layerDropdown = document.getElementById('layerDropdown');
+        var maglassDropdown = document.getElementById('maglassDropdown');
+
+        var layerButton = document.getElementById('layerBtn');
+        var maglassButton = document.getElementById('maglass');
+
+        // Make sure the dropdowns and buttons themselves can be clicked without hiding the dropdowns
+        if (!layerDropdown.contains(event.target) && !layerButton.contains(event.target)) {
+            layerDropdown.style.display = 'none';
+        }
+
+        if (!maglassDropdown.contains(event.target) && !maglassButton.contains(event.target)) {
+            maglassDropdown.style.display = 'none';
         }
     });
 
-    // This code fix the click problem for buttons (click twice to toggle dropdown...wtf)
-    window.onload = function () {
-        // Ensure dropdown is hidden when page loads
-        var dropdown = document.getElementById('layerDropdown');
-        dropdown.style.display = 'none';
-
-        // Event listener for the button click
-        document.getElementById('layerBtn').addEventListener('click', function () {
-            dropdown.style.display = dropdown.style.display === 'none' ? 'block' : 'none';
-        });
-
-    };
     
-});
+});s
 
 
 
