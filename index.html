@@ -56,51 +56,51 @@
 
       <div id="layerDropdown">
         <div class="layer-option">
+          <!-- Master checkbox for toggling sub-dropdown -->
           <input type="checkbox" id="masterCheckbox" onclick="toggleSubDropdown('subDropdown')">
           <label for="masterCheckbox"><strong>Licensed Commercial Imagery</strong></label>
-
-          
-
-         
-            <div class="layer-option">
-              <input type="checkbox" id="layer2Checkbox">
-              <label for="layer2Checkbox">0.5m Antarctic Imagery Mosaic (<span class="panchromatic-text">panchromatic</span>)</label>
-            </div>
-            
-
-            <div class="layer-option">
-              <input type="checkbox" id="layer3Checkbox">
-              <label for="layer3Checkbox">2m Antarctic Imagery Mosaic <span class="rainbow-text">(<strong>multispectral</strong>)</span></label>
-            </div>
-
+      
+          <div class="layer-option">
+            <!-- Checkbox for Layer 2 -->
+            <input type="checkbox" id="layer2Checkbox">
+            <label for="layer2Checkbox">0.5m Antarctic Imagery Mosaic (<span class="panchromatic-text">panchromatic</span>)</label>
           </div>
-
-        
+      
+          <div class="layer-option">
+            <!-- Checkbox for Layer 3 -->
+            <input type="checkbox" id="layer3Checkbox">
+            <label for="layer3Checkbox">2m Antarctic Imagery Mosaic <span class="rainbow-text">(<strong>multispectral</strong>)</span></label>
+          </div>
+        </div>
+      
         <div class="layer-option">
+          <!-- Master checkbox for toggling sub-dropdown 2 -->
           <input type="checkbox" id="dataOverlayCheckbox" onclick="toggleSubDropdown2('dataOverlaySubDropdown')">
           <label for="dataOverlayCheckbox"><strong>Data & Overlay Layers</strong></label>
-
+      
           
-
-          <div class="sub-dropdown" id="dataOverlaySubDropdown">
             <div class="layer-option">
+              <!-- Checkbox for Antarctic Composite Basemap -->
               <input type="checkbox" id="AntCompBaseMapCheckbox">
               <label for="AntCompBaseMapCheckbox">Antarctic Composite Basemap</label>
-          </div>
-
+            </div>
+      
             <div class="layer-option">
+              <!-- Checkbox for Layer 1 -->
               <input type="checkbox" id="layer1Checkbox">
               <label for="layer1Checkbox">USGS Topo Map</label>
             </div>
-            
+      
             <div class="layer-option">
+              <!-- Checkbox for Additional Layer 2 -->
               <input type="checkbox" id="layer5Checkbox">
               <label for="layer5Checkbox">Additional Layer 2</label>
-            </div>
             
           </div>
         </div>
       </div>
+      
+      
      
       
     
