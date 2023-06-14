@@ -594,24 +594,7 @@ require([
         });
     };
     
-    // Functions for opening and closing modals
-    function openModal(modalId, event) {
-        event.stopPropagation();  // Prevents the click event from triggering parent elements
-        var modal = document.getElementById(modalId);
-        modal.style.display = "block";
-    }
     
-    function closeModal(modalId) {
-        var modal = document.getElementById(modalId);
-        modal.style.display = "none";
-    }
-    
-    // Close modals when clicking outside of them
-    window.onclick = function(event) {
-        if (event.target.className === 'modal') {
-            event.target.style.display = "none";
-        }
-    };
 
     
 });
