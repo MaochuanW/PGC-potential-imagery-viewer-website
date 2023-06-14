@@ -554,41 +554,64 @@ require([
     // This code fixes the click problem for both sets of buttons and dropdown menus
 
     window.onload = function () {
-        // Ensure dropdowns are hidden when page loads
+        // Ensure dropdowns and modals are hidden when page loads
         var layerDropdown = document.getElementById('layerDropdown');
         var maglassDropdown = document.getElementById('maglassDropdown');
-
+        var coordinatesModal = document.getElementById('coordinatesModal');
+        var popularPlacesModal = document.getElementById('popularPlacesModal');
+    
         layerDropdown.style.display = 'none';
         maglassDropdown.style.display = 'none';
-
+        coordinatesModal.style.display = 'none';
+        popularPlacesModal.style.display = 'none';
+    
         // Event listener for the layer button click
         document.getElementById('layerBtn').addEventListener('click', function () {
             layerDropdown.style.display = layerDropdown.style.display === 'none' ? 'block' : 'none';
         });
-
+    
         // Event listener for the maglass button click
         document.getElementById('maglass').addEventListener('click', function () {
             maglassDropdown.style.display = maglassDropdown.style.display === 'none' ? 'block' : 'none';
         });
+    
+        // Event listener to hide the dropdown menus when clicking anywhere on the map
+        document.addEventListener("click", function (event) {
+            var layerDropdown = document.getElementById('layerDropdown');
+            var maglassDropdown = document.getElementById('maglassDropdown');
+    
+            var layerButton = document.getElementById('layerBtn');
+            var maglassButton = document.getElementById('maglass');
+    
+            // Make sure the dropdowns and buttons themselves can be clicked without hiding the dropdowns
+            if (!layerDropdown.contains(event.target) && !layerButton.contains(event.target)) {
+                layerDropdown.style.display = 'none';
+            }
+    
+            if (!maglassDropdown.contains(event.target) && !maglassButton.contains(event.target)) {
+                maglassDropdown.style.display = 'none';
+            }
+        });
+    };
+    
+    // Functions for opening and closing modals
+    function openModal(modalId, event) {
+        event.stopPropagation();  // Prevents the click event from triggering parent elements
+        var modal = document.getElementById(modalId);
+        modal.style.display = "block";
     }
-
-    // Event listener to hide the dropdown menus when clicking anywhere on the map
-    document.addEventListener("click", function (event) {
-        var layerDropdown = document.getElementById('layerDropdown');
-        var maglassDropdown = document.getElementById('maglassDropdown');
-
-        var layerButton = document.getElementById('layerBtn');
-        var maglassButton = document.getElementById('maglass');
-
-        // Make sure the dropdowns and buttons themselves can be clicked without hiding the dropdowns
-        if (!layerDropdown.contains(event.target) && !layerButton.contains(event.target)) {
-            layerDropdown.style.display = 'none';
+    
+    function closeModal(modalId) {
+        var modal = document.getElementById(modalId);
+        modal.style.display = "none";
+    }
+    
+    // Close modals when clicking outside of them
+    window.onclick = function(event) {
+        if (event.target.className === 'modal') {
+            event.target.style.display = "none";
         }
-
-        if (!maglassDropdown.contains(event.target) && !maglassButton.contains(event.target)) {
-            maglassDropdown.style.display = 'none';
-        }
-    });
+    };
 
     
 });
