@@ -528,6 +528,7 @@ require([
     //view.ui.remove(layerList);
 
     window.openModal = openModal;
+    window.closeModal = closeModal;
     function openModal(modalId, event) { 
         var modal = document.getElementById(modalId);
         modal.style.display = "block";
