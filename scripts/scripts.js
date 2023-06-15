@@ -521,36 +521,40 @@ require([
     view.ui.remove(layerList);
 
     
-    // Function to zoom to popular place
-    function zoomToPopularPlace(coordinates) {
-        console.log(coordinates)
-        view.goTo({ center: coordinates, zoom: 15 });
-        togglePopularPlaceList();
-    }
 
     const searchWidget = new Search({ view: view });
     view.ui.add(searchWidget, { position: "top-right" });
     // Remove the LayerList widget from the UI
     //view.ui.remove(layerList);
 
-    // Function to toggle popular place list
-    function togglePopularPlaceList() {
-        const popularPlaceList = document.getElementById("popularPlaceList");
-        if (popularPlaceList.style.display === "none") {
-            popularPlaceList.style.display = "block";
-        } else {
-            popularPlaceList.style.display = "none";
+    window.openModal = openModal;
+    function openModal(modalId, event) { 
+        var modal = document.getElementById(modalId);
+        modal.style.display = "block";
+    }
+
+    function closeModal(modalId) {
+        var modal = document.getElementById(modalId);
+        modal.style.display = "none";
+    }
+
+    window.onclick = function(event) {
+        if (event.target.className === 'modal') {
+            event.target.style.display = "none";
         }
     }
 
-
-
+    // Function to zoom to popular place
+    function zoomToPopularPlace(coordinates) {
+        console.log(coordinates)
+        view.goTo({ center: coordinates, zoom: 15 });
+        closeModal('popularPlacesModal');
+    }
     // Attach toggle popular place list function to button click event
-    document.getElementById("zoomToPopularPlaceBtn").addEventListener("click", togglePopularPlaceList);
-    const buck = document.getElementById("buck")
-    buck.addEventListener("click", function () {
-        zoomToPopularPlace([-0.1411, 51.501])
+    document.getElementById("buck").addEventListener("click", function () {
+        zoomToPopularPlace([-0.1411, 51.501]);
     });
+    
 
     const tooltipButtons = document.querySelectorAll('.tooltip');
     tooltipButtons.forEach(btn => {

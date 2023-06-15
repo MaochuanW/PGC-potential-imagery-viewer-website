@@ -102,24 +102,6 @@
     
       <hr class="line3">
 
-      <script>
-        function openModal(modalId, event) { 
-            var modal = document.getElementById(modalId);
-            modal.style.display = "block";
-        }
-    
-        function closeModal(modalId) {
-            var modal = document.getElementById(modalId);
-            modal.style.display = "none";
-        }
-    
-        window.onclick = function(event) {
-            if (event.target.className === 'modal') {
-                event.target.style.display = "none";
-            }
-        }
-      </script>
-
       <div id="maglass" class="tooltip">
         <img src="mag_glass.png" alt="Layer">
         <div class="tooltip-text">Zoom to</div>
@@ -134,9 +116,9 @@
       </div>
       
       <div class="zoom-option" onclick="openModal('popularPlacesModal', event)">
-          <img src="popular.png" alt="Image 2" style="margin-right: 10px; width: 30px; height: 30px; margin-top: 5px;">
-          <label for="ZoomtoPopularPlaces" style="position: relative; top: -9px;"><strong>Zoom to Popular Places</strong></label>
-      </div>
+        <img src="popular.png" alt="Image 2" style="margin-right: 10px; width: 30px; height: 30px; margin-top: 5px;">
+        <label for="ZoomtoPopularPlaces" style="position: relative; top: -9px;"><strong>Zoom to Popular Places</strong></label>
+    </div>
       
       <div id="coordinatesModal" class="modal" onclick="closeModal('coordinatesModal')">
           <div class="modal-content" onclick="event.stopPropagation()">
@@ -146,18 +128,28 @@
       </div>
       
       <div id="popularPlacesModal" class="modal" onclick="closeModal('popularPlacesModal')">
-          <div class="modal-content" onclick="event.stopPropagation()">
-              <span class="close" onclick="closeModal('popularPlacesModal')">&times;</span>
-              <p>Some text in the Popular Places Modal..</p>
-          </div>
-      </div>
+        <div class="modal-content" onclick="event.stopPropagation()">
+            <span class="close" onclick="closeModal('popularPlacesModal')">&times;</span>
+            <p>This is a ugly Modal Window!</p>
+    
+            <div id="popularPlaceList" class="popular-place-list">
+                <div>
+                    <img src="big-ben-icon.png" class="popular-place-icon" alt="Big Ben Icon">
+                    <button onclick="zoomToPopularPlace([-0.1278, 51.5074])">Big Ben</button>
+                </div>
+                <div>
+                    <img src="buckingham-palace-icon.png" class="popular-place-icon" alt="Buckingham Palace Icon">
+                    <button id="buck">Buckingham Palace</button>
+                </div>
+                <div>
+                    <img src="great-wall-icon.png" class="popular-place-icon" alt="The Great Wall Icon">
+                    <button onclick="zoomToPopularPlace([116.5977, 40.4406])">The Great Wall</button>
+                </div>
+            </div>
+        </div>
     </div>
-
-
-
-
-
-
+    
+    </div>
 
     
       <hr class="line4">
@@ -184,29 +176,6 @@
       
     </div>
 
-       
-      
-      <div id="popularPlaceList" class="popular-place-list">
-
-        <div>
-            <img src="big-ben-icon.png" class="popular-place-icon" alt="Big Ben Icon">
-            <button onclick="zoomToPopularPlace([-0.1278, 51.5074])">Big Ben</button>
-        </div>
-        <div>
-            <img src="buckingham-palace-icon.png" class="popular-place-icon" alt="Buckingham Palace Icon">
-            <button id="buck">Buckingham Palace</button>
-        </div>
-        <div>
-            <img src="great-wall-icon.png" class="popular-place-icon" alt="The Great Wall Icon">
-            <button onclick="zoomToPopularPlace([116.5977, 40.4406])">The Great Wall</button>
-        </div>
-      </div>
-
-    <div style="position: absolute; top: 10px; left: 600px;">
-        <button id="zoomToPopularPlaceBtn">Zoom to Popular Place</button>
-    </div>
-
-    
 </body>
 
 </html>

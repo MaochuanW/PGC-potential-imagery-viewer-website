@@ -23,14 +23,11 @@ html,
           height: 50px;
         }
         .popular-place-list {
-          display: none;
-          position: absolute;
-          top: 10px;
-          left: 10px;
+          display: block;
           background-color: white;
           border: 1px solid gray;
           padding: 10px;
-        }
+      }
         .esri-icon-visible{
           color: blue;
         }
