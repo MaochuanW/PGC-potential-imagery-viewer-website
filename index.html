@@ -16,8 +16,10 @@
   <div id="viewDiv"></div>
 
   <div id="toolbarDiv" class="esri-component esri-widget">
-    <button id="distance" class="esri-widget--button esri-interactive esri-icon-measure-line" title="Distance Measurement Tool"></button>
-    <button id="area" class="esri-widget--button esri-interactive esri-icon-measure-area" title="Area Measurement Tool"></button>
+    <button id="distance" class="esri-widget--button esri-interactive esri-icon-measure-line"
+      title="Distance Measurement Tool"></button>
+    <button id="area" class="esri-widget--button esri-interactive esri-icon-measure-area"
+      title="Area Measurement Tool"></button>
     <button id="clear" class="esri-widget--button esri-interactive esri-icon-trash" title="Clear Measurements"></button>
   </div>
 
@@ -55,13 +57,15 @@
         <div class="layer-option">
           <!-- Checkbox for Layer 2 -->
           <input type="checkbox" id="layer2Checkbox">
-          <label for="layer2Checkbox">0.5m Antarctic Imagery Mosaic (<span class="panchromatic-text">panchromatic</span>)</label>
+          <label for="layer2Checkbox">0.5m Antarctic Imagery Mosaic (<span
+              class="panchromatic-text">panchromatic</span>)</label>
         </div>
 
         <div class="layer-option">
           <!-- Checkbox for Layer 3 -->
           <input type="checkbox" id="layer3Checkbox">
-          <label for="layer3Checkbox">2m Antarctic Imagery Mosaic <span class="rainbow-text">(<strong>multispectral</strong>)</span></label>
+          <label for="layer3Checkbox">2m Antarctic Imagery Mosaic <span
+              class="rainbow-text">(<strong>multispectral</strong>)</span></label>
         </div>
       </div>
 
@@ -99,13 +103,16 @@
 
     <div id="maglassDropdown">
       <div class="zoom-option" onclick="openCoordinateWidget()">
-        <img src="Coordinates.png" alt="Image 1" style="margin-right: 10px; width: 30px; height: 30px; margin-top: 5px;">
-        <label for="ZoomtoCoordinates" style="position: relative; top: -10px;"><strong>Zoom to Coordinates</strong></label>
+        <img src="Coordinates.png" alt="Image 1"
+          style="margin-right: 10px; width: 30px; height: 30px; margin-top: 5px;">
+        <label for="ZoomtoCoordinates" style="position: relative; top: -10px;"><strong>Zoom to
+            Coordinates</strong></label>
       </div>
 
       <div class="zoom-option" onclick="openModal('popularPlacesModal', event)">
         <img src="popular.png" alt="Image 2" style="margin-right: 10px; width: 30px; height: 30px; margin-top: 5px;">
-        <label for="ZoomtoPopularPlaces" style="position: relative; top: -9px;"><strong>Zoom to Popular Places</strong></label>
+        <label for="ZoomtoPopularPlaces" style="position: relative; top: -9px;"><strong>Zoom to Popular
+            Places</strong></label>
       </div>
 
       <div id="coordinatesModal" class="modal" onclick="closeModal('coordinatesModal')">

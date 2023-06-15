@@ -1,539 +1,587 @@
 html,
-        body,
-        #viewDiv {
-          padding: 0;
-          margin: 0;
-          height: 100%;
-          width: 100%;
-          padding-left: 0px;
-          grid-column: 2;
-          background-color: #000000;
-        }
-        body {
-          display: grid;
-          grid-template-columns: 50px 1fr;
-          grid-template-rows: 100vh;
-          margin: 0;
-          height: 100vh;
-          width: 100%;
-          overflow: hidden;
-        }
-        .popular-place-icon {
-          width: 50px;
-          height: 50px;
-        }
-        .popular-place-list {
-          display: block;
-          background-color: white;
-          border: 1px solid gray;
-          padding: 10px;
-      }
-        .esri-icon-visible{
-          color: blue;
-        }
+body,
+#viewDiv {
+  padding: 0;
+  margin: 0;
+  height: 100%;
+  width: 100%;
+  padding-left: 0px;
+  grid-column: 2;
+  background-color: #000000;
+}
 
-        .sidebar {
-          height: 100%;
-          width: 50px;
-          position: absolute;
-          left: 0;
-          top: 0;
-          padding-top: 40px;
-          background: linear-gradient(to bottom, #B2EEF1 0%, #f5f8dc 100%);
-          grid-column: 1;
-          overflow-y: auto;
-          overflow: visible;
-        }
+body {
+  display: grid;
+  grid-template-columns: 50px 1fr;
+  grid-template-rows: 100vh;
+  margin: 0;
+  height: 100vh;
+  width: 100%;
+  overflow: hidden;
+}
 
-        .sidebar div {
-          padding: 8px;
-          font-size: 24px;
-          display: block;
-        }
-        .sidebar img {
-          width: 50px;  
-          height: 50px;  
-          margin-top: -30px;
-        }
-        #imagery {
-          position: absolute;
-          top: 82px;  
-          left: -10px;  
-          writing-mode: vertical-rl;
-          transform: rotate(180deg);
-          font-family: 'Sensation Light', sans-serif;
-          text-shadow: 2px 2px 4px rgba(0,0,0,0.5);
-        }
+.popular-place-icon {
+  width: 50px;
+  height: 50px;
+}
 
-        #viewer {
-          position: absolute;
-          top: 90px;  
-          left: 15px;  
-          writing-mode: vertical-rl;
-          transform: rotate(180deg);
-          font-family: 'Sensation Light', sans-serif;
-          text-shadow: 2px 2px 4px rgba(0,0,0,0.5);
-        }
-        @font-face {
-          font-family: 'Sensation Light';
-          src: url('Sansation_Light.ttf') format('truetype');
-        }
-        hr.line1 {
-          
-          width: 40px;  
-          height: 1.5px; 
-          top: 90px;  
-          left: 0px;  
-          border: 0;
-          color: #333;
-          background-color: #333;
-        }
+.popular-place-list {
+  display: block;
+  background-color: white;
+  border: 1px solid gray;
+  padding: 10px;
+}
 
-        #zoomInBtn, #zoomOutBtn {
-          position: absolute;
-          left: 7px; 
-          background: none; 
-          border: none; 
-          padding: 0; 
-          margin: 5px; 
-          outline: none; 
-        }
+.esri-icon-visible {
+  color: blue;
+}
 
-        #zoomInBtn {
-          top: 250px; 
-          left: 8.5px;
-        }
+.sidebar {
+  height: 100%;
+  width: 50px;
+  position: absolute;
+  left: 0;
+  top: 0;
+  padding-top: 40px;
+  background: linear-gradient(to bottom, #B2EEF1 0%, #f5f8dc 100%);
+  grid-column: 1;
+  overflow-y: auto;
+  overflow: visible;
+}
 
-        #zoomOutBtn {
-          top: 300px; 
-        }
+.sidebar div {
+  padding: 8px;
+  font-size: 24px;
+  display: block;
+}
 
-        #layer{
-          position: absolute;
-          top: 900px;
-        }
+.sidebar img {
+  width: 50px;
+  height: 50px;
+  margin-top: -30px;
+}
 
-        #zoomInBtn img, #zoomOutBtn img {
-          display: block; 
-          width: 100%; 
-          height: 100%; 
-        }
+#imagery {
+  position: absolute;
+  top: 82px;
+  left: -10px;
+  writing-mode: vertical-rl;
+  transform: rotate(180deg);
+  font-family: 'Sensation Light', sans-serif;
+  text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+}
 
-        #zoomInBtn img:hover, #zoomOutBtn img:hover {
-          outline: 2px solid #5A5A5A; 
-        }
+#viewer {
+  position: absolute;
+  top: 90px;
+  left: 15px;
+  writing-mode: vertical-rl;
+  transform: rotate(180deg);
+  font-family: 'Sensation Light', sans-serif;
+  text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+}
 
-        hr.line2 {
-          position: absolute;
-          width: 50px;  
-          height: 1.5px; 
-          top: 200px;  
-          left: 0px;  
-          border: 0;
-          color: #333;
-          background-color: #333;
-        }
-        hr.line2-5 {
-          position: absolute;
-          width: 50px;  
-          height: 2px; 
-          top: 300px;  
-          left: 0px;  
-          border: 0;
-          color: #333;
-          background-color: #333;
-        }
-        #layerBtn {
-          position: absolute;
-          top: 360px; 
-          left: 4px; 
-          width: 30px; 
-          height: 30px; 
-        }
+@font-face {
+  font-family: 'Sensation Light';
+  src: url('Sansation_Light.ttf') format('truetype');
+}
 
-        #layerBtn img {
-          width: 90%;
-          height: 90%;
-        }
-        #layerBtn img:hover{
-          outline: 2px solid #5A5A5A;
-        }
-        hr.line3 {
-          position: absolute;
-          width: 50px;  
-          height: 1.5px; 
-          top: 395px;  
-          left: 0px;  
-          border: 0;
-          color: #333;
-          background-color: #333;
-        }
-        #maglass {
-          position: absolute;
-          top: 420px; 
-          left: 4px; 
-          width: 30px; 
-          height: 30px; 
-        }
+hr.line1 {
 
-        #maglass img {
-          width: 90%;
-          height: 90%;
-        }
-        #maglass img:hover{
-          outline: 2px solid #5A5A5A;
-        }
-        hr.line4 {
-          position: absolute;
-          width: 50px;  
-          height: 1.5px; 
-          top: 455px;  
-          left: 0px;  
-          border: 0;
-          color: #333;
-          background-color: #333;
-        }
-        #link {
-          position: absolute;
-          top: 530px; 
-          left: 3px; 
-          width: 30px; 
-          height: 30px; 
-        }
+  width: 40px;
+  height: 1.5px;
+  top: 90px;
+  left: 0px;
+  border: 0;
+  color: #333;
+  background-color: #333;
+}
 
-        #link img {
-          width: 90%;
-          height: 90%;
-        }
-        #link img:hover{
-          outline: 2px solid #5A5A5A;
-        }
-        hr.line4-5 {
-          position: absolute;
-          width: 50px;  
-          height: 2px; 
-          top: 509px;  
-          left: 0px;  
-          border: 0;
-          color: #333;
-          background-color: #333;
-        }
-        #ruler {
-          position: absolute;
-          top: 475px; 
-          left: 2px; 
-          width: 30px; 
-          height: 30px; 
-        }
-        #ruler img {
-          width: 100%;
-          height: 100%;
-        }
-        #ruler img:hover{
-          outline: 2px solid #5A5A5A;
-        }
-        
-        #share {
-          position: absolute;
-          bottom: 9%;
-          left: 6px; 
-          width: 30px; 
-          height: 30px; 
-        }
+#zoomInBtn,
+#zoomOutBtn {
+  position: absolute;
+  left: 7px;
+  background: none;
+  border: none;
+  padding: 0;
+  margin: 5px;
+  outline: none;
+}
 
-        #share img {
-          width: 75%;
-          height: 75%;
-        }
-        #share img:hover{
-          outline: 2px solid #5A5A5A;
-        }
-        hr.line5 {
-          position: absolute;
-          width: 50px;  
-          height: 1.5px; 
-          bottom: 8%; 
-          left: 0px;  
-          border: 0;
-          color: #333;
-          background-color: #333;
-        }
-        #help {
-          position: absolute;
-          bottom: 3.3%;
-          left: 3px; 
-          width: 30px; 
-          height: 30px; 
-        }
+#zoomInBtn {
+  top: 250px;
+  left: 8.5px;
+}
 
-        #help img {
-          width: 100%;
-          height: 100%;
-        }
-        #help img:hover{
-          outline: 2px solid #5A5A5A;
-        }
-        .tooltip {
-          position: relative;
-          display: inline-block;
-        }
+#zoomOutBtn {
+  top: 300px;
+}
 
-        .tooltip .tooltip-text {
-          visibility: hidden;
-          width: 120px;
-          background-color: #eaf0b4; 
-          color: #333; 
-          text-align: center;
-          border-radius: 6px;
-          padding: 5px 0;
-          position: absolute;
-          z-index: 1;
-          bottom: 125%; 
-          left: 50%;
-          margin-left: -60px; 
-          opacity: 0;
-          transition: opacity 0.3s;
-          box-shadow: 0px 0px 10px rgba(0,0,0,0.1); 
-          font-family: 'Sensation Light', sans-serif; 
-          border: 1px solid #B2EEF1; 
-      }
+#layer {
+  position: absolute;
+  top: 900px;
+}
 
-        .tooltip:hover .tooltip-text {
-          visibility: visible;
-          opacity: 1;
-        }
+#zoomInBtn img,
+#zoomOutBtn img {
+  display: block;
+  width: 100%;
+  height: 100%;
+}
 
-        #zoomInBtn .tooltip-text {
-          bottom: 16%;
-          left: 230%;
-          margin-left: -10px;
-        }
+#zoomInBtn img:hover,
+#zoomOutBtn img:hover {
+  outline: 2px solid #5A5A5A;
+}
 
-        #zoomOutBtn .tooltip-text {
-          bottom: 16%;
-          left: 230%;
-          margin-left: -10px;
-        }
+hr.line2 {
+  position: absolute;
+  width: 50px;
+  height: 1.5px;
+  top: 200px;
+  left: 0px;
+  border: 0;
+  color: #333;
+  background-color: #333;
+}
 
-        #layerBtn .tooltip-text {
-          bottom: 16%;
-          left: 140%;
-          margin-left: -10px;
-          width: 80px;
-        }
-        #maglass .tooltip-text {
-          bottom: 20%;
-          left: 140%;
-          margin-left: -10px;
-        }
-        #link .tooltip-text {
-          bottom: 20%;
-          left: 140%;
-          margin-left: -10px;
-          width: 80px;
-        }
-        #ruler .tooltip-text {
-          bottom: 20%; 
-          left: 140%; 
-          margin-left: -10px;
-          width: 160px;
-        }
+hr.line2-5 {
+  position: absolute;
+  width: 50px;
+  height: 2px;
+  top: 300px;
+  left: 0px;
+  border: 0;
+  color: #333;
+  background-color: #333;
+}
 
-        #share .tooltip-text {
-          bottom: 10%;
-          left: 140%;
-          margin-left: -10px;
-          width: 80px;
-        }
-        #help .tooltip-text {
-          bottom: 20%;
-          left: 140%;
-          margin-left: -10px;
-          width: 80px;
-        }
+#layerBtn {
+  position: absolute;
+  top: 360px;
+  left: 4px;
+  width: 30px;
+  height: 30px;
+}
 
-        #layerDropdown {
-            display: none;
-            position: absolute;
-            background-color: #f9f9f9;
-            min-width: 380px;
-            box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
-            z-index: 1;
-            left: 60px;
-            top: 360px; 
+#layerBtn img {
+  width: 90%;
+  height: 90%;
+}
 
-        }
-      
-        
-        .layer-option {
-            padding: 12px 16px;
-            border-bottom: 1px solid #ddd; /* Optional: add a border between options */
-            font-size: 16px;
-        }
-        .layer-option label {
-            font-size: 15px;
-            font-family: 'Sensation Light', sans-serif; 
-        }
-        .layer-option:last-child {
-            border-bottom: none; /* Optional: remove the border from the last option */
-        }
+#layerBtn img:hover {
+  outline: 2px solid #5A5A5A;
+}
 
-        .layer-option input[type="checkbox"] {
-            margin-right: 10px;
-        }
+hr.line3 {
+  position: absolute;
+  width: 50px;
+  height: 1.5px;
+  top: 395px;
+  left: 0px;
+  border: 0;
+  color: #333;
+  background-color: #333;
+}
 
-        #maglassDropdown {
-          display: none;
-          position: absolute;
-          background-color: #f9f9f9;
-          min-width: 220px;
-          box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
-          z-index: 1;
-          left: 60px;
-          top: 410px; 
+#maglass {
+  position: absolute;
+  top: 420px;
+  left: 4px;
+  width: 30px;
+  height: 30px;
+}
 
-        }
-        .zoom-option {
-          padding: 12px 16px;
-          border-bottom: 1px solid #ddd; /* Optional: add a border between options */
-          font-size: 16px;
-        }
-        .zoom-option label {
-          font-size: 15px;
-          font-family: 'Sensation Light', sans-serif; 
-        }
-        .zoom-option:last-child {
-          border-bottom: none; /* Optional: remove the border from the last option */
-        }
+#maglass img {
+  width: 90%;
+  height: 90%;
+}
 
-        .zoom-option input[type="checkbox"] {
-          margin-right: 10px;
-        }
+#maglass img:hover {
+  outline: 2px solid #5A5A5A;
+}
 
-        .rainbow-text {
-          background-image: linear-gradient(to right, violet, indigo, blue, green, rgb(168, 168, 75), orange, red);
-          -webkit-background-clip: text;
-          -webkit-text-fill-color: transparent;
-        }
+hr.line4 {
+  position: absolute;
+  width: 50px;
+  height: 1.5px;
+  top: 455px;
+  left: 0px;
+  border: 0;
+  color: #333;
+  background-color: #333;
+}
 
-        .rainbow-text strong {
-          font-weight: bold;
-        }
-        
-        .panchromatic-text {
-          font-weight: bold;
-          color: #555555; /* Custom color */
-        }
+#link {
+  position: absolute;
+  top: 530px;
+  left: 3px;
+  width: 30px;
+  height: 30px;
+}
 
-        #toolbarDiv {
-          position: absolute;
-          top: 475px; /* Adjust according to your layout */
-          left: calc(50px + 10px); /* 50px is the assumed width of the #rulerBtn, and 10px is the gap between #rulerBtn and #toolbarDiv. Adjust these values based on your actual layout */
-          cursor: default;
-          display: flex;
-          flex-direction: row;
-          flex-wrap: nowrap;
-        }
+#link img {
+  width: 90%;
+  height: 90%;
+}
 
-        .esri-widget--button.active,
-        .esri-widget--button.active:hover,
-        .esri-widget--button.active:focus {
-          cursor: default;
-          background-color: #999696;
-        }
-        .esri-widget--button.active path,
-        .esri-widget--button.active:hover path,
-        .esri-widget--button.active:focus path {
-          fill: #E4E4E4;
-        }
-        .esri-popup .esri-popup__header-title {
-          color: rgb(3, 3, 3);
-          font-size: 17px;
-        }
-  
-        .esri-popup .esri-popup__content {
-          color: green !important;
-          font-size: 16px !important;
-        }
-      
-        .esri-popup .esri-popup__main-container {
-          width: 350px !important; /* Adjust the desired width */
-          height: 264px !important; /* Adjust the desired height */
-          max-width: none !important;
-          max-height: none !important;
-        }
-        
+#link img:hover {
+  outline: 2px solid #5A5A5A;
+}
 
-        #toolbarDiv {
-          display: none;
-        }
-        
-        #toolbarDiv.show {
-          display: block;
-        }
-        
-        #toolbarDiv .esri-widget--button {
-          display: inline-block;
-          margin-right: 0px;
-        }
-        
-        .modal {
-          display: none;
-          position: fixed;
-          z-index: 1;
-          left: 0;
-          top: 0;
-          width: 100%;
-          height: 100%;
-          overflow: auto;
-          background-color: rgba(0,0,0,0.4);
-      }
-      
-      .modal-content {
-          background-color: #fefefe;
-          margin: 15% auto;
-          padding: 20px;
-          border: 4px solid #888;
-          width: 30%;
-          top: 0%;
-          left: 50%;
-          transform: translate(-50%, -50%);
-          animation: slideIn 0.5s ease-in-out forwards;
-          position: fixed;
-      }
+hr.line4-5 {
+  position: absolute;
+  width: 50px;
+  height: 2px;
+  top: 509px;
+  left: 0px;
+  border: 0;
+  color: #333;
+  background-color: #333;
+}
 
-      @keyframes slideIn {
-        0% {
-          transform: translate(-50%, -100%);
-        }
-        100% {
-          transform: translate(-50%, -50%);
-        }
-      }
-      .close {
-          color: #aaaaaa;
-          float: right;
-          font-size: 28px;
-          font-weight: bold;
-      }
-      
-      .close:hover,
-      .close:focus {
-          color: #000;
-          text-decoration: none;
-          cursor: pointer;
-      }
+#ruler {
+  position: absolute;
+  top: 475px;
+  left: 2px;
+  width: 30px;
+  height: 30px;
+}
 
-      #coordinate-widget {
-        position: absolute;
-        bottom: 3%;
-        left: 50%;
-        transform: translateX(-50%);
-        color: black; /* Change the text color */
-        background-color: white;
-        border: 3px solid #ceeff5;
-    }
-      
-      
+#ruler img {
+  width: 100%;
+  height: 100%;
+}
 
-        
+#ruler img:hover {
+  outline: 2px solid #5A5A5A;
+}
+
+#share {
+  position: absolute;
+  bottom: 9%;
+  left: 6px;
+  width: 30px;
+  height: 30px;
+}
+
+#share img {
+  width: 75%;
+  height: 75%;
+}
+
+#share img:hover {
+  outline: 2px solid #5A5A5A;
+}
+
+hr.line5 {
+  position: absolute;
+  width: 50px;
+  height: 1.5px;
+  bottom: 8%;
+  left: 0px;
+  border: 0;
+  color: #333;
+  background-color: #333;
+}
+
+#help {
+  position: absolute;
+  bottom: 3.3%;
+  left: 3px;
+  width: 30px;
+  height: 30px;
+}
+
+#help img {
+  width: 100%;
+  height: 100%;
+}
+
+#help img:hover {
+  outline: 2px solid #5A5A5A;
+}
+
+.tooltip {
+  position: relative;
+  display: inline-block;
+}
+
+.tooltip .tooltip-text {
+  visibility: hidden;
+  width: 120px;
+  background-color: #eaf0b4;
+  color: #333;
+  text-align: center;
+  border-radius: 6px;
+  padding: 5px 0;
+  position: absolute;
+  z-index: 1;
+  bottom: 125%;
+  left: 50%;
+  margin-left: -60px;
+  opacity: 0;
+  transition: opacity 0.3s;
+  box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+  font-family: 'Sensation Light', sans-serif;
+  border: 1px solid #B2EEF1;
+}
+
+.tooltip:hover .tooltip-text {
+  visibility: visible;
+  opacity: 1;
+}
+
+#zoomInBtn .tooltip-text {
+  bottom: 16%;
+  left: 230%;
+  margin-left: -10px;
+}
+
+#zoomOutBtn .tooltip-text {
+  bottom: 16%;
+  left: 230%;
+  margin-left: -10px;
+}
+
+#layerBtn .tooltip-text {
+  bottom: 16%;
+  left: 140%;
+  margin-left: -10px;
+  width: 80px;
+}
+
+#maglass .tooltip-text {
+  bottom: 20%;
+  left: 140%;
+  margin-left: -10px;
+}
+
+#link .tooltip-text {
+  bottom: 20%;
+  left: 140%;
+  margin-left: -10px;
+  width: 80px;
+}
+
+#ruler .tooltip-text {
+  bottom: 20%;
+  left: 140%;
+  margin-left: -10px;
+  width: 160px;
+}
+
+#share .tooltip-text {
+  bottom: 10%;
+  left: 140%;
+  margin-left: -10px;
+  width: 80px;
+}
+
+#help .tooltip-text {
+  bottom: 20%;
+  left: 140%;
+  margin-left: -10px;
+  width: 80px;
+}
+
+#layerDropdown {
+  display: none;
+  position: absolute;
+  background-color: #f9f9f9;
+  min-width: 380px;
+  box-shadow: 0px 8px 16px 0px rgba(0, 0, 0, 0.2);
+  z-index: 1;
+  left: 60px;
+  top: 360px;
+
+}
+
+
+.layer-option {
+  padding: 12px 16px;
+  border-bottom: 1px solid #ddd;
+  /* Optional: add a border between options */
+  font-size: 16px;
+}
+
+.layer-option label {
+  font-size: 15px;
+  font-family: 'Sensation Light', sans-serif;
+}
+
+.layer-option:last-child {
+  border-bottom: none;
+  /* Optional: remove the border from the last option */
+}
+
+.layer-option input[type="checkbox"] {
+  margin-right: 10px;
+}
+
+#maglassDropdown {
+  display: none;
+  position: absolute;
+  background-color: #f9f9f9;
+  min-width: 220px;
+  box-shadow: 0px 8px 16px 0px rgba(0, 0, 0, 0.2);
+  z-index: 1;
+  left: 60px;
+  top: 410px;
+
+}
+
+.zoom-option {
+  padding: 12px 16px;
+  border-bottom: 1px solid #ddd;
+  /* Optional: add a border between options */
+  font-size: 16px;
+}
+
+.zoom-option label {
+  font-size: 15px;
+  font-family: 'Sensation Light', sans-serif;
+}
+
+.zoom-option:last-child {
+  border-bottom: none;
+  /* Optional: remove the border from the last option */
+}
+
+.zoom-option input[type="checkbox"] {
+  margin-right: 10px;
+}
+
+.rainbow-text {
+  background-image: linear-gradient(to right, violet, indigo, blue, green, rgb(168, 168, 75), orange, red);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+.rainbow-text strong {
+  font-weight: bold;
+}
+
+.panchromatic-text {
+  font-weight: bold;
+  color: #555555;
+  /* Custom color */
+}
+
+#toolbarDiv {
+  position: absolute;
+  top: 475px;
+  /* Adjust according to your layout */
+  left: calc(50px + 10px);
+  /* 50px is the assumed width of the #rulerBtn, and 10px is the gap between #rulerBtn and #toolbarDiv. Adjust these values based on your actual layout */
+  cursor: default;
+  display: flex;
+  flex-direction: row;
+  flex-wrap: nowrap;
+}
+
+.esri-widget--button.active,
+.esri-widget--button.active:hover,
+.esri-widget--button.active:focus {
+  cursor: default;
+  background-color: #999696;
+}
+
+.esri-widget--button.active path,
+.esri-widget--button.active:hover path,
+.esri-widget--button.active:focus path {
+  fill: #E4E4E4;
+}
+
+.esri-popup .esri-popup__header-title {
+  color: rgb(3, 3, 3);
+  font-size: 17px;
+}
+
+.esri-popup .esri-popup__content {
+  color: green !important;
+  font-size: 16px !important;
+}
+
+.esri-popup .esri-popup__main-container {
+  width: 350px !important;
+  /* Adjust the desired width */
+  height: 264px !important;
+  /* Adjust the desired height */
+  max-width: none !important;
+  max-height: none !important;
+}
+
+
+#toolbarDiv {
+  display: none;
+}
+
+#toolbarDiv.show {
+  display: block;
+}
+
+#toolbarDiv .esri-widget--button {
+  display: inline-block;
+  margin-right: 0px;
+}
+
+.modal {
+  display: none;
+  position: fixed;
+  z-index: 1;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  overflow: auto;
+  background-color: rgba(0, 0, 0, 0.4);
+}
+
+.modal-content {
+  background-color: #fefefe;
+  margin: 15% auto;
+  padding: 20px;
+  border: 4px solid #888;
+  width: 30%;
+  top: 0%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  animation: slideIn 0.5s ease-in-out forwards;
+  position: fixed;
+}
+
+@keyframes slideIn {
+  0% {
+    transform: translate(-50%, -100%);
+  }
+
+  100% {
+    transform: translate(-50%, -50%);
+  }
+}
+
+.close {
+  color: #aaaaaa;
+  float: right;
+  font-size: 28px;
+  font-weight: bold;
+}
+
+.close:hover,
+.close:focus {
+  color: #000;
+  text-decoration: none;
+  cursor: pointer;
+}
+
+#coordinate-widget {
+  position: absolute;
+  bottom: 3%;
+  left: 50%;
+  transform: translateX(-50%);
+  color: black;
+  /* Change the text color */
+  background-color: white;
+  border: 3px solid #ceeff5;
+}
