@@ -103,7 +103,7 @@
       <hr class="line3">
 
       <script>
-        function openModal(modalId, event) {
+        function openModal(modalId, event) { 
             var modal = document.getElementById(modalId);
             modal.style.display = "block";
         }
@@ -128,7 +128,7 @@
 
 
       <div id="maglassDropdown">
-        <div class="zoom-option" onclick="openModal('coordinatesModal', event)">
+        <div class="zoom-option" onclick="openCoordinateWidget()">
           <img src="Coordinates.png" alt="Image 1" style="margin-right: 10px; width: 30px; height: 30px; margin-top: 5px;">
           <label for="ZoomtoCoordinates" style="position: relative; top: -10px;"><strong>Zoom to Coordinates</strong></label>
       </div>
@@ -203,9 +203,6 @@
       </div>
 
     <div style="position: absolute; top: 10px; left: 600px;">
-        <input type="text" id="longitude" placeholder="Longitude">
-        <input type="text" id="latitude" placeholder="Latitude">
-        <button id="zoomBtn">Zoom to Coordinates</button>
         <button id="zoomToPopularPlaceBtn">Zoom to Popular Place</button>
     </div>
 

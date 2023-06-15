@@ -58,7 +58,8 @@ require([
     "esri/rest/support/Query",
     "esri/layers/GraphicsLayer",
     "esri/geometry/SpatialReference",
-    "esri/layers/support/TileInfo"
+    "esri/layers/support/TileInfo",
+    "esri/widgets/CoordinateConversion"
 
 ], function (
     esriConfig, 
@@ -80,7 +81,8 @@ require([
     Query,
     GraphicsLayer,
     SpatialReference,
-    TileInfo
+    TileInfo,
+    CoordinateConversion
 ) {
     esriConfig.apiKey = "AAPK5b378c5a659a47668b94785aee29f811CspcF_qvBERUKbwD9AiaNB94Ie4mbJyNQAgY6gskPznuqWXfm7PU_M1CZJdpDT3i";
     
@@ -192,7 +194,7 @@ require([
         }
     });
 
-        
+    
     const spatialReference = new SpatialReference({
         wkid: 3031 
     });
@@ -216,6 +218,26 @@ require([
             snapToZoom: false
         }
     });
+
+
+    let ccWidget = new CoordinateConversion({
+        view: view,
+        orientation: "expand-up"
+    });
+    
+    window.openCoordinateWidget = openCoordinateWidget;
+
+    function openCoordinateWidget() {
+        if(!view.ui.find(ccWidget)) {
+            view.ui.add(ccWidget, "manual");
+            ccWidget.container.id = 'coordinate-widget';
+    
+            setTimeout(() => {
+                document.querySelector('#coordinate-widget .esri-widget--button').click();
+            }, 1);
+        }
+    }
+    
 
     // Smooth zoom effect using mouse scroll
     let accumulatedDeltaY = 0;
@@ -420,6 +442,7 @@ require([
     }
 
     
+    
 
     // Function to create a measurement tool
     const distanceButton = document.getElementById('distance');
@@ -520,19 +543,7 @@ require([
         }
     }
 
-    function zoomToCoordinates() {
-        console.log("zoom to coordinates")
-        const x = parseFloat(document.getElementById("longitude").value);
-        const y = parseFloat(document.getElementById("latitude").value);
-        console.log(x, y)
-        view.goTo({
-            center: [x, y],
-            zoom: 15
-        });
-    }
 
-    const zoomToCoordinatesbutton = document.getElementById("zoomBtn")
-    zoomToCoordinatesbutton.addEventListener("click", zoomToCoordinates)
 
     // Attach toggle popular place list function to button click event
     document.getElementById("zoomToPopularPlaceBtn").addEventListener("click", togglePopularPlaceList);
