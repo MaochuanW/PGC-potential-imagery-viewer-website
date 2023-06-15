@@ -1,180 +1,167 @@
 <!DOCTYPE html>
 <html lang="en">
-    <head>
-      <meta charset="utf-8" />
-      <meta name="viewport" content="initial-scale=1, maximum-scale=1, user-scalable=no" />
-      <link rel="stylesheet" href="styles.css">
-      <link rel="stylesheet" href="https://js.arcgis.com/4.26/esri/themes/light/main.css">
-      <script src="https://account.pgc.umn.edu/auth/js/keycloak.js"></script>
-      <script src="https://js.arcgis.com/4.26/"></script>
-      <script src="scripts/scripts.js"></script>
-      
-    </head>
 
-    <body>
-      
-    <div id="viewDiv"></div>
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="initial-scale=1, maximum-scale=1, user-scalable=no" />
+  <link rel="stylesheet" href="styles.css">
+  <link rel="stylesheet" href="https://js.arcgis.com/4.26/esri/themes/light/main.css">
+  <script src="https://account.pgc.umn.edu/auth/js/keycloak.js"></script>
+  <script src="https://js.arcgis.com/4.26/"></script>
+  <script src="scripts/scripts.js"></script>
+</head>
 
+<body>
+
+  <div id="viewDiv"></div>
+
+  <div id="toolbarDiv" class="esri-component esri-widget">
+    <button id="distance" class="esri-widget--button esri-interactive esri-icon-measure-line" title="Distance Measurement Tool"></button>
+    <button id="area" class="esri-widget--button esri-interactive esri-icon-measure-area" title="Area Measurement Tool"></button>
+    <button id="clear" class="esri-widget--button esri-interactive esri-icon-trash" title="Clear Measurements"></button>
+  </div>
+
+  <div class="sidebar">
+
+    <a href="http://pgc.umn.edu" target="_blank">
+      <img src="pgc.png" alt="Descriptive text">
+    </a>
+
+    <div id="imagery" class="vertical-text">Imagery</div>
+    <div id="viewer" class="vertical-text">Viewer</div>
+    <hr class="line1">
+
+    <hr class="line2">
+    <div id="zoomInBtn" class="tooltip">
+      <img src="PLUS.png" alt="Zoom In">
+      <div class="tooltip-text">Zoom in</div>
+    </div>
+    <hr class="line2-5">
+    <div id="zoomOutBtn" class="tooltip">
+      <img src="MINUS.png" alt="Zoom Out">
+      <div class="tooltip-text">Zoom out</div>
     </div>
 
-    <div id="toolbarDiv" class="esri-component esri-widget">
-      <button id="distance" class="esri-widget--button esri-interactive esri-icon-measure-line" title="Distance Measurement Tool">
-      </button>
-      <button id="area" class="esri-widget--button esri-interactive esri-icon-measure-area" title="Area Measurement Tool">
-      </button>
-      <button id="clear" class="esri-widget--button esri-interactive esri-icon-trash" title="Clear Measurements">
-      </button>
+    <div id="layerBtn" class="tooltip">
+      <img src="Layer.png" alt="Layer">
+      <div class="tooltip-text">Layers</div>
     </div>
-    
 
-      <div class="sidebar">
+    <div id="layerDropdown">
+      <div class="layer-option">
+        <!-- Master checkbox -->
+        <label for="masterCheckbox"><strong>Licensed Commercial Imagery</strong></label>
 
-      <a href="http://pgc.umn.edu" target="_blank">
-        <img src="pgc.png" alt="Descriptive text">
-      </a>
-
-      
-      <div id="imagery" class="vertical-text">Imagery</div>
-      <div id="viewer" class="vertical-text">Viewer</div>
-      <hr class="line1">
-
-      <hr class="line2">
-      <div id="zoomInBtn" class="tooltip">
-        <img src="PLUS.png" alt="Zoom In">
-        <div class="tooltip-text">Zoom in</div>
-      </div>
-      <hr class="line2-5">
-      <div id="zoomOutBtn" class="tooltip">
-        <img src="MINUS.png" alt="Zoom Out">
-        <div class="tooltip-text">Zoom out</div>
-      </div>
-      
-
-      <div id="layerBtn" class="tooltip">
-        <img src="Layer.png" alt="Layer">
-        <div class="tooltip-text">Layers</div>
-      </div>
-
-      <div id="layerDropdown">
         <div class="layer-option">
-          <!-- Master checkbox -->
-          <label for="masterCheckbox"><strong>Licensed Commercial Imagery</strong></label>
-      
-          <div class="layer-option">
-            <!--Checkbox for Layer 2 -->
-            <input type="checkbox" id="layer2Checkbox">
-            <label for="layer2Checkbox">0.5m Antarctic Imagery Mosaic (<span class="panchromatic-text">panchromatic</span>)</label>
-          </div>
-      
-          <div class="layer-option">
-            <!-- Checkbox for Layer 3 -->
-            <input type="checkbox" id="layer3Checkbox">
-            <label for="layer3Checkbox">2m Antarctic Imagery Mosaic <span class="rainbow-text">(<strong>multispectral</strong>)</span></label>
-          </div>
+          <!-- Checkbox for Layer 2 -->
+          <input type="checkbox" id="layer2Checkbox">
+          <label for="layer2Checkbox">0.5m Antarctic Imagery Mosaic (<span class="panchromatic-text">panchromatic</span>)</label>
         </div>
-      
+
         <div class="layer-option">
-          <!-- Master checkbox -->
-          <label for="dataOverlayCheckbox"><strong>Data & Overlay Layers</strong></label>
-      
-          
-            <div class="layer-option">
-              <!-- Checkbox for Antarctic Composite Basemap -->
-              <input type="checkbox" id="AntCompBaseMapCheckbox">
-              <label for="AntCompBaseMapCheckbox">Antarctic Composite Basemap</label>
-            </div>
-      
-            <div class="layer-option">
-              <!-- Checkbox for Layer 1 -->
-              <input type="checkbox" id="layer1Checkbox">
-              <label for="layer1Checkbox">USGS Topo Map</label>
-            </div>
-      
-            <div class="layer-option">
-              <!-- Checkbox for Additional Layer 2 -->
-              <input type="checkbox" id="layer5Checkbox">
-              <label for="layer5Checkbox">Additional Layer 2</label>
-            
-          </div>
+          <!-- Checkbox for Layer 3 -->
+          <input type="checkbox" id="layer3Checkbox">
+          <label for="layer3Checkbox">2m Antarctic Imagery Mosaic <span class="rainbow-text">(<strong>multispectral</strong>)</span></label>
         </div>
       </div>
-  
-    
-      <hr class="line3">
 
-      <div id="maglass" class="tooltip">
-        <img src="mag_glass.png" alt="Layer">
-        <div class="tooltip-text">Zoom to</div>
+      <div class="layer-option">
+        <!-- Master checkbox -->
+        <label for="dataOverlayCheckbox"><strong>Data & Overlay Layers</strong></label>
+
+        <div class="layer-option">
+          <!-- Checkbox for Antarctic Composite Basemap -->
+          <input type="checkbox" id="AntCompBaseMapCheckbox">
+          <label for="AntCompBaseMapCheckbox">Antarctic Composite Basemap</label>
+        </div>
+
+        <div class="layer-option">
+          <!-- Checkbox for Layer 1 -->
+          <input type="checkbox" id="layer1Checkbox">
+          <label for="layer1Checkbox">USGS Topo Map</label>
+        </div>
+
+        <div class="layer-option">
+          <!-- Checkbox for Additional Layer 2 -->
+          <input type="checkbox" id="layer5Checkbox">
+          <label for="layer5Checkbox">Additional Layer 2</label>
+        </div>
+      </div>
+    </div>
+
+
+    <hr class="line3">
+
+    <div id="maglass" class="tooltip">
+      <img src="mag_glass.png" alt="Layer">
+      <div class="tooltip-text">Zoom to</div>
+    </div>
+
+    <div id="maglassDropdown">
+      <div class="zoom-option" onclick="openCoordinateWidget()">
+        <img src="Coordinates.png" alt="Image 1" style="margin-right: 10px; width: 30px; height: 30px; margin-top: 5px;">
+        <label for="ZoomtoCoordinates" style="position: relative; top: -10px;"><strong>Zoom to Coordinates</strong></label>
       </div>
 
-
-
-      <div id="maglassDropdown">
-        <div class="zoom-option" onclick="openCoordinateWidget()">
-          <img src="Coordinates.png" alt="Image 1" style="margin-right: 10px; width: 30px; height: 30px; margin-top: 5px;">
-          <label for="ZoomtoCoordinates" style="position: relative; top: -10px;"><strong>Zoom to Coordinates</strong></label>
-      </div>
-      
       <div class="zoom-option" onclick="openModal('popularPlacesModal', event)">
         <img src="popular.png" alt="Image 2" style="margin-right: 10px; width: 30px; height: 30px; margin-top: 5px;">
         <label for="ZoomtoPopularPlaces" style="position: relative; top: -9px;"><strong>Zoom to Popular Places</strong></label>
-    </div>
-      
-      <div id="coordinatesModal" class="modal" onclick="closeModal('coordinatesModal')">
-          <div class="modal-content" onclick="event.stopPropagation()">
-              <span class="close" onclick="closeModal('coordinatesModal')">&times;</span>
-              <p>Some text in the Coordinates Modal..</p>
-          </div>
       </div>
-      
+
+      <div id="coordinatesModal" class="modal" onclick="closeModal('coordinatesModal')">
+        <div class="modal-content" onclick="event.stopPropagation()">
+          <span class="close" onclick="closeModal('coordinatesModal')">&times;</span>
+          <p>Some text in the Coordinates Modal..</p>
+        </div>
+      </div>
+
       <div id="popularPlacesModal" class="modal" onclick="closeModal('popularPlacesModal')">
         <div class="modal-content" onclick="event.stopPropagation()">
-            <span class="close" onclick="closeModal('popularPlacesModal')">&times;</span>
-            <p>This is a ugly Modal Window!</p>
-    
-            <div id="popularPlaceList" class="popular-place-list">
-                <div>
-                    <img src="big-ben-icon.png" class="popular-place-icon" alt="Big Ben Icon">
-                    <button onclick="zoomToPopularPlace([-0.1278, 51.5074])">Big Ben</button>
-                </div>
-                <div>
-                    <img src="buckingham-palace-icon.png" class="popular-place-icon" alt="Buckingham Palace Icon">
-                    <button id="buck">Buckingham Palace</button>
-                </div>
-                <div>
-                    <img src="great-wall-icon.png" class="popular-place-icon" alt="The Great Wall Icon">
-                    <button onclick="zoomToPopularPlace([116.5977, 40.4406])">The Great Wall</button>
-                </div>
+          <span class="close" onclick="closeModal('popularPlacesModal')">&times;</span>
+          <p>This is an ugly Modal Window!</p>
+
+          <div id="popularPlaceList" class="popular-place-list">
+            <div>
+              <img src="big-ben-icon.png" class="popular-place-icon" alt="Big Ben Icon">
+              <button onclick="zoomToPopularPlace([-0.1278, 51.5074])">Big Ben</button>
             </div>
+            <div>
+              <img src="buckingham-palace-icon.png" class="popular-place-icon" alt="Buckingham Palace Icon">
+              <button id="buck">Buckingham Palace</button>
+            </div>
+            <div>
+              <img src="great-wall-icon.png" class="popular-place-icon" alt="The Great Wall Icon">
+              <button onclick="zoomToPopularPlace([116.5977, 40.4406])">The Great Wall</button>
+            </div>
+          </div>
         </div>
-    </div>
-    
+      </div>
+
     </div>
 
-    
-      <hr class="line4">
-      <div id="link" class="tooltip">
-        <img src="link.png" alt="Layer">
-        <div class="tooltip-text">Links</div>
-      </div>
-      <hr class="line4-5">
-      <div id="ruler" class="tooltip">
-        <img src="ruler.png" alt="Layer">
-        <div class="tooltip-text">Measurement</div>
-      </div>
-      
 
-      <div id="share" class="tooltip">
-        <img src='share.png' alt="Layer">
-        <div class="tooltip-text">share</div>
-      </div>
-      <hr class="line5">
-      <div id="help" class="tooltip">
-        <img src='help.png' alt="Layer">
-        <div class="tooltip-text">Help</div>
-      </div>
-      
+    <hr class="line4">
+    <div id="link" class="tooltip">
+      <img src="link.png" alt="Layer">
+      <div class="tooltip-text">Links</div>
     </div>
+    <hr class="line4-5">
+    <div id="ruler" class="tooltip">
+      <img src="ruler.png" alt="Layer">
+      <div class="tooltip-text">Measurement</div>
+    </div>
+
+    <div id="share" class="tooltip">
+      <img src='share.png' alt="Layer">
+      <div class="tooltip-text">Share</div>
+    </div>
+    <hr class="line5">
+    <div id="help" class="tooltip">
+      <img src='help.png' alt="Layer">
+      <div class="tooltip-text">Help</div>
+    </div>
+
+  </div>
 
 </body>
 
