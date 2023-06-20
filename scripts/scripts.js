@@ -1,4 +1,4 @@
-function login() {
+/* function login() {
   const keycloak = new Keycloak({
     realm: "pgc",
     "auth-server-url": "https://account.pgc.umn.edu/auth",
@@ -41,7 +41,7 @@ function login() {
     });
 }
 
-login();
+login(); */
 
 require([
   "esri/config",
