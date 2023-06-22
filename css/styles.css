@@ -83,7 +83,7 @@ body {
 
 @font-face {
   font-family: 'Sensation Light';
-  src: url('Sansation_Light.ttf') format('truetype');
+  src: url('../pics/Sansation_Light.ttf') format('truetype');
 }
 
 hr.line1 {

@@ -1,11 +1,11 @@
 @font-face {
     font-family: 'Sansation Light';
-    src: url('Sansation_Light.ttf') format('truetype');
+    src: url('../pics/Sansation_Light.ttf') format('truetype');
   }
   
   body {
     /* Your background image */
-    background-image: url('coolbackG.jpg');
+    background-image: url('../pics/coolbackG.jpg');
     background-repeat: no-repeat;
     background-attachment: fixed;
     background-size: cover;
