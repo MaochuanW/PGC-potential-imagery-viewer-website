@@ -26,6 +26,7 @@
     /* Fade in effect */
     animation: fadeIn 2s ease-in-out;
     animation-fill-mode: forwards;
+    color: white;
   }
   
   
@@ -103,7 +104,7 @@
 }
 
 .box h2, .box p, .box small {
-  font-family: 'Museo Sans 300', sans-serif;
+  font-family: 'Sansation Light';
   margin: 10px 0; /* Space above and below the text */
 }
 
