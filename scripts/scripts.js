@@ -1,47 +1,47 @@
-/* function login() {
-  const keycloak = new Keycloak({
-    realm: "pgc",
-    "auth-server-url": "https://account.pgc.umn.edu/auth",
-    "ssl-required": "external",
-    clientId: "imagery-viewers",
-    "public-client": true,
-    "enable-cors": true,
-    "cors-allowed-methods": "POST, PUT, DELETE, GET, HEAD",
-    "cors-allowed-headers":
-      "Access-Control-Allow-Origin, Origin, Accept, X-Requested-With, Content-Type, Access-Control-Request-Method, Access-Control-Request-Headers, Authorization",
-    "confidential-port": 0,
-  });
+// function login() {
+//   const keycloak = new Keycloak({
+//     realm: "pgc",
+//     "auth-server-url": "https://account.pgc.umn.edu/auth",
+//     "ssl-required": "external",
+//     clientId: "imagery-viewers",
+//     "public-client": true,
+//     "enable-cors": true,
+//     "cors-allowed-methods": "POST, PUT, DELETE, GET, HEAD",
+//     "cors-allowed-headers":
+//       "Access-Control-Allow-Origin, Origin, Accept, X-Requested-With, Content-Type, Access-Control-Request-Method, Access-Control-Request-Headers, Authorization",
+//     "confidential-port": 0,
+//   });
 
-  keycloak
-    .init({ checkLoginIframe: false })
-    .then((authenticated) => {
-      if (!authenticated) {
-        keycloak.login();
-      } else {
-        window.keycloak = keycloak; // Assign keycloak to a global variable so it can be accessed later.
-        console.log(authenticated ? "authenticated" : "not authenticated");
+//   keycloak
+//     .init({ checkLoginIframe: false })
+//     .then((authenticated) => {
+//       if (!authenticated) {
+//         keycloak.login();
+//       } else {
+//         window.keycloak = keycloak; // Assign keycloak to a global variable so it can be accessed later.
+//         console.log(authenticated ? "authenticated" : "not authenticated");
 
-        // Refresh the token every minute if it's valid
-        setInterval(() => {
-          if (!window.keycloak.isTokenExpired()) {
-            window.keycloak
-              .updateToken(30)
-              .then((refreshed) => {
-                console.log("Token refreshed successfully");
-              })
-              .catch(() => {
-                console.log("Error updating token");
-              });
-          }
-        }, 60000); // 60000 milliseconds = 1 minute
-      }
-    })
-    .catch(() => {
-      console.log("failed to initialize");
-    });
-}
+//         // Refresh the token every minute if it's valid
+//         setInterval(() => {
+//           if (!window.keycloak.isTokenExpired()) {
+//             window.keycloak
+//               .updateToken(30)
+//               .then((refreshed) => {
+//                 console.log("Token refreshed successfully");
+//               })
+//               .catch(() => {
+//                 console.log("Error updating token");
+//               });
+//           }
+//         }, 60000); // 60000 milliseconds = 1 minute
+//       }
+//     })
+//     .catch(() => {
+//       console.log("failed to initialize");
+//     });
+// }
 
-login(); */
+// login(); 
 
 require([
   "esri/config",
@@ -65,6 +65,9 @@ require([
   "esri/geometry/SpatialReference",
   "esri/layers/support/TileInfo",
   "esri/widgets/CoordinateConversion",
+  "esri/renderers/RasterStretchRenderer",
+  "esri/rest/support/AlgorithmicColorRamp",
+  "esri/rest/support/MultipartColorRamp"
 ], function (
   esriConfig,
   Map,
@@ -86,7 +89,10 @@ require([
   GraphicsLayer,
   SpatialReference,
   TileInfo,
-  CoordinateConversion
+  CoordinateConversion,
+  RasterStretchRenderer,
+  AlgorithmicColorRamp,
+  MultipartColorRamp
 ) {
   esriConfig.apiKey =
     "AAPK5b378c5a659a47668b94785aee29f811CspcF_qvBERUKbwD9AiaNB94Ie4mbJyNQAgY6gskPznuqWXfm7PU_M1CZJdpDT3i";
@@ -97,6 +103,7 @@ require([
       "https://web.overlord.pgc.umn.edu/arcgis/rest/services/fridge/md_pgc_comm_opt_mono_mosaic_mul_ant/ImageServer",
       "https://web.overlord.pgc.umn.edu/arcgis/rest/services/fridge/cut_pgc_comm_opt_mono_mosaic_pan_ant/FeatureServer/0",
       "https://web.overlord.pgc.umn.edu/arcgis/rest/services/fridge/cut_pgc_comm_opt_mono_mosaic_mul_ant/FeatureServer/0",
+      "https://web.overlord.pgc.umn.edu/arcgis/rest/services/elevation/ncalm_mdv_lidar_201415_1m/ImageServer"
     ],
 
     // use the Before method to add token to query
@@ -112,8 +119,28 @@ require([
     },
   });
 
-  const map = new Map({});
 
+let currentFreeLayer; // This will keep track of the current layer
+let currentCheckbox; // This will keep track of the current checkbox
+
+function addLayer(layer, checkbox) {
+    // If there is a current Free layer, remove it from the map
+    if (currentFreeLayer) {
+        map.remove(currentFreeLayer);
+        // Uncheck the current checkbox
+        if (currentCheckbox) {
+            currentCheckbox.checked = false;
+        }
+    }
+
+    // Add the new layer to the map and set it as the current layer
+    map.add(layer);
+    currentFreeLayer = layer;
+    // Set the current checkbox
+    currentCheckbox = checkbox;
+}
+
+  const map = new Map({});
   const AntCompBaseMap = new TileLayer({
     url: "https://overlord.pgc.umn.edu/arcgis/rest/services/imagery/ant_pgc_composite_mosaic/MapServer",
     title: "Antarctica Composite Basemap",
@@ -150,10 +177,18 @@ require([
           url: "https://overlord.pgc.umn.edu/arcgis/rest/services/maps/ant_usgs_50k_topos/MapServer",
           title: "Layer 1",
         });
-        map.add(layer1);
+        addLayer(layer1, this);
+        
+        // Zoom to the coordinates when layer is added
+        view.goTo({
+          center: [162.382828, -77.689443],
+          zoom: 10
+        });
       } else {
         // If the checkbox is not checked, remove the layer
         map.remove(layer1);
+        currentfreeLayer = null;
+        currentCheckbox = null;
       }
     });
 
@@ -204,6 +239,144 @@ require([
       }
     });
 
+    
+    let layer4;
+
+    document
+        .getElementById("layer4Checkbox")
+        .addEventListener("change", function () {
+          if (this.checked) {
+            // If the checkbox is checked, show the layer
+            layer4 = new ImageryLayer({
+              url: "https://web.overlord.pgc.umn.edu/arcgis/rest/services/elevation/ncalm_mdv_lidar_201415_1m/ImageServer",
+              title: "Layer 4",
+            });
+    
+            // Define multiple color ramps
+            const colorRamp1 = new AlgorithmicColorRamp({
+              fromColor: new Color([61, 1, 255]),  // Blue
+              toColor: new Color([255, 255, 255]), // White
+              algorithm: "hsv" // This specifies how the intermediate colors will be calculated
+            });
+            const colorRamp2 = new AlgorithmicColorRamp({
+              fromColor: new Color([255, 255, 255]),  // White
+              toColor: new Color([230, 0, 0]),       // Red
+              algorithm: "hsv" // This specifies how the intermediate colors will be calculated
+            });
+    
+            // Combine the color ramps into a multipart color ramp
+            const multipartColorRamp = new MultipartColorRamp({
+              colorRamps: [colorRamp1, colorRamp2]
+            });
+    
+            // Create a new stretch renderer using the color ramp
+            const renderer = new RasterStretchRenderer({
+              stretchType: "percent-clip",
+              numStandardDeviations: 3,
+              dra: true,
+              min: 0,
+              max: 255,
+              colorRamp: multipartColorRamp  // Here we are using the colorRamp that we defined earlier
+            });
+    
+            // Set the renderer on the layer
+            layer4.renderer = renderer;
+    
+            addLayer(layer4, this);
+    
+            // Immediately zoom to the coordinates when layer is added
+            view.goTo({
+              // Define the longitude, latitude and zoom level
+              center: [162.382828, -77.689443],
+              zoom: 10
+            });
+            
+          } else {
+            // If the checkbox is not checked, remove the layer
+            map.remove(layer4);
+            currentFreeLayer = null;
+            currentCheckbox = null;
+          }
+        });
+    
+    let layer5;
+    document
+    .getElementById("layer5Checkbox")
+    .addEventListener("change", function () {
+      if (this.checked) {
+        // If the checkbox is checked, show the layer
+        layer5 = new TileLayer({
+          url: "https://overlord.pgc.umn.edu/arcgis/rest/services/maps/ant_usgs_250k_topos/MapServer",
+          title: "Layer 5",
+        });
+        addLayer(layer5, this);
+        
+        // Zoom to the coordinates when layer is added
+        view.goTo({
+          center: [166.666664, -90.8499966],
+          zoom: 5
+        });
+      } else {
+        // If the checkbox is not checked, remove the layer
+        map.remove(layer5);
+        currentFreeLayer = null;
+        currentCheckbox = null;
+      }
+    });
+
+    let layer6;
+    document
+    .getElementById("layer6Checkbox")
+    .addEventListener("change", function () {
+      if (this.checked) {
+        // If the checkbox is checked, show the layer
+        layer6 = new TileLayer({
+          url: "https://overlord.pgc.umn.edu/arcgis/rest/services/maps/ant_usgs_500k_topos/MapServer",
+          title: "Layer 6",
+        });
+        addLayer(layer6, this);
+        
+        // Zoom to the coordinates when layer is added
+        view.goTo({
+          center: [166.666664, -90.8499966],
+          zoom: 5
+        });
+      } else {
+        // If the checkbox is not checked, remove the layer
+        map.remove(layer6);
+        currentFreeLayer = null;
+        currentCheckbox = null;
+      }
+    });
+    
+    let layer7;
+    document
+    .getElementById("layer7Checkbox")
+    .addEventListener("change", function () {
+      if (this.checked) {
+        // If the checkbox is checked, show the layer
+        layer7 = new TileLayer({
+          url: "https://overlord.pgc.umn.edu/arcgis/rest/services/maps/ant_usgs_500k_sketch/MapServer",
+          title: "Layer 7",
+        });
+        addLayer(layer7, this);
+        
+        // Zoom to the coordinates when layer is added
+        view.goTo({
+          center: [166.666664, -90.8499966],
+          zoom: 5
+        });
+      } else {
+        // If the checkbox is not checked, remove the layer
+        map.remove(layer7);
+        currentFreeLayer = null;
+        currentCheckbox = null;
+      }
+    });
+    
+
+
+
   const spatialReference = new SpatialReference({
     wkid: 3031,
   });
@@ -248,61 +421,40 @@ require([
     }
   }
 
-// Smooth zoom effect using mouse scroll
-let accumulatedDeltaY = 0;
-let zooming = false;
-let scrollDirection = null; // Keep track of scroll direction
-let zoomController = new AbortController(); // Controller to abort zooming
-const zoomThreshold = 50; // Adjust the scroll delta threshold for zoom action
+  // Smooth zoom effect using mouse scroll
+  let accumulatedDeltaY = 0;
+  let zooming = false;
+  const zoomThreshold = 50; // Adjust the scroll delta threshold for zoom action
 
-view.on("mouse-wheel", function (event) {
-  event.stopPropagation();
-  event.preventDefault();
+  view.on("mouse-wheel", function (event) {
+    event.stopPropagation();
+    event.preventDefault();
 
-  const deltaY = event.deltaY;
-  const zoomFactor = 1; // Adjust the zoom speed (smaller value for slower zoom-in)
+    const deltaY = event.deltaY;
+    const zoomFactor = 1; // Adjust the zoom speed (smaller value for slower zoom-in)
 
-  // Check if the scroll direction has changed
-  const newScrollDirection = deltaY > 0 ? 'down' : 'up';
-  if (scrollDirection && newScrollDirection !== scrollDirection) {
-    zoomController.abort(); // Abort the ongoing zoom if scroll direction changes
-    zoomController = new AbortController(); // Instantiate a new controller for the next zoom
-    accumulatedDeltaY = deltaY; // Reset accumulatedDeltaY with the new deltaY
-  } else {
-    accumulatedDeltaY += deltaY; // Accumulate deltaY normally
-  }
-  scrollDirection = newScrollDirection; // Update the scroll direction
+    accumulatedDeltaY += deltaY;
 
-  if (!zooming && Math.abs(accumulatedDeltaY) >= zoomThreshold) {
-    zooming = true;
-    const zoomDirection = accumulatedDeltaY > 0 ? -1 : 1;
-    const zoomLevel = view.zoom + zoomDirection * zoomFactor;
+    if (!zooming && Math.abs(accumulatedDeltaY) >= zoomThreshold) {
+      zooming = true;
+      const zoomDirection = accumulatedDeltaY > 0 ? -1 : 1;
+      const zoomLevel = view.zoom + zoomDirection * zoomFactor;
 
-    view
-      .goTo({
-        zoom: zoomLevel,
-      }, {
-        duration: 150, // Adjust the animation duration as needed
-        easing: "linear", // Use linear easing for smoother zoom
-        signal: zoomController.signal, // Use signal to potentially cancel ongoing zoom actions
-      })
-      .then(() => {
-        zooming = false;
-      })
-      .catch((error) => {
-        if (error.name === 'AbortError') {
-          // If it's an AbortError, we expect it, do nothing
-        } else {
-          console.error(error);
-        }
-        zooming = false;
-      });
+      view
+        .goTo({
+          zoom: zoomLevel,
+          duration: 250, // Adjust the animation duration as needed
+          easing: "linear", // Use linear easing for smoother zoom
+          signal: null, // Remove signal if you don't need to cancel ongoing zoom actions
+        })
+        .then(() => {
+          zooming = false;
+        });
 
-    accumulatedDeltaY = 0;
-  }
-});
+      accumulatedDeltaY = 0;
+    }
+  });
 
-  
   document.getElementById("zoomInBtn").addEventListener("click", function () {
     let zoomLevel = view.zoom + 1;
     view.goTo({ zoom: zoomLevel });
