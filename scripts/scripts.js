@@ -808,11 +808,6 @@ function loadExtentFromUrl(view) {
 }
 
 
-
-
-
-
-
   // This code fixes the click problem for both sets of buttons and dropdown menus
 
   window.onload = function () {
@@ -823,6 +818,7 @@ function loadExtentFromUrl(view) {
     var popularPlacesModal = document.getElementById("popularPlacesModal");
     var LinkDropdown = document.getElementById("LinkDropdown");
     var shareModal = document.getElementById("Sharelinkmodal")
+    var linkmodal = document.getElementById("helpmodal")
 
     layerDropdown.style.display = "none";
     maglassDropdown.style.display = "none";
@@ -830,6 +826,7 @@ function loadExtentFromUrl(view) {
     popularPlacesModal.style.display = "none";
     LinkDropdown.style.display = "none";
     shareModal.style.display = "none";
+    linkmodal.style.display = "none";
 
     // Event listener for the layer button click
     document.getElementById("layerBtn").addEventListener("click", function () {
