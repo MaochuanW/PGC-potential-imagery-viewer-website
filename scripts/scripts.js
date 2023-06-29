@@ -743,16 +743,24 @@ function addLayer(layer, checkbox) {
     var maglassDropdown = document.getElementById("maglassDropdown");
     var coordinatesModal = document.getElementById("coordinatesModal");
     var popularPlacesModal = document.getElementById("popularPlacesModal");
+    var LinkDropdown = document.getElementById("LinkDropdown")
 
     layerDropdown.style.display = "none";
     maglassDropdown.style.display = "none";
     coordinatesModal.style.display = "none";
     popularPlacesModal.style.display = "none";
+    LinkDropdown.style.display = "none";
 
     // Event listener for the layer button click
     document.getElementById("layerBtn").addEventListener("click", function () {
       layerDropdown.style.display =
         layerDropdown.style.display === "none" ? "block" : "none";
+    });
+
+    // Event listener for the link button click
+    document.getElementById("link").addEventListener("click", function () {
+      LinkDropdown.style.display = 
+        LinkDropdown.style.display === "none"? "block" : "none";
     });
 
     // Event listener for the maglass button click
@@ -765,9 +773,11 @@ function addLayer(layer, checkbox) {
     document.addEventListener("click", function (event) {
       var layerDropdown = document.getElementById("layerDropdown");
       var maglassDropdown = document.getElementById("maglassDropdown");
+      var LinkDropdown = document.getElementById("LinkDropdown")
 
       var layerButton = document.getElementById("layerBtn");
       var maglassButton = document.getElementById("maglass");
+      var LinkButton = document.getElementById("link");
 
       // Make sure the dropdowns and buttons themselves can be clicked without hiding the dropdowns
       if (
@@ -782,6 +792,13 @@ function addLayer(layer, checkbox) {
         !maglassButton.contains(event.target)
       ) {
         maglassDropdown.style.display = "none";
+      }
+
+      if(
+        !LinkDropdown.contains(event.target) &&
+        !LinkButton.contains(event.target)
+      ) {
+        LinkDropdown.style.display = "none";
       }
     });
   };

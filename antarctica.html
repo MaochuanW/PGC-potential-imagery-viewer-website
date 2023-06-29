@@ -139,6 +139,7 @@
           <p>Some text in the Coordinates Modal..</p>
         </div>
       </div>
+      
 
       <div id="popularPlacesModal" class="modal" onclick="closeModal('popularPlacesModal')">
         <div class="modal-content" onclick="event.stopPropagation()">
@@ -170,6 +171,49 @@
       <img src="pics/link.png" alt="Layer">
       <div class="tooltip-text">Links</div>
     </div>
+
+    <div id="LinkDropdown">
+      <div class="layer-option">
+        
+        <label for="linkdropbox"><strong>Switch to</strong></label>
+
+        <div class="layer-option" onclick="window.open('arctic.html', '_blank')">
+          <img src="pics/globe.png" alt="globepic" style="margin-right: 10px; width: 20px; height: 20px; margin-top: 5px;">
+          <label for="arcticlink">Arctic Imagery Viewer</label>
+        </div>
+
+        <div class="layer-option" onclick="window.open('world.html', '_blank')">
+          <img src="pics/globe.png" alt="globepic" style="margin-right: 10px; width: 20px; height: 20px; margin-top: 5px;">
+          <label for = "worldlink">World Imagery Viewer</label>
+        </div>
+      
+        <div class="layer-option" onclick="window.open('https://www.pgc.umn.edu/', '_blank')">
+          <img src="pics/home.png" alt="globepic" style="margin-right: 10px; width: 20px; height: 20px; margin-top: 5px;">
+          <label for="PGChomepage">PGC Homepage</label>
+        </div>
+
+        <div class="layer-option" onclick="window.open('index.html', '_blank')">
+          <img src="pics/landing.png" alt="globepic" style="margin-right: 10px; width: 20px; height: 20px; margin-top: 5px;">
+          <label for="Landingpage">Viewers Landing Page</label>
+        </div>
+
+        <div class="layer-option" onclick="window.open('https://users.pgc.umn.edu/password', '_blank')">
+          <img src="pics/password.png" alt="globepic" style="margin-right: 10px; width: 20px; height: 20px; margin-top: 5px;">
+          <label for="passwordlink">Password Reset</label>
+        </div>
+
+        <div class="layer-option" onclick="window.open('https://users.pgc.umn.edu/request', '_blank')">
+          <img src="pics/account.png" alt="globepic" style="margin-right: 10px; width: 20px; height: 20px; margin-top: 5px;">
+          <label for="Requestacclink">Request Account</label>
+        </div>
+        
+      </div>
+    </div>
+
+    
+
+
+
     <hr class="line4-5">
     <div id="ruler" class="tooltip">
       <img src="pics/ruler.png" alt="Layer">
