@@ -63,17 +63,17 @@ body {
 
 #imagery {
   position: absolute;
-  top: 82px;
+  top: 89px;
   left: -10px;
   writing-mode: vertical-rl;
   transform: rotate(180deg);
-  font-family: 'Sensation Light', sans-serif;
+  font-family: 'Sensation Light',sans-serif;
   text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
 }
 
 #viewer {
   position: absolute;
-  top: 90px;
+  top: 97px;
   left: 15px;
   writing-mode: vertical-rl;
   transform: rotate(180deg);
@@ -83,7 +83,7 @@ body {
 
 @font-face {
   font-family: 'Sensation Light';
-  src: url('../pics/Sansation_Light.ttf') format('truetype');
+  src: url('../pics/Roboto-Light.ttf') format('truetype');
 }
 
 hr.line1 {
@@ -323,7 +323,7 @@ hr.line5 {
   opacity: 0;
   transition: opacity 0.3s;
   box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
-  font-family: 'Sensation Light', sans-serif;
+  font-family: 'Sensation Light';
   border: 1px solid #B2EEF1;
 }
 
@@ -407,7 +407,7 @@ hr.line5 {
 
 .layer-option label {
   font-size: 15px;
-  font-family: 'Sensation Light', sans-serif;
+  font-family: 'Sensation Light';
 }
 
 .layer-option:last-child {
@@ -440,7 +440,7 @@ hr.line5 {
 
 .zoom-option label {
   font-size: 15px;
-  font-family: 'Sensation Light', sans-serif;
+  font-family: 'Sensation Light';
 }
 
 .zoom-option:last-child {
