@@ -96,6 +96,11 @@ require([
 ) {
   esriConfig.apiKey =
     "AAPK5b378c5a659a47668b94785aee29f811CspcF_qvBERUKbwD9AiaNB94Ie4mbJyNQAgY6gskPznuqWXfm7PU_M1CZJdpDT3i";
+    document.addEventListener('DOMContentLoaded', (event) => {
+      view.when(function(){
+          loadExtentFromUrl(view);
+      });
+    });
 
   esriConfig.request.interceptors.push({
     urls: [
@@ -735,6 +740,79 @@ function addLayer(layer, checkbox) {
     });
   });
 
+
+
+  
+// Function to get the current extent and create an object
+function getCurrentState(view) {
+  var xmin = view.extent.xmin;
+  var ymin = view.extent.ymin;
+  var xmax = view.extent.xmax;
+  var ymax = view.extent.ymax;
+
+  return { xmin: xmin, ymin: ymin, xmax: xmax, ymax: ymax };
+}
+
+
+// Function to create the shareable URL
+function createShareableUrl(map) {
+  var state = getCurrentState(map);
+  var baseUrl = window.location.href.split('?')[0]; // remove existing parameters
+  var url = new URL(baseUrl);
+
+  url.searchParams.append('xmin', state.xmin);
+  url.searchParams.append('ymin', state.ymin);
+  url.searchParams.append('xmax', state.xmax);
+  url.searchParams.append('ymax', state.ymax);
+
+  return url.toString();
+}
+
+function openShareModal(map) {
+  var url = createShareableUrl(map);
+
+  // Display the URL in the modal
+  var modal = document.getElementById('Sharelinkmodal');
+  var urlDisplay = modal.querySelector('.url-display'); // Add a selector for where to display the URL
+  urlDisplay.innerHTML = `<a href="${url}" target="_blank">${url}</a>`; // Make it a clickable link
+
+    // Set the href for the email button
+    var emailButton = document.getElementById('emailButton');
+    emailButton.href = `mailto:?subject=Link to the map&body=${url}`;
+
+  // Show the modal
+  modal.style.display = 'block';
+}
+
+document.getElementById('share').addEventListener('click', function() {
+  openShareModal(view);
+});
+
+function loadExtentFromUrl(view) {
+  var url = new URL(window.location.href);
+  var xmin = parseFloat(url.searchParams.get('xmin'));
+  var ymin = parseFloat(url.searchParams.get('ymin'));
+  var xmax = parseFloat(url.searchParams.get('xmax'));
+  var ymax = parseFloat(url.searchParams.get('ymax'));
+
+  if (!isNaN(xmin) && !isNaN(ymin) && !isNaN(xmax) && !isNaN(ymax)) {
+    var extent = {
+      xmin: xmin,
+      ymin: ymin,
+      xmax: xmax,
+      ymax: ymax,
+      spatialReference: view.spatialReference
+    };
+    view.extent = extent;
+  }
+}
+
+
+
+
+
+
+
   // This code fixes the click problem for both sets of buttons and dropdown menus
 
   window.onload = function () {
@@ -743,13 +821,15 @@ function addLayer(layer, checkbox) {
     var maglassDropdown = document.getElementById("maglassDropdown");
     var coordinatesModal = document.getElementById("coordinatesModal");
     var popularPlacesModal = document.getElementById("popularPlacesModal");
-    var LinkDropdown = document.getElementById("LinkDropdown")
+    var LinkDropdown = document.getElementById("LinkDropdown");
+    var shareModal = document.getElementById("Sharelinkmodal")
 
     layerDropdown.style.display = "none";
     maglassDropdown.style.display = "none";
     coordinatesModal.style.display = "none";
     popularPlacesModal.style.display = "none";
     LinkDropdown.style.display = "none";
+    shareModal.style.display = "none";
 
     // Event listener for the layer button click
     document.getElementById("layerBtn").addEventListener("click", function () {

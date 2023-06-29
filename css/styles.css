@@ -384,6 +384,10 @@ hr.line5 {
   margin-left: -10px;
   width: 80px;
 }
+#Sharelinkmodal {
+  display: none;
+  /* your other styles */
+}
 
 
 #layerDropdown {
@@ -596,3 +600,28 @@ hr.line5 {
   background-color: white;
   border: 3px solid #ceeff5;
 }
+
+.url-display {
+  font-size: 20px;
+  color: #333;
+  word-wrap: break-word; /* Add this line */
+}
+
+#emailButton {
+  background-color: #4CAF50; /* Green background */
+  border: none; /* No border */
+  color: white; /* White text */
+  padding: 15px 32px; /* Padding */
+  text-align: center; /* Center the text */
+  text-decoration: none; /* No underline */
+  display: inline-block;
+  font-size: 16px;
+  margin: 4px 2px;
+  cursor: pointer; /* Cursor changes when you hover over it */
+  transition-duration: 0.4s; /* Transition effect */
+}
+
+#emailButton:hover {
+  background-color: #45a049; /* Change background color on hover */
+}
+
