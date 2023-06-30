@@ -832,7 +832,7 @@ view.on("mouse-wheel", function (event) {
         console.log('Error with goTo function:', error);
       });
     } else {
-      console.log('Values were not parsed correctly, check your URL parameters.');
+      console.log('Values were not parsed correctly');
     }
   }
 
