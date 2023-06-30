@@ -253,7 +253,7 @@ function addLayer(layer, checkbox) {
           if (this.checked) {
             // If the checkbox is checked, show the layer
             layer4 = new ImageryLayer({
-              url: "https://web.overlord.pgc.umn.edu/arcgis/rest/services/elevation/ncalm_mdv_lidar_201415_1m/ImageServer",
+              url: "https://overlord.pgc.umn.edu/arcgis/rest/services/elevation/ncalm_mdv_lidar_201415_1m/ImageServer",
               title: "Layer 4",
             });
     
@@ -828,19 +828,11 @@ view.on("mouse-wheel", function (event) {
         spatialReference: view.spatialReference
       };
       console.log('Parsed extent:', extent);
-      view.goTo(extent).catch(function(error) {
-        console.log('Error with goTo function:', error);
-      });
-    } else {
-      console.log('Values were not parsed correctly');
-    }
+      view.extent = extent;
   }
-
+  }
   // Call the function passing the view object as an argument
   loadExtentFromUrl(view);
-
-
-
 
   
   // This code fixes the click problem for both sets of buttons and dropdown menus
@@ -919,28 +911,4 @@ view.on("mouse-wheel", function (event) {
   };
 });
 
-/*  function toggleSubDropdown() {
-        var subDropdown = document.getElementById("subDropdown");
-        var masterCheckbox = document.getElementById("masterCheckbox");
-      
-        if (masterCheckbox.checked) {
-          subDropdown.style.display = "block";
-        } else {
-          subDropdown.style.display = "none";
-        }
-      }
-    
-      function toggleSubDropdown2() {
-        var dataOverlaySubDropdown = document.getElementById("dataOverlaySubDropdown");
-        var dataOverlayCheckbox = document.getElementById("dataOverlayCheckbox");
-      
-        if (dataOverlayCheckbox.checked) {
-            dataOverlaySubDropdown.style.display = "block";
-        } else {
-            dataOverlaySubDropdown.style.display = "none";
-        }
-      }
-    // Hide sub-dropdown initially
-    toggleSubDropdown();
-    toggleSubDropdown2();
- */
+
