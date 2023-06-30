@@ -573,15 +573,29 @@ hr.line5 {
 }
 
 
+.modal-content {
+  background: #ffffff;
+  box-shadow: 0 14px 28px rgba(0,0,0,0.25), 0 10px 10px rgba(0,0,0,0.22);
+  border-radius: 10px;
+  font-family: 'Roboto', sans-serif;
+  line-height: 1.6;
+}
+
 .modal-content h4 {
   color: #000000;
   font-size: 22px;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  border-bottom: 2px solid #005a9c;
+  padding-bottom: 10px;
+  margin-bottom: 20px;
 }
 
 .modal-content dt {
   color: #005a9c;
   font-size: 18px;
-  margin-bottom: 10px;
+  font-weight: 500;
+  margin: 20px 0 10px 0;
 }
 
 .modal-content dd {
@@ -592,7 +606,38 @@ hr.line5 {
 
 .modal-content a {
   color: #0066cc;
+  text-decoration: none;
+  transition: color 0.3s ease;
 }
+
+.modal-content a:hover {
+  color: #005a9c;
+}
+
+.modal-content ul.unstyled {
+  list-style: none;
+  padding: 0;
+}
+
+.modal-content ul.unstyled li:before {
+  content: "–"; 
+  padding-right: 10px;
+}
+
+@media only screen and (max-width: 600px) {
+  .modal-content h4 {
+    font-size: 18px;
+  }
+
+  .modal-content dt {
+    font-size: 16px;
+  }
+
+  .modal-content dd {
+    font-size: 14px;
+  }
+}
+
 @keyframes slideIn {
   0% {
     transform: translate(-50%, -100%);
@@ -652,3 +697,78 @@ hr.line5 {
   background-color: #45a049; /* Change background color on hover */
 }
 
+
+
+#Sharelinkmodal {
+  display: none;
+  position: fixed;
+  z-index: 1;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  overflow: auto;
+  background-color: rgba(0, 0, 0, 0.4);
+}
+
+#Sharelinkmodal .modal-content {
+  background-color: #fff;
+  border-radius: 10px;
+  padding: 20px;
+  box-shadow: 0 14px 28px rgba(0,0,0,0.25), 0 10px 10px rgba(0,0,0,0.22);
+  width: 80%;
+  max-width: 500px;
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  font-family: 'Roboto', sans-serif;
+  color: #333;
+  line-height: 1.6;
+}
+
+#Sharelinkmodal .modal-content .close {
+  color: #aaa;
+  float: right;
+  font-size: 28px;
+  font-weight: bold;
+}
+
+#Sharelinkmodal .modal-content .close:hover,
+#Sharelinkmodal .modal-content .close:focus {
+  color: black;
+  text-decoration: none;
+  cursor: pointer;
+}
+
+#Sharelinkmodal .modal-content p {
+  margin: 0 0 15px;
+}
+
+#Sharelinkmodal .modal-content .url-display {
+  font-size: 20px;
+  color: #333;
+  word-wrap: break-word;
+  background-color: #f1f1f1;
+  padding: 10px;
+  border-radius: 5px;
+  margin-bottom: 15px;
+}
+
+#Sharelinkmodal .modal-content a#emailButton {
+  color: #fff;
+  background-color: #79c0ff; /* Green background */
+  border: none; /* No border */
+  padding: 15px 32px; /* Padding */
+  text-decoration: none; /* No underline */
+  display: inline-block;
+  font-size: 16px;
+  margin: 4px 2px;
+  cursor: pointer; /* Cursor changes when you hover over it */
+  transition-duration: 0.4s; /* Transition effect */
+  border-radius: 5px;
+}
+
+#Sharelinkmodal .modal-content a#emailButton:hover {
+  background-color: #45a049; /* Change background color on hover */
+}

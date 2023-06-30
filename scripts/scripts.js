@@ -778,7 +778,8 @@ function openShareModal(map) {
 
     // Set the href for the email button
     var emailButton = document.getElementById('emailButton');
-    emailButton.href = `mailto:?subject=Link to the map&body=${url}`;
+    var encodedUrl = encodeURIComponent(url);  // Add this line
+    emailButton.href = `mailto:?subject=Link to the map&body=${encodedUrl}`;
 
   // Show the modal
   modal.style.display = 'block';
