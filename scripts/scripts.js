@@ -426,35 +426,55 @@ function addLayer(layer, checkbox) {
     }
   }
 
-  // Smooth zoom effect using mouse scroll
-  let accumulatedDeltaY = 0;
-  let zooming = false;
-  const zoomThreshold = 50; // Adjust the scroll delta threshold for zoom action
+// Smooth zoom effect using mouse scroll
+let accumulatedDeltaY = 0;
+let zooming = false;
+let scrollDirection = null; // Keep track of scroll direction
+let zoomController = new AbortController(); // Controller to abort zooming
+const zoomThreshold = 50; // Adjust the scroll delta threshold for zoom action
 
-  view.on("mouse-wheel", function (event) {
-    event.stopPropagation();
-    event.preventDefault();
+view.on("mouse-wheel", function (event) {
+  event.stopPropagation();
+  event.preventDefault();
 
-    const deltaY = event.deltaY;
-    const zoomFactor = 1; // Adjust the zoom speed (smaller value for slower zoom-in)
+  const deltaY = event.deltaY;
+  const zoomFactor = 1; // Adjust the zoom speed (smaller value for slower zoom-in)
 
-    accumulatedDeltaY += deltaY;
+  // Check if the scroll direction has changed
+  const newScrollDirection = deltaY > 0 ? 'down' : 'up';
+  if (scrollDirection && newScrollDirection !== scrollDirection) {
+    zoomController.abort(); // Abort the ongoing zoom if scroll direction changes
+    zoomController = new AbortController(); // Instantiate a new controller for the next zoom
+    accumulatedDeltaY = deltaY; // Reset accumulatedDeltaY with the new deltaY
+  } else {
+    accumulatedDeltaY += deltaY; // Accumulate deltaY normally
+  }
+  scrollDirection = newScrollDirection; // Update the scroll direction
 
-    if (!zooming && Math.abs(accumulatedDeltaY) >= zoomThreshold) {
-      zooming = true;
-      const zoomDirection = accumulatedDeltaY > 0 ? -1 : 1;
-      const zoomLevel = view.zoom + zoomDirection * zoomFactor;
+  if (!zooming && Math.abs(accumulatedDeltaY) >= zoomThreshold) {
+    zooming = true;
+    const zoomDirection = accumulatedDeltaY > 0 ? -1 : 1;
+    const zoomLevel = view.zoom + zoomDirection * zoomFactor;
 
-      view
-        .goTo({
-          zoom: zoomLevel,
-          duration: 250, // Adjust the animation duration as needed
-          easing: "linear", // Use linear easing for smoother zoom
-          signal: null, // Remove signal if you don't need to cancel ongoing zoom actions
-        })
-        .then(() => {
-          zooming = false;
-        });
+    view
+      .goTo({
+        zoom: zoomLevel,
+      }, {
+        duration: 150, // Adjust the animation duration as needed
+        easing: "linear", // Use linear easing for smoother zoom
+        signal: zoomController.signal, // Use signal to potentially cancel ongoing zoom actions
+      })
+      .then(() => {
+        zooming = false;
+      })
+      .catch((error) => {
+        if (error.name === 'AbortError') {
+          // If it's an AbortError, we expect it, do nothing
+        } else {
+          console.error(error);
+        }
+        zooming = false;
+      });
 
       accumulatedDeltaY = 0;
     }
@@ -743,76 +763,91 @@ function addLayer(layer, checkbox) {
 
 
   
-// Function to get the current extent and create an object
-function getCurrentState(view) {
-  var xmin = view.extent.xmin;
-  var ymin = view.extent.ymin;
-  var xmax = view.extent.xmax;
-  var ymax = view.extent.ymax;
+  // Function to get the current extent and create an object
+  function getCurrentState(view) {
+    var xmin = view.extent.xmin;
+    var ymin = view.extent.ymin;
+    var xmax = view.extent.xmax;
+    var ymax = view.extent.ymax;
 
-  return { xmin: xmin, ymin: ymin, xmax: xmax, ymax: ymax };
-}
-
-
-// Function to create the shareable URL
-function createShareableUrl(map) {
-  var state = getCurrentState(map);
-  var baseUrl = window.location.href.split('?')[0]; // remove existing parameters
-  var url = new URL(baseUrl);
-
-  url.searchParams.append('xmin', state.xmin);
-  url.searchParams.append('ymin', state.ymin);
-  url.searchParams.append('xmax', state.xmax);
-  url.searchParams.append('ymax', state.ymax);
-
-  return url.toString();
-}
-
-function openShareModal(map) {
-  var url = createShareableUrl(map);
-
-  // Display the URL in the modal
-  var modal = document.getElementById('Sharelinkmodal');
-  var urlDisplay = modal.querySelector('.url-display'); // Add a selector for where to display the URL
-  urlDisplay.innerHTML = `<a href="${url}" target="_blank">${url}</a>`; // Make it a clickable link
-
-    // Set the href for the email button
-    var emailButton = document.getElementById('emailButton');
-    var encodedUrl = encodeURIComponent(url);  // Add this line
-    emailButton.href = `mailto:?subject=Link to the map&body=${encodedUrl}`;
-
-  // Show the modal
-  modal.style.display = 'block';
-}
-
-document.getElementById('share').addEventListener('click', function() {
-  openShareModal(view);
-});
-
-function loadExtentFromUrl(view) {
-  var url = new URL(window.location.href);
-  var xmin = parseFloat(url.searchParams.get('xmin'));
-  var ymin = parseFloat(url.searchParams.get('ymin'));
-  var xmax = parseFloat(url.searchParams.get('xmax'));
-  var ymax = parseFloat(url.searchParams.get('ymax'));
-
-  if (!isNaN(xmin) && !isNaN(ymin) && !isNaN(xmax) && !isNaN(ymax)) {
-    var extent = {
-      xmin: xmin,
-      ymin: ymin,
-      xmax: xmax,
-      ymax: ymax,
-      spatialReference: view.spatialReference
-    };
-    view.extent = extent;
+    return { xmin: xmin, ymin: ymin, xmax: xmax, ymax: ymax };
   }
-}
+
+  // Function to create the shareable URL
+  function createShareableUrl(map) {
+    var state = getCurrentState(map);
+    var baseUrl = window.location.href.split('?')[0]; // remove existing parameters
+    var url = new URL(baseUrl);
+
+    url.searchParams.append('xmin', state.xmin);
+    url.searchParams.append('ymin', state.ymin);
+    url.searchParams.append('xmax', state.xmax);
+    url.searchParams.append('ymax', state.ymax);
+
+    return url.toString();
+  }
+
+  function openShareModal(map) {
+    var url = createShareableUrl(map);
+
+    // Display the URL in the modal
+    var modal = document.getElementById('Sharelinkmodal');
+    var urlDisplay = modal.querySelector('.url-display'); // Add a selector for where to display the URL
+    urlDisplay.innerHTML = `<a href="${url}" target="_blank">${url}</a>`; // Make it a clickable link
+
+      // Set the href for the email button
+      var emailButton = document.getElementById('emailButton');
+      var encodedUrl = encodeURIComponent(url);  // Add this line
+      emailButton.href = `mailto:?subject=Link to the map&body=${encodedUrl}`;
+
+    // Show the modal
+    modal.style.display = 'block';
+  }
+
+  document.getElementById('share').addEventListener('click', function() {
+    openShareModal(view);
+  });
+
+  function loadExtentFromUrl(view) {
+    console.log('Running loadExtentFromUrl function.');
+
+    var url = new URL(window.location.href);
+    var xmin = parseFloat(url.searchParams.get('xmin'));
+    var ymin = parseFloat(url.searchParams.get('ymin'));
+    var xmax = parseFloat(url.searchParams.get('xmax'));
+    var ymax = parseFloat(url.searchParams.get('ymax'));
+
+    console.log(`xmin: ${xmin}, ymin: ${ymin}, xmax: ${xmax}, ymax: ${ymax}`);
+
+    if (!isNaN(xmin) && !isNaN(ymin) && !isNaN(xmax) && !isNaN(ymax)) {
+      var extent = {
+        xmin: xmin,
+        ymin: ymin,
+        xmax: xmax,
+        ymax: ymax,
+        spatialReference: view.spatialReference
+      };
+      console.log('Parsed extent:', extent);
+      view.goTo(extent).catch(function(error) {
+        console.log('Error with goTo function:', error);
+      });
+    } else {
+      console.log('Values were not parsed correctly, check your URL parameters.');
+    }
+  }
+
+  // Call the function passing the view object as an argument
+  loadExtentFromUrl(view);
 
 
+
+
+  
   // This code fixes the click problem for both sets of buttons and dropdown menus
 
   window.onload = function () {
     // Ensure dropdowns and modals are hidden when page loads
+
     var layerDropdown = document.getElementById("layerDropdown");
     var maglassDropdown = document.getElementById("maglassDropdown");
     var coordinatesModal = document.getElementById("coordinatesModal");
@@ -820,7 +855,7 @@ function loadExtentFromUrl(view) {
     var LinkDropdown = document.getElementById("LinkDropdown");
     var shareModal = document.getElementById("Sharelinkmodal")
     var linkmodal = document.getElementById("helpmodal")
-
+   
     layerDropdown.style.display = "none";
     maglassDropdown.style.display = "none";
     coordinatesModal.style.display = "none";
@@ -878,6 +913,8 @@ function loadExtentFromUrl(view) {
       ) {
         LinkDropdown.style.display = "none";
       }
+
+
     });
   };
 });
