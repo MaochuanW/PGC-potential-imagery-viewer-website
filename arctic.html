@@ -1,0 +1,264 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="initial-scale=1, maximum-scale=1, user-scalable=no" />
+  <link rel="stylesheet" href="css/styles.css">
+  <link rel="stylesheet" href="https://js.arcgis.com/4.26/esri/themes/light/main.css">
+  <script src="https://account.pgc.umn.edu/auth/js/keycloak.js"></script>
+  <script src="https://js.arcgis.com/4.26/"></script>
+  <script src="scripts/arctic.js"></script>
+</head>
+
+<body>
+
+  <div id="viewDiv"></div>
+
+  <div id="toolbarDiv" class="esri-component esri-widget">
+    <button id="distance" class="esri-widget--button esri-interactive esri-icon-measure-line"
+      title="Distance Measurement Tool"></button>
+    <button id="area" class="esri-widget--button esri-interactive esri-icon-measure-area"
+      title="Area Measurement Tool"></button>
+    <button id="clear" class="esri-widget--button esri-interactive esri-icon-trash" title="Clear Measurements"></button>
+  </div>
+
+  <div class="sidebar">
+
+    <a href="http://pgc.umn.edu" target="_blank">
+      <img src="pics/pgc.png" alt="Descriptive text">
+    </a>
+
+    <div id="imagery" class="vertical-text">Imagery</div>
+    <div id="viewer" class="vertical-text">Viewer</div>
+    <hr class="line1">
+
+    <hr class="line2">
+    <div id="zoomInBtn" class="tooltip">
+      <img src="pics/PLUS.png" alt="Zoom In">
+      <div class="tooltip-text">Zoom in</div>
+    </div>
+    <hr class="line2-5">
+    <div id="zoomOutBtn" class="tooltip">
+      <img src="pics/MINUS.png" alt="Zoom Out">
+      <div class="tooltip-text">Zoom out</div>
+    </div>
+
+    <div id="layerBtn" class="tooltip">
+      <img src="pics/Layer.png" alt="Layer">
+      <div class="tooltip-text">Layers</div>
+    </div>
+
+    <div id="layerDropdown">
+      <div class="layer-option">
+        <!-- Master checkbox -->
+        <label for="masterCheckbox"><strong>Licensed Commercial Imagery</strong></label>
+
+        <div class="layer-option">
+          <!-- Checkbox for Layer 2 -->
+          <input type="checkbox" id="layer2Checkbox">
+          <label for="layer2Checkbox">0.5m Arctic Imagery Mosaic (<span
+              class="panchromatic-text">panchromatic</span>)</label>
+        </div>
+
+
+      </div>
+
+      <div class="layer-option">
+        <!-- Master checkbox -->
+        <label for="dataOverlayCheckbox"><strong>Data & Overlay Layers</strong></label>
+
+        <div class="layer-option">
+          <!-- Checkbox for Antarctic Composite Basemap -->
+          <input type="checkbox" id="ArcticDEMcheckbox">
+          <label for="ArcticDEMcheckbox">Antarctic Composite Basemap</label>
+        </div>
+
+      </div>
+    </div>
+
+    <hr class="line3">
+
+    <div id="maglass" class="tooltip">
+      <img src="pics/mag_glass.png" alt="Layer">
+      <div class="tooltip-text">Zoom to</div>
+    </div>
+
+    <div id="maglassDropdown">
+      <div class="zoom-option" onclick="openCoordinateWidget()">
+        <img src="pics/Coordinates.png" alt="Image 1"
+          style="margin-right: 10px; width: 30px; height: 30px; margin-top: 5px;">
+        <label for="ZoomtoCoordinates" style="position: relative; top: -10px;"><strong>Zoom to
+            Coordinates</strong></label>
+      </div>
+
+      <div class="zoom-option" onclick="openModal('popularPlacesModal', event)">
+        <img src="pics/popular.png" alt="Image 2" style="margin-right: 10px; width: 30px; height: 30px; margin-top: 5px;">
+        <label for="ZoomtoPopularPlaces" style="position: relative; top: -9px;"><strong>Zoom to Popular
+            Places</strong></label>
+      </div>
+
+      <div id="coordinatesModal" class="modal" onclick="closeModal('coordinatesModal')">
+        <div class="modal-content" onclick="event.stopPropagation()">
+          <span class="close" onclick="closeModal('coordinatesModal')">&times;</span>
+          <p>Some text in the Coordinates Modal..</p>
+        </div>
+      </div>
+      
+
+      <div id="popularPlacesModal" class="modal" onclick="closeModal('popularPlacesModal')">
+        <div class="modal-content" onclick="event.stopPropagation()">
+          <span class="close" onclick="closeModal('popularPlacesModal')">&times;</span>
+          <p>Work in Progress....</p>
+
+          <div id="popularPlaceList" class="popular-place-list">
+            <div>
+              <img src="pics/big-ben-icon.png" class="popular-place-icon" alt="Big Ben Icon">
+              <button onclick="zoomToPopularPlace([-0.1278, 51.5074])">Big Ben</button>
+            </div>
+            <div>
+              <img src="pics/buckingham-palace-icon.png" class="popular-place-icon" alt="Buckingham Palace Icon">
+              <button id="buck">Buckingham Palace</button>
+            </div>
+            <div>
+              <img src="pics/great-wall-icon.png" class="popular-place-icon" alt="The Great Wall Icon">
+              <button onclick="zoomToPopularPlace([116.5977, 40.4406])">The Great Wall</button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+
+
+    <hr class="line4">
+    <div id="link" class="tooltip">
+      <img src="pics/link.png" alt="Layer">
+      <div class="tooltip-text">Links</div>
+    </div>
+
+    <div id="LinkDropdown">
+      <div class="layer-option">
+        
+        <label for="linkdropbox"><strong>Switch to</strong></label>
+
+        <div class="layer-option" onclick="window.open('arctic.html', '_blank')">
+          <img src="pics/globe.png" alt="globepic" style="margin-right: 10px; width: 20px; height: 20px; margin-top: 5px;">
+          <label for="arcticlink">Arctic Imagery Viewer</label>
+        </div>
+
+        <div class="layer-option" onclick="window.open('world.html', '_blank')">
+          <img src="pics/globe.png" alt="globepic" style="margin-right: 10px; width: 20px; height: 20px; margin-top: 5px;">
+          <label for = "worldlink">World Imagery Viewer</label>
+        </div>
+      
+        <div class="layer-option" onclick="window.open('https://www.pgc.umn.edu/', '_blank')">
+          <img src="pics/home.png" alt="globepic" style="margin-right: 10px; width: 20px; height: 20px; margin-top: 5px;">
+          <label for="PGChomepage">PGC Homepage</label>
+        </div>
+
+        <div class="layer-option" onclick="window.open('index.html', '_blank')">
+          <img src="pics/landing.png" alt="globepic" style="margin-right: 10px; width: 20px; height: 20px; margin-top: 5px;">
+          <label for="Landingpage">Viewers Landing Page</label>
+        </div>
+
+        <div class="layer-option" onclick="window.open('https://users.pgc.umn.edu/password', '_blank')">
+          <img src="pics/password.png" alt="globepic" style="margin-right: 10px; width: 20px; height: 20px; margin-top: 5px;">
+          <label for="passwordlink">Password Reset</label>
+        </div>
+
+        <div class="layer-option" onclick="window.open('https://users.pgc.umn.edu/request', '_blank')">
+          <img src="pics/account.png" alt="globepic" style="margin-right: 10px; width: 20px; height: 20px; margin-top: 5px;">
+          <label for="Requestacclink">Request Account</label>
+        </div>
+        
+      </div>
+    </div>
+
+    
+
+
+
+    <hr class="line4-5">
+    
+    <div id="ruler" class="tooltip">
+      <img src="pics/ruler.png" alt="Layer">
+      <div class="tooltip-text">Measurement</div>
+    </div>
+
+    <div id="share" class="tooltip" onclick="openModal('Sharelinkmodal')">
+      <img src="pics/share.png" alt="Layer">
+      <div class="tooltip-text">Share</div>
+    </div>
+
+
+    <div id="Sharelinkmodal" class="modal" onclick="closeModal('Sharelinkmodal')">
+      <div class="modal-content" onclick="event.stopPropagation()">
+        <span class="close" onclick="closeModal('Sharelinkmodal')">&times;</span>
+        <p>Share the current map extent</p>
+        <p class="url-display"></p> <!-- This is where the URL will be displayed -->
+        <a id="emailButton" href="#">Email this link</a> <!-- Here is your button -->
+      </div>
+    </div>
+    
+    
+
+
+    <hr class="line5">
+
+    <div id="help" class="tooltip" onclick = "openModal('helpmodal')">
+      <img src='pics/help.png' alt="Layer">
+      <div class="tooltip-text">Help</div>
+    </div>
+
+    <div id="helpmodal" class="modal" onclick="closeModal('helpmodal')">
+      <div class="modal-content" onclick="event.stopPropagation()">
+        <span class="close" onclick="closeModal('helpmodal')">&times;</span>
+        <h4>Common Issues</h4>
+                <dl>
+                  <dt>I don't have an account</dt>
+                  <dd>You must have an account with the Polar Geospatial Center in order to view the commercial high-resolution satellite imagery.  If you would like an account please visit the <a href="http://users.pgc.umn.edu/request" target="_blank">Request New Acccount</a> page.  Certain restrictions apply, view the <a href="http://repository.agic.umn.edu/website/docs/PGCAccountTermsAndConditions.pdf" target="_blank">Terms &amp; Conditions</a> for more information.</dd>
+                  <dt>I'm unable to stay signed in</dt>
+                  <dd>Staying signed in requires a browser that supports <a href="http://www.w3schools.com/html/html5_webstorage.asp" target="_blank">local storage</a> or <a href="http://en.wikipedia.org/wiki/HTTP_cookie" target="_blank">cookies</a>.  You will be required to sign in again after 1 day of inactivity.</dd>
+                  <dt>Satellite imagery loads slow</dt>
+                  <dd>Although the application is optimized to serve terabytes of satellite imagery via the internet, slow internet connections can cause images to have some latency.</dd>
+                  <dt>View image information</dt>
+                  <dd>Click anywhere on the map or image and a popup will display with information on the image including Maxar Catalog ID, sensor, and date.</dd>
+                  <dt>I want to suggest a feature</dt>
+                  <dd>Please send an email to the PGC Web Development Team at <a href="mailto:pgc@umn.edu?subject=Feature%20Suggestion:%20PGC%20Imagery%20Viewer" target="_blank">pgc@umn.edu</a>.</dd>
+                  <dt>I want to report a bug</dt>
+                  <dd>Please fill out <a href="http://www.pgc.umn.edu/about/contact" target="_blank">this form</a> on the PGC website and select "Website problems or feedback" in the "Reason for writing" field.</dd>
+                </dl>
+                <h4>Credits</h4>
+                <dl>
+                  <dt>Development</dt>
+                  <dd><ul class="unstyled">
+                    <li>Developed by Maochuan Wang---Mentored by Shane Loeffler</li>
+                    <li>2023 Polar Geospatial Center, University of Minnesota</li>
+                  </ul></dd>
+                  <dt>Imagery Processing</dt>
+                  <dd><ul class="unstyled">
+                    <li>Satellite imagery processing by Claire Porter, Erik Husby, Jesse Bakker, Jim Klassen, Danny Im,  </li>
+                    <li>Polar Geospatial Center, University of Minnesota</li>
+                  </ul></dd>
+                  <dt>Map Data</dt>
+                  <dd><ul class="unstyled">
+                    <li>WorldView-1, WorldView-2, WorldView-3, QuickBird, IKONOS imagery <a href="http://www.Maxar.com" target="_blank">© Maxar, Inc.</a></li>
+                    <li><a href="http://lima.usgs.gov" target="_blank">Landsat Image Mosaic of Antarctica (LIMA)</a> from <a href="http://www.usgs.gov" target="_blank">USGS</a>, <a href="http://www.nsf.gov" target="_blank">NSF</a>, <a href="http://www.nasa.gov" target="_blank">NASA</a>, <a href="http://www.antarctica.ac.uk/" target="_blank">BAS</a></li>
+                    <li>Topographic maps from the USGS <a href="http://usarc.usgs.gov/" target="_blank">United States Antarctic Resource Center (USARC)</a></li>
+                   </ul></dd>
+                  <dt>Built Using</dt>
+                  <dd><ul class="unstyled">
+                    <li><a href="http://help.arcgis.com/en/webapi/javascript/arcgis/" target="_blank">ArcGIS API for JavaScript</a></li>
+                   </ul></dd>
+                 </dl>
+      </div>
+    </div> 
+
+
+
+  </div>
+
+</body>
+
+</html>
