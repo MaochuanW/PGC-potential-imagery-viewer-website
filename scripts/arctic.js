@@ -152,18 +152,14 @@ function addLayer(layer, checkbox) {
     title: "country names"
   });
 
-  const labelmap = new WMSLayer({
-    url: "http://arcticgeoservices.org/arcgis/services/public/Arctic_Countries/MapServer/WMSServer",
-    title: "names",
-  });
 
-  const arcticDEMbasemap = new MapImageLayer({
+  const arcticDEMbasemap = new TileLayer({
     url: "https://services.arcgisonline.com/arcgis/rest/services/Polar/Arctic_Imagery/MapServer",
     title: "ArcticDEM Basemap",
 
   });
   
-  map.addMany([arcticDEMbasemap, labelmap, labelname]);
+  map.addMany([arcticDEMbasemap, labelname]);
 
 
 
