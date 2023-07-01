@@ -67,7 +67,9 @@ require([
   "esri/widgets/CoordinateConversion",
   "esri/renderers/RasterStretchRenderer",
   "esri/rest/support/AlgorithmicColorRamp",
-  "esri/rest/support/MultipartColorRamp"
+  "esri/rest/support/MultipartColorRamp",
+  "esri/layers/WMSLayer",
+  "esri/layers/MapImageLayer"
 ], function (
   esriConfig,
   Map,
@@ -92,7 +94,9 @@ require([
   CoordinateConversion,
   RasterStretchRenderer,
   AlgorithmicColorRamp,
-  MultipartColorRamp
+  MultipartColorRamp,
+  WMSLayer,
+  MapImageLayer
 ) {
   esriConfig.apiKey =
     "AAPK5b378c5a659a47668b94785aee29f811CspcF_qvBERUKbwD9AiaNB94Ie4mbJyNQAgY6gskPznuqWXfm7PU_M1CZJdpDT3i";
@@ -146,6 +150,12 @@ function addLayer(layer, checkbox) {
 }
 
   const map = new Map({});
+
+  const antlabel = new MapImageLayer({
+    url: "https://gis.ngdc.noaa.gov/arcgis/rest/services/antarctic/reference/MapServer",
+    title: "Antarctica label"
+  });
+
   const AntCompBaseMap = new TileLayer({
     url: "https://overlord.pgc.umn.edu/arcgis/rest/services/imagery/ant_pgc_composite_mosaic/MapServer",
     title: "Antarctica Composite Basemap",
@@ -153,7 +163,8 @@ function addLayer(layer, checkbox) {
       wkid: 3031,
     },
   });
-  map.add(AntCompBaseMap);
+
+  map.addMany([AntCompBaseMap, antlabel]);
 
   document
     .getElementById("AntCompBaseMapCheckbox")
