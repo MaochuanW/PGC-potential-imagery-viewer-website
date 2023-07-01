@@ -8,7 +8,7 @@
   <link rel="stylesheet" href="https://js.arcgis.com/4.26/esri/themes/light/main.css">
   <script src="https://account.pgc.umn.edu/auth/js/keycloak.js"></script>
   <script src="https://js.arcgis.com/4.26/"></script>
-  <script src="scripts/arctic.js"></script>
+  <script src="scripts/world.js"></script>
 </head>
 
 <body>
@@ -55,10 +55,10 @@
         <label for="masterCheckbox"><strong>Licensed Commercial Imagery</strong></label>
 
         <div class="layer-option">
-          <!-- Checkbox for Layer 2 -->
-          <input type="checkbox" id="layer2Checkbox">
-          <label for="layer2Checkbox">0.5m Arctic Imagery Mosaic (<span
-              class="panchromatic-text">panchromatic</span>)</label>
+          <!-- Checkbox for hmaL8rgb -->
+          <input type="checkbox" id="hmaL8rgb">
+          <label for="hmaL8rgb">0.5m High Mountain Asia Imagery Mosaic (<span
+              class="panchromatic-text">Panchromatic</span>)</label>
         </div>
 
 
@@ -69,10 +69,16 @@
         <label for="dataOverlayCheckbox"><strong>Data & Overlay Layers</strong></label>
 
         <div class="layer-option">
-          <!-- Checkbox for Arctic  Basemap -->
-          <input type="checkbox" id="ArcticDEMcheckbox">
-          <label for="ArcticDEMcheckbox">Arctic Composite Basemap</label>
+          <!-- Checkbox for Esri  Basemap -->
+          <input type="checkbox" id="EsriBasemapCheckbox">
+          <label for="EsriBasemapCheckbox">Esri Basemap</label>
         </div>
+
+        <div class="layer-option">
+            <!-- Checkbox for Esri Label Basemap -->
+            <input type="checkbox" id="EsriLabelBasemapCheckbox">
+            <label for="EsriLabelBasemapCheckbox">Esri Label Basemap</label>
+          </div>
 
       </div>
     </div>
@@ -147,9 +153,9 @@
           <label for="arcticlink">Antarctic Imagery Viewer</label>
         </div>
 
-        <div class="layer-option" onclick="window.open('world.html', '_blank')">
+        <div class="layer-option" onclick="window.open('Arctic.html', '_blank')">
           <img src="pics/globe.png" alt="globepic" style="margin-right: 10px; width: 20px; height: 20px; margin-top: 5px;">
-          <label for = "worldlink">World Imagery Viewer</label>
+          <label for = "worldlink">Arctic Imagery Viewer</label>
         </div>
       
         <div class="layer-option" onclick="window.open('https://www.pgc.umn.edu/', '_blank')">
@@ -244,7 +250,9 @@
                   <dt>Map Data</dt>
                   <dd><ul class="unstyled">
                     <li>WorldView-1, WorldView-2, WorldView-3, QuickBird, IKONOS imagery <a href="http://www.Maxar.com" target="_blank">© Maxar, Inc.</a></li>
-
+                    <li><a href="https://www.arcgis.com/home/item.html?id=10df2279f9684e4a9f6a7f08febac2a9" target="_blank">World Imagery</a> and <a href="https://www.arcgis.com/home/item.html?id=a842e359856a4365b1ddf8cc34fde079" target="_blank">Boundaries and Places</a> from Esri. See <a href="http://www.esri.com/legal/software-license" target="_blank">Terms &amp; Conditions</a>.</li>
+                </ul></dd>
+                   
                    </ul></dd>
                   <dt>Built Using</dt>
                   <dd><ul class="unstyled">
