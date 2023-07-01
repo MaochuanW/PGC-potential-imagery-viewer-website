@@ -147,14 +147,23 @@ function addLayer(layer, checkbox) {
 }
 
   const map = new Map({});
-  const arcticDEMbasemap = new WMSLayer({
-    url: "http://arcticgeoservices.org/arcgis/services/public/Arctic_Base_Map/MapServer/WMSServer?request=GetCapabilities&service=WMS",
+  const labelname = new MapImageLayer({
+    url: "https://gis.ngdc.noaa.gov/arcgis/rest/services/arctic_ps/reference/MapServer",
+    title: "country names"
+  });
+
+  const labelmap = new WMSLayer({
+    url: "http://arcticgeoservices.org/arcgis/services/public/Arctic_Countries/MapServer/WMSServer",
+    title: "names",
+  });
+
+  const arcticDEMbasemap = new MapImageLayer({
+    url: "https://services.arcgisonline.com/arcgis/rest/services/Polar/Arctic_Imagery/MapServer",
     title: "ArcticDEM Basemap",
 
   });
   
-
-  map.add(arcticDEMbasemap);
+  map.addMany([arcticDEMbasemap, labelmap, labelname]);
 
 
 
@@ -197,7 +206,7 @@ function addLayer(layer, checkbox) {
 
 
   const spatialReference = new SpatialReference({
-    wkid: 3413,
+    wkid: 5936,
   });
 
   // Create LODs from level 0 to 24
@@ -210,7 +219,7 @@ function addLayer(layer, checkbox) {
 
   const view = new MapView({
     map: map,
-    center: [69.6354163 -42.1736914],
+    center: [0.0,90.0],
     zoom: 4,
     container: "viewDiv",
     spatialReference,
