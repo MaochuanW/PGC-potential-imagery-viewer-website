@@ -750,73 +750,100 @@ view.on("mouse-wheel", function (event) {
     }
   };
 
-  // Function to zoom to popular place
-  function zoomToPopularPlace(coordinates, zoomLevel) {
-    console.log(coordinates);
-    view.goTo({ center: coordinates, zoom: zoomLevel });
-    closeModal("popularPlacesModal");
+ // Popular places data
+const popularPlaces = [
+  {
+    id: "mcmurdo",
+    coordinates: [166.66664, -77.849996],
+    zoomLevel: 15
+  },
+  {
+    id: "amundson",
+    coordinates: [-90.0, -139.2666656],
+    zoomLevel: 15
+  },
+  {
+    id: "palmer",
+    coordinates: [-64.053056, -64.774167],
+    zoomLevel: 15
+  },
+  {
+    id: "byrdcamp",
+    coordinates: [-119.5333312, -80.0166666],
+    zoomLevel: 15
+  },
+  {
+    id: "shackleton",
+    coordinates: [-176.333332, -84.583331],
+    zoomLevel: 13
+  },
+  {
+    id: "WAIS",
+    coordinates: [-112.086389, -79.467472],
+    zoomLevel: 15
+  },
+  {
+    id: "peninsula",
+    coordinates: [-63, -66],
+    zoomLevel: 7
+  },
+  {
+    id: "anvers",
+    coordinates: [-63.58, -64.55],
+    zoomLevel: 12
+  },
+  {
+    id: "marie",
+    coordinates: [-139.1, -75.183],
+    zoomLevel: 15
+  },
+  {
+    id: "dryvalley",
+    coordinates: [164.731711, -76.441301],
+    zoomLevel: 8
+  },
+  {
+    id: "pine",
+    coordinates: [-100.0, -75.16666],
+    zoomLevel: 8
+  },
+  {
+    id: "rossisland",
+    coordinates: [166.949996, -77.5166],
+    zoomLevel: 10
+  },
+  {
+    id: "taylor",
+    coordinates: [163.0, -77.6166642],
+    zoomLevel: 10
+  },
+  {
+    id: "victoria",
+    coordinates: [158.871909, -74.6591],
+    zoomLevel: 9
+  },
+  {
+    id: "vinson",
+    coordinates: [-85.617147, -78.525483],
+    zoomLevel: 13
   }
-  // Attach toggle popular place list function to button click event
-  document.getElementById("mcmurdo").addEventListener("click", function () {
-    zoomToPopularPlace([166.66664, -77.849996], 15);
-  });
+];
 
-  document.getElementById("amundson").addEventListener("click", function () {
-    zoomToPopularPlace([-90.0, -139.2666656], 15);
-  });
+// Function to zoom to popular place
+function zoomToPopularPlace(coordinates, zoomLevel) {
+  console.log(coordinates);
+  view.goTo({ center: coordinates, zoom: zoomLevel });
+  closeModal("popularPlacesModal");
+}
 
-
-  document.getElementById("palmer").addEventListener("click", function () {
-    zoomToPopularPlace([-64.053056,-64.774167 ], 15);
+// Attach event listeners to popular places
+popularPlaces.forEach(place => {
+  const button = document.getElementById(place.id);
+  button.addEventListener("click", function () {
+    zoomToPopularPlace(place.coordinates, place.zoomLevel);
   });
+});
 
-  document.getElementById("byrdcamp").addEventListener("click", function () {
-    zoomToPopularPlace([-119.5333312, -80.0166666], 15);
-  });
-
-  document.getElementById("shackleton").addEventListener("click", function () {
-    zoomToPopularPlace([-176.333332, -84.583331], 13);
-  });
-
-  document.getElementById("WAIS").addEventListener("click", function () {
-    zoomToPopularPlace([-112.086389, -79.467472], 15);
-  });
-
-  document.getElementById("peninsula").addEventListener("click", function () {
-    zoomToPopularPlace([-63, -66],7);
-  });
-
-  document.getElementById("anvers").addEventListener("click", function () {
-    zoomToPopularPlace([-63.58, -64.55], 12);
-  });
-
-  document.getElementById("marie").addEventListener("click", function () {
-    zoomToPopularPlace([-139.1, -75.183],15);
-  });
-
-  document.getElementById("dryvalley").addEventListener("click", function () {
-    zoomToPopularPlace([164.731711, -76.441301],8);
-  });
-
-  document.getElementById("pine").addEventListener("click", function () {
-    zoomToPopularPlace([-100.0, -75.16666],8);
-  });
-
-  document.getElementById("rossisland").addEventListener("click", function () {
-    zoomToPopularPlace([166.949996, -77.5166], 10);
-  });
-
-  document.getElementById("taylor").addEventListener("click", function () {
-    zoomToPopularPlace([163.0, -77.6166642], 10);
-  });
-
-  document.getElementById("victoria").addEventListener("click", function () {
-    zoomToPopularPlace([158.871909, -74.6591], 9);
-  });
-
-  document.getElementById("vinson").addEventListener("click", function () {
-    zoomToPopularPlace([-85.617147, -78.525483],13);
-  });
 
   const tooltipButtons = document.querySelectorAll(".tooltip");
   tooltipButtons.forEach((btn) => {

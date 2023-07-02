@@ -21,7 +21,7 @@
   
   .header {
     position: relative;
-    top: -100px;
+    top: 130px;
     
     /* Fade in effect */
     animation: fadeIn 2s ease-in-out;
