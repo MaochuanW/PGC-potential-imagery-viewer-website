@@ -750,99 +750,99 @@ view.on("mouse-wheel", function (event) {
     }
   };
 
- // Popular places data
-const popularPlaces = [
-  {
-    id: "mcmurdo",
-    coordinates: [166.66664, -77.849996],
-    zoomLevel: 15
-  },
-  {
-    id: "amundson",
-    coordinates: [-90.0, -139.2666656],
-    zoomLevel: 15
-  },
-  {
-    id: "palmer",
-    coordinates: [-64.053056, -64.774167],
-    zoomLevel: 15
-  },
-  {
-    id: "byrdcamp",
-    coordinates: [-119.5333312, -80.0166666],
-    zoomLevel: 15
-  },
-  {
-    id: "shackleton",
-    coordinates: [-176.333332, -84.583331],
-    zoomLevel: 13
-  },
-  {
-    id: "WAIS",
-    coordinates: [-112.086389, -79.467472],
-    zoomLevel: 15
-  },
-  {
-    id: "peninsula",
-    coordinates: [-63, -66],
-    zoomLevel: 7
-  },
-  {
-    id: "anvers",
-    coordinates: [-63.58, -64.55],
-    zoomLevel: 12
-  },
-  {
-    id: "marie",
-    coordinates: [-139.1, -75.183],
-    zoomLevel: 15
-  },
-  {
-    id: "dryvalley",
-    coordinates: [164.731711, -76.441301],
-    zoomLevel: 8
-  },
-  {
-    id: "pine",
-    coordinates: [-100.0, -75.16666],
-    zoomLevel: 8
-  },
-  {
-    id: "rossisland",
-    coordinates: [166.949996, -77.5166],
-    zoomLevel: 10
-  },
-  {
-    id: "taylor",
-    coordinates: [163.0, -77.6166642],
-    zoomLevel: 10
-  },
-  {
-    id: "victoria",
-    coordinates: [158.871909, -74.6591],
-    zoomLevel: 9
-  },
-  {
-    id: "vinson",
-    coordinates: [-85.617147, -78.525483],
-    zoomLevel: 13
+  // Popular places data
+  const popularPlaces = [
+    {
+      id: "mcmurdo",
+      coordinates: [166.66664, -77.849996],
+      zoomLevel: 15
+    },
+    {
+      id: "amundson",
+      coordinates: [-90.0, -139.2666656],
+      zoomLevel: 15
+    },
+    {
+      id: "palmer",
+      coordinates: [-64.053056, -64.774167],
+      zoomLevel: 15
+    },
+    {
+      id: "byrdcamp",
+      coordinates: [-119.5333312, -80.0166666],
+      zoomLevel: 15
+    },
+    {
+      id: "shackleton",
+      coordinates: [-176.333332, -84.583331],
+      zoomLevel: 13
+    },
+    {
+      id: "WAIS",
+      coordinates: [-112.086389, -79.467472],
+      zoomLevel: 15
+    },
+    {
+      id: "peninsula",
+      coordinates: [-63, -66],
+      zoomLevel: 7
+    },
+    {
+      id: "anvers",
+      coordinates: [-63.58, -64.55],
+      zoomLevel: 12
+    },
+    {
+      id: "marie",
+      coordinates: [-139.1, -75.183],
+      zoomLevel: 15
+    },
+    {
+      id: "dryvalley",
+      coordinates: [164.731711, -76.441301],
+      zoomLevel: 8
+    },
+    {
+      id: "pine",
+      coordinates: [-100.0, -75.16666],
+      zoomLevel: 8
+    },
+    {
+      id: "rossisland",
+      coordinates: [166.949996, -77.5166],
+      zoomLevel: 10
+    },
+    {
+      id: "taylor",
+      coordinates: [163.0, -77.6166642],
+      zoomLevel: 10
+    },
+    {
+      id: "victoria",
+      coordinates: [158.871909, -74.6591],
+      zoomLevel: 9
+    },
+    {
+      id: "vinson",
+      coordinates: [-85.617147, -78.525483],
+      zoomLevel: 13
+    }
+  ];
+
+  // Function to zoom to popular place
+  function zoomToPopularPlace(coordinates, zoomLevel) {
+    console.log(coordinates);
+    view.goTo({ center: coordinates, zoom: zoomLevel });
+    closeModal("popularPlacesModal");
   }
-];
 
-// Function to zoom to popular place
-function zoomToPopularPlace(coordinates, zoomLevel) {
-  console.log(coordinates);
-  view.goTo({ center: coordinates, zoom: zoomLevel });
-  closeModal("popularPlacesModal");
-}
-
-// Attach event listeners to popular places
-popularPlaces.forEach(place => {
-  const button = document.getElementById(place.id);
-  button.addEventListener("click", function () {
-    zoomToPopularPlace(place.coordinates, place.zoomLevel);
+  // Attach event listeners to popular places
+  popularPlaces.forEach(place => {
+    const button = document.getElementById(place.id);
+    button.addEventListener("click", function () {
+      zoomToPopularPlace(place.coordinates, place.zoomLevel);
+    });
   });
-});
 
 
   const tooltipButtons = document.querySelectorAll(".tooltip");
