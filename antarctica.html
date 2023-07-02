@@ -143,24 +143,291 @@
 
       <div id="popularPlacesModal" class="modal" onclick="closeModal('popularPlacesModal')">
         <div class="modal-content" onclick="event.stopPropagation()">
-          <span class="close" onclick="closeModal('popularPlacesModal')">&times;</span>
-          <p>Work in Progress....</p>
+            <span class="close" onclick="closeModal('popularPlacesModal')">&times;</span>
+            <p>Zoom to Popular Places</p>
+    
+          <hr>
+          <div class = "cards-container">
+            <article class="card">
+                <img
+                    class="card__background"
+                    src="/pics/mcmurdo.jpg"
+                    width="1920"
+                    height="2193"
+                />
+                <div class="card__content | flow">
+                    <div class="card__content--container | flow">
+                        <h2 class="card__title custom-h2">McMurdo Station</h2>
+                        <p class="card__description custom-p">
+                          McMurdo Station is the largest research facility in Antarctica, serving as a hub for scientific exploration and logistical support in the harsh Antarctic environment.
+                        </p>
+                    </div>
+                    <button id ='mcmurdo' class="card__button">Zoom to</button>
+                </div>
+            </article>
 
-          <div id="popularPlaceList" class="popular-place-list">
-            <div>
-              <img src="pics/big-ben-icon.png" class="popular-place-icon" alt="Big Ben Icon">
-              <button onclick="zoomToPopularPlace([-0.1278, 51.5074])">Big Ben</button>
+            <article class="card">
+              <img
+                  class="card__background"
+                  src="/pics/amundson.jpg"
+                  width="1920"
+                  height="2193"
+              />
+              <div class="card__content | flow">
+                  <div class="card__content--container | flow">
+                      <h2 class="card__title custom-h2">Amundson-scott Station</h2>
+                      <p class="card__description custom-p">
+                        The Amundson-Scott South Pole Station is a U.S. research facility at the South Pole, conducting astronomy, meteorology, and geophysics data collection.
+                      </p>
+                  </div>
+                  <button id = 'amundson' class="card__button">Zoom to</button>
+              </div>
+          </article>
+
+          <article class="card">
+            <img
+                class="card__background"
+                src="/pics/palmer.jpg"
+                width="1920"
+                height="2193"
+            />
+            <div class="card__content | flow">
+                <div class="card__content--container | flow">
+                    <h2 class="card__title custom-h2">Palmer Station</h2>
+                    <p class="card__description custom-p">
+                      Palmer Station is a U.S. research facility in Antarctica, studying climate change and marine biology, situated on Anvers Island in the Southern Ocean.
+                    </p>
+                </div>
+                <button id = 'palmer' class="card__button">Zoom to</button>
             </div>
-            <div>
-              <img src="pics/buckingham-palace-icon.png" class="popular-place-icon" alt="Buckingham Palace Icon">
-              <button id="buck">Buckingham Palace</button>
-            </div>
-            <div>
-              <img src="pics/great-wall-icon.png" class="popular-place-icon" alt="The Great Wall Icon">
-              <button onclick="zoomToPopularPlace([116.5977, 40.4406])">The Great Wall</button>
-            </div>
+        </article>
+
+        <article class="card">
+          <img
+              class="card__background"
+              src="/pics/byrd.jpg"
+              width="1920"
+              height="2193"
+          />
+          <div class="card__content | flow">
+              <div class="card__content--container | flow">
+                  <h2 class="card__title custom-h2">Byrd Surface Camp</h2>
+                  <p class="card__description custom-p">
+                    The Byrd Surface Camp is a seasonal research camp located in West Antarctica, named after Admiral Richard E. Byrd.
+                  </p>
+              </div>
+              <button id = 'byrdcamp' class="card__button">Zoom to</button>
           </div>
+      </article>
+
+      <article class="card">
+        <img
+            class="card__background"
+            src="/pics/shackleton.jpg"
+            width="1920"
+            height="2193"
+        />
+        <div class="card__content | flow">
+            <div class="card__content--container | flow">
+                <h2 class="card__title custom-h2">Shackleton Glacier Camp</h2>
+                <p class="card__description custom-p">
+                  Shackleton Glacier Camp is a remote research outpost in Shackleton Glacier.
+                </p>
+            </div>
+            <button id = 'shackleton' class="card__button">Zoom to</button>
         </div>
+    </article>
+
+    <article class="card">
+      <img
+          class="card__background"
+          src="/pics/wais.jpg"
+          width="1920"
+          height="2193"
+      />
+      <div class="card__content | flow">
+          <div class="card__content--container | flow">
+              <h2 class="card__title custom-h2">WAIS Divide</h2>
+              <p class="card__description custom-p">
+                WAIS Divide is a scientific research camp located in West Antarctica, specifically at the divide of the West Antarctic Ice Sheet (WAIS), dedicated to drilling ice cores to study climate history and ice sheet dynamics.
+              </p>
+          </div>
+          <button id = 'WAIS' class="card__button">Zoom to</button>
+      </div>
+  </article>
+
+  <article class="card">
+    <img
+        class="card__background"
+        src="/pics/peninsula.jpg"
+        width="1920"
+        height="2193"
+    />
+    <div class="card__content | flow">
+        <div class="card__content--container | flow">
+            <h2 class="card__title custom-h2">Antarctic Peninsula</h2>
+            <p class="card__description custom-p">
+              The Antarctic Peninsula is a rugged and ecologically diverse region, home to research stations and a rich array of wildlife, attracting scientists and nature enthusiasts alike.
+            </p>
+        </div>
+        <button id = 'peninsula' class="card__button">Zoom to</button>
+    </div>
+</article>
+
+
+  <article class="card">
+    <img
+        class="card__background"
+        src="/pics/anvers.jpg"
+        width="1920"
+        height="2193"
+    />
+    <div class="card__content | flow">
+        <div class="card__content--container | flow">
+            <h2 class="card__title custom-h2">Anvers Island</h2>
+            <p class="card__description custom-p">
+              Anvers Island is a picturesque island off the coast of the Antarctic Peninsula, housing research stations studying climate change and marine ecosystems in its icy surroundings.
+            </p>
+        </div>
+        <button id = 'anvers' class="card__button">Zoom to</button>
+    </div>
+</article>
+
+<article class="card">
+  <img
+      class="card__background"
+      src="/pics/marie.jpg"
+      width="1920"
+      height="2193"
+  />
+  <div class="card__content | flow">
+      <div class="card__content--container | flow">
+          <h2 class="card__title custom-h2">Marie Byrd Land</h2>
+          <p class="card__description custom-p">
+            Marie Byrd Land is a vast and remote region in Antarctica, named after the wife of explorer Richard E. Byrd, known for its expansive ice sheets, active volcanoes, and scientific research on glaciology and geology.
+          </p>
+      </div>
+      <button id = 'marie'  class="card__button">Zoom to</button>
+  </div>
+</article>
+
+<article class="card">
+  <img
+      class="card__background"
+      src="/pics/dry.jpg"
+      width="1920"
+      height="2193"
+  />
+  <div class="card__content | flow">
+      <div class="card__content--container | flow">
+          <h2 class="card__title custom-h2">McMurdo Dry Valley</h2>
+          <p class="card__description custom-p">
+            Antarctica's McMurdo Dry Valleys are ice-free, desolate valleys perfect for studying extreme environments and conducting astrobiology research.
+          </p>
+      </div>
+      <button id = 'dryvalley' class="card__button">Zoom to</button>
+  </div>
+</article>
+
+<article class="card">
+  <img
+      class="card__background"
+      src="/pics/pine.jpg"
+      width="1920"
+      height="2193"
+  />
+  <div class="card__content | flow">
+      <div class="card__content--container | flow">
+          <h2 class="card__title custom-h2">Pine Island Glacier</h2>
+          <p class="card__description custom-p">
+            Pine Island Glacier is a dynamic and influential glacier in West Antarctica, studied for its contribution to sea-level rise and ice sheet stability.
+          </p>
+      </div>
+      <button id = 'pine' class="card__button">Zoom to</button>
+  </div>
+</article>
+
+<article class="card">
+  <img
+      class="card__background"
+      src="/pics/ross.jpg"
+      width="1920"
+      height="2193"
+  />
+  <div class="card__content | flow">
+      <div class="card__content--container | flow">
+          <h2 class="card__title custom-h2">Ross Island</h2>
+          <p class="card__description custom-p">
+            Ross Island is an Antarctic volcanic island with historic huts and research stations studying geology, biology, and other scientific disciplines.
+          </p>
+      </div>
+      <button id = 'rossisland' class="card__button">Zoom to</button>
+  </div>
+</article>
+
+<article class="card">
+  <img
+      class="card__background"
+      src="/pics/Taylor.png"
+      width="1920"
+      height="2193"
+  />
+  <div class="card__content | flow">
+      <div class="card__content--container | flow">
+          <h2 class="card__title custom-h2">Taylor Valley</h2>
+          <p class="card__description custom-p">
+            Taylor Valley, in Antarctica's McMurdo Dry Valleys, is an ice-free valley where scientists study extreme environments and microbial life.
+          </p>
+      </div>
+      <button id = 'taylor' class="card__button">Zoom to</button>
+  </div>
+</article>
+
+<article class="card">
+  <img
+      class="card__background"
+      src="/pics/victoria.jpg"
+      width="1920"
+      height="2193"
+  />
+  <div class="card__content | flow">
+      <div class="card__content--container | flow">
+          <h2 class="card__title custom-h2">Victoria Land</h2>
+          <p class="card__description custom-p">
+            Victoria Land, in Antarctica's Ross Sea region, is known for its expansive ice sheets, mountains, and research stations investigating climate, geology, and biology.
+          </p>
+      </div>
+      <button id = 'victoria' class="card__button">Zoom to</button>
+  </div>
+</article>
+
+<article class="card">
+  <img
+      class="card__background"
+      src="/pics/vinson.jpg"
+      width="1920"
+      height="2193"
+  />
+  <div class="card__content | flow">
+      <div class="card__content--container | flow">
+          <h2 class="card__title custom-h2">Vinson Massif</h2>
+          <p class="card__description custom-p">
+            Vinson Massif is Antarctica's tallest peak in the Ellsworth Mountains, attracting climbers and researchers studying glaciology and climate change.
+          </p>
+      </div>
+      <button id = 'vinson' class="card__button">Zoom to</button>
+  </div>
+</article>
+
+
+
+
+
+
+
+        </div>
+        
+        </div> 
       </div>
 
     </div>

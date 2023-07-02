@@ -1,47 +1,47 @@
-// function login() {
-//   const keycloak = new Keycloak({
-//     realm: "pgc",
-//     "auth-server-url": "https://account.pgc.umn.edu/auth",
-//     "ssl-required": "external",
-//     clientId: "imagery-viewers",
-//     "public-client": true,
-//     "enable-cors": true,
-//     "cors-allowed-methods": "POST, PUT, DELETE, GET, HEAD",
-//     "cors-allowed-headers":
-//       "Access-Control-Allow-Origin, Origin, Accept, X-Requested-With, Content-Type, Access-Control-Request-Method, Access-Control-Request-Headers, Authorization",
-//     "confidential-port": 0,
-//   });
+function login() {
+  const keycloak = new Keycloak({
+    realm: "pgc",
+    "auth-server-url": "https://account.pgc.umn.edu/auth",
+    "ssl-required": "external",
+    clientId: "imagery-viewers",
+    "public-client": true,
+    "enable-cors": true,
+    "cors-allowed-methods": "POST, PUT, DELETE, GET, HEAD",
+    "cors-allowed-headers":
+      "Access-Control-Allow-Origin, Origin, Accept, X-Requested-With, Content-Type, Access-Control-Request-Method, Access-Control-Request-Headers, Authorization",
+    "confidential-port": 0,
+  });
 
-//   keycloak
-//     .init({ checkLoginIframe: false })
-//     .then((authenticated) => {
-//       if (!authenticated) {
-//         keycloak.login();
-//       } else {
-//         window.keycloak = keycloak; // Assign keycloak to a global variable so it can be accessed later.
-//         console.log(authenticated ? "authenticated" : "not authenticated");
+  keycloak
+    .init({ checkLoginIframe: false })
+    .then((authenticated) => {
+      if (!authenticated) {
+        keycloak.login();
+      } else {
+        window.keycloak = keycloak; // Assign keycloak to a global variable so it can be accessed later.
+        console.log(authenticated ? "authenticated" : "not authenticated");
 
-//         // Refresh the token every minute if it's valid
-//         setInterval(() => {
-//           if (!window.keycloak.isTokenExpired()) {
-//             window.keycloak
-//               .updateToken(30)
-//               .then((refreshed) => {
-//                 console.log("Token refreshed successfully");
-//               })
-//               .catch(() => {
-//                 console.log("Error updating token");
-//               });
-//           }
-//         }, 60000); // 60000 milliseconds = 1 minute
-//       }
-//     })
-//     .catch(() => {
-//       console.log("failed to initialize");
-//     });
-// }
+        // Refresh the token every minute if it's valid
+        setInterval(() => {
+          if (!window.keycloak.isTokenExpired()) {
+            window.keycloak
+              .updateToken(30)
+              .then((refreshed) => {
+                console.log("Token refreshed successfully");
+              })
+              .catch(() => {
+                console.log("Error updating token");
+              });
+          }
+        }, 60000); // 60000 milliseconds = 1 minute
+      }
+    })
+    .catch(() => {
+      console.log("failed to initialize");
+    });
+}
 
-// login(); 
+login(); 
 
 require([
   "esri/config",
@@ -751,14 +751,71 @@ view.on("mouse-wheel", function (event) {
   };
 
   // Function to zoom to popular place
-  function zoomToPopularPlace(coordinates) {
+  function zoomToPopularPlace(coordinates, zoomLevel) {
     console.log(coordinates);
-    view.goTo({ center: coordinates, zoom: 15 });
+    view.goTo({ center: coordinates, zoom: zoomLevel });
     closeModal("popularPlacesModal");
   }
   // Attach toggle popular place list function to button click event
-  document.getElementById("buck").addEventListener("click", function () {
-    zoomToPopularPlace([-0.1411, 51.501]);
+  document.getElementById("mcmurdo").addEventListener("click", function () {
+    zoomToPopularPlace([166.66664, -77.849996], 15);
+  });
+
+  document.getElementById("amundson").addEventListener("click", function () {
+    zoomToPopularPlace([-90.0, -139.2666656], 15);
+  });
+
+
+  document.getElementById("palmer").addEventListener("click", function () {
+    zoomToPopularPlace([-64.053056,-64.774167 ], 15);
+  });
+
+  document.getElementById("byrdcamp").addEventListener("click", function () {
+    zoomToPopularPlace([-119.5333312, -80.0166666], 15);
+  });
+
+  document.getElementById("shackleton").addEventListener("click", function () {
+    zoomToPopularPlace([-176.333332, -84.583331], 13);
+  });
+
+  document.getElementById("WAIS").addEventListener("click", function () {
+    zoomToPopularPlace([-112.086389, -79.467472], 15);
+  });
+
+  document.getElementById("peninsula").addEventListener("click", function () {
+    zoomToPopularPlace([-63, -66],7);
+  });
+
+  document.getElementById("anvers").addEventListener("click", function () {
+    zoomToPopularPlace([-63.58, -64.55], 12);
+  });
+
+  document.getElementById("marie").addEventListener("click", function () {
+    zoomToPopularPlace([-139.1, -75.183],15);
+  });
+
+  document.getElementById("dryvalley").addEventListener("click", function () {
+    zoomToPopularPlace([164.731711, -76.441301],8);
+  });
+
+  document.getElementById("pine").addEventListener("click", function () {
+    zoomToPopularPlace([-100.0, -75.16666],8);
+  });
+
+  document.getElementById("rossisland").addEventListener("click", function () {
+    zoomToPopularPlace([166.949996, -77.5166], 10);
+  });
+
+  document.getElementById("taylor").addEventListener("click", function () {
+    zoomToPopularPlace([163.0, -77.6166642], 10);
+  });
+
+  document.getElementById("victoria").addEventListener("click", function () {
+    zoomToPopularPlace([158.871909, -74.6591], 9);
+  });
+
+  document.getElementById("vinson").addEventListener("click", function () {
+    zoomToPopularPlace([-85.617147, -78.525483],13);
   });
 
   const tooltipButtons = document.querySelectorAll(".tooltip");
