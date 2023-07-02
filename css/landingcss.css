@@ -1,138 +1,169 @@
 @font-face {
-    font-family: 'Sansation Light';
-    src: url('../pics/museo-sans-300.ttf') format('truetype');
-  }
-  
-  body {
-    /* Your background image */
-    background-image: url('../pics/coolbackG.jpg');
-    background-repeat: no-repeat;
-    background-attachment: fixed;
-    background-size: cover;
-  
-    /* Flexbox for centering */
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    height: 100vh;
-    margin: 0;
-  }
-  
-  .header {
-    position: relative;
-    top: 130px;
-    
-    /* Fade in effect */
-    animation: fadeIn 2s ease-in-out;
-    animation-fill-mode: forwards;
-    color: white;
-  }
-  
-  
-  h1 {
-    font-family: 'Sansation Light', sans-serif;
-    font-size: 2em;
-    display: flex;
-    align-items: center;
-    text-align: center;
-  }
+  font-family: 'Sansation Light';
+  src: url('../pics/museo-sans-300.ttf') format('truetype');
+}
 
-  
-  
-  #pgc-icon {
-    width: 50px;
-    height: 50px;
-    margin-right: 20px;
-  }
-  
-  .text-background {
-    width: 100%; /* To cover the full width of the box */
-    height: 100%; /* To cover the full height of the box */
-    display: flex; /* To align the items vertically */
-    flex-direction: column; /* To arrange the items in a column */
-    align-items: center; /* To center the items horizontally */
-    justify-content: center; /* To center the items vertically */
-    padding: 10px; /* Space around the contents */
-    backdrop-filter: blur(10px); /* Blur effect */
-    -webkit-backdrop-filter: blur(10px); /* For Safari compatibility */
-    border-radius: 5px; /* Rounded corners */
-  }
-  
-  
-  .boxes {
-    display: grid;
-    gap: 30px;
-    grid-template-columns: repeat(3, 1fr);
-    width: 80%;
-    position: relative;
-    top: 10px;
-  }
-  
-  .box {
-    /* Existing properties... */
-    display: flex;
-    flex-direction: column;
-    justify-content: space-between;
-    align-items: center;
-    opacity:0;
-    animation: fadeIn 1s ease-in-out;
-    animation-delay: 1s;
-    animation-fill-mode: forwards;
-    border-radius: 20px;
-    padding: 15px;
-    backdrop-filter: blur(10px);
-    -webkit-backdrop-filter: blur(10px);
-    background-color: rgba(255, 255, 255, 0.1);
-    border: 2px solid transparent;
-    overflow: hidden; /* Ensure content does not overflow */
-    text-align: center; /* Center-align the text */
+body {
+  /* Your background image */
+  background-image: url('../pics/coolbackG.jpg');
+  background-repeat: no-repeat;
+  background-attachment: fixed;
+  background-size: cover;
 
-  }
-  
-  
+  /* Flexbox for centering */
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+  margin: 0;
+}
 
-  .box:hover {
-  border: 2px solid rgba(0, 0, 0, 0.7); /* Dark line on hover */
+.header {
+  position: relative;
+  top: 130px;
+
+  /* Fade in effect */
+  animation: fadeIn 2s ease-in-out;
+  animation-fill-mode: forwards;
+  color: white;
+}
+
+
+h1 {
+  font-family: 'Sansation Light', sans-serif;
+  font-size: 2em;
+  display: flex;
+  align-items: center;
+  text-align: center;
+}
+
+
+
+#pgc-icon {
+  width: 50px;
+  height: 50px;
+  margin-right: 20px;
+}
+
+.text-background {
+  width: 100%;
+  /* To cover the full width of the box */
+  height: 100%;
+  /* To cover the full height of the box */
+  display: flex;
+  /* To align the items vertically */
+  flex-direction: column;
+  /* To arrange the items in a column */
+  align-items: center;
+  /* To center the items horizontally */
+  justify-content: center;
+  /* To center the items vertically */
+  padding: 10px;
+  /* Space around the contents */
+  backdrop-filter: blur(10px);
+  /* Blur effect */
+  -webkit-backdrop-filter: blur(10px);
+  /* For Safari compatibility */
+  border-radius: 5px;
+  /* Rounded corners */
+}
+
+
+.boxes {
+  display: grid;
+  gap: 30px;
+  grid-template-columns: repeat(3, 1fr);
+  width: 80%;
+  position: relative;
+  top: 10px;
+}
+
+.box {
+  /* Existing properties... */
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  align-items: center;
+  opacity: 0;
+  animation: fadeIn 1s ease-in-out;
+  animation-delay: 1s;
+  animation-fill-mode: forwards;
+  border-radius: 20px;
+  padding: 15px;
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  background-color: rgba(255, 255, 255, 0.1);
+  border: 2px solid transparent;
+  overflow: hidden;
+  /* Ensure content does not overflow */
+  text-align: center;
+  /* Center-align the text */
+
+}
+
+
+
+.box:hover {
+  border: 2px solid rgba(0, 0, 0, 0.7);
+  /* Dark line on hover */
 }
 
 .box img {
-  width: 50%; /* Full width of the box */
-  height: auto; /* Maintain aspect ratio */
+  width: 50%;
+  /* Full width of the box */
+  height: auto;
+  /* Maintain aspect ratio */
   border-radius: 50%
 }
 
-.box h2, .box p, .box small {
+.box h2,
+.box p,
+.box small {
   font-family: 'Sansation Light';
-  margin: 10px 0; /* Space above and below the text */
+  margin: 10px 0;
+  /* Space above and below the text */
 }
 
 
 .box button {
-  background-color: lightskyblue; /* Green background */
-  border: none; /* No border */
-  color: white; /* White text */
-  padding: 15px 32px; /* Space inside the button */
-  text-align: center; /* Centered text */
-  text-decoration: none; /* No underline */
+  background-color: lightskyblue;
+  /* Green background */
+  border: none;
+  /* No border */
+  color: white;
+  /* White text */
+  padding: 15px 32px;
+  /* Space inside the button */
+  text-align: center;
+  /* Centered text */
+  text-decoration: none;
+  /* No underline */
   display: inline-block;
   font-size: 16px;
   margin: 4px 2px;
-  transition-duration: 0.4s; /* Transition for hover effect */
-  cursor: pointer; /* Cursor changes when hovering */
+  transition-duration: 0.4s;
+  /* Transition for hover effect */
+  cursor: pointer;
+  /* Cursor changes when hovering */
   font-family: 'Sansation Light';
-  
+
 }
 
 .box button:hover {
-  background-color: #45a049; /* Darker green on hover */
+  background-color: #45a049;
+  /* Darker green on hover */
 }
 
 
 
-  /* Fade in animation */
-  @keyframes fadeIn {
-    0% {opacity: 0;}
-    100% {opacity: 1;}
+/* Fade in animation */
+@keyframes fadeIn {
+  0% {
+    opacity: 0;
   }
-  
+
+  100% {
+    opacity: 1;
+  }
+}

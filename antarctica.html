@@ -1,567 +1,808 @@
 <!DOCTYPE html>
 <html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta
+      name="viewport"
+      content="initial-scale=1, maximum-scale=1, user-scalable=no"
+    />
+    <link rel="stylesheet" href="css/styles.css" />
+    <link
+      rel="stylesheet"
+      href="https://js.arcgis.com/4.26/esri/themes/light/main.css"
+    />
+    <script src="https://account.pgc.umn.edu/auth/js/keycloak.js"></script>
+    <script src="https://js.arcgis.com/4.26/"></script>
+    <script src="scripts/antarctica.js"></script>
+  </head>
 
-<head>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="initial-scale=1, maximum-scale=1, user-scalable=no" />
-  <link rel="stylesheet" href="css/styles.css">
-  <link rel="stylesheet" href="https://js.arcgis.com/4.26/esri/themes/light/main.css">
-  <script src="https://account.pgc.umn.edu/auth/js/keycloak.js"></script>
-  <script src="https://js.arcgis.com/4.26/"></script>
-  <script src="scripts/antarctica.js"></script>
-</head>
+  <body>
+    <div id="viewDiv"></div>
 
-<body>
-
-  <div id="viewDiv"></div>
-
-  <div id="toolbarDiv" class="esri-component esri-widget">
-    <button id="distance" class="esri-widget--button esri-interactive esri-icon-measure-line"
-      title="Distance Measurement Tool"></button>
-    <button id="area" class="esri-widget--button esri-interactive esri-icon-measure-area"
-      title="Area Measurement Tool"></button>
-    <button id="clear" class="esri-widget--button esri-interactive esri-icon-trash" title="Clear Measurements"></button>
-  </div>
-
-  <div class="sidebar">
-
-    <a href="http://pgc.umn.edu" target="_blank">
-      <img src="pics/pgc.png" alt="Descriptive text">
-    </a>
-
-    <div id="imagery" class="vertical-text">Imagery</div>
-    <div id="viewer" class="vertical-text">Viewer</div>
-    <hr class="line1">
-
-    <hr class="line2">
-    <div id="zoomInBtn" class="tooltip">
-      <img src="pics/PLUS.png" alt="Zoom In">
-      <div class="tooltip-text">Zoom in</div>
-    </div>
-    <hr class="line2-5">
-    <div id="zoomOutBtn" class="tooltip">
-      <img src="pics/MINUS.png" alt="Zoom Out">
-      <div class="tooltip-text">Zoom out</div>
+    <div id="toolbarDiv" class="esri-component esri-widget">
+      <button
+        id="distance"
+        class="esri-widget--button esri-interactive esri-icon-measure-line"
+        title="Distance Measurement Tool"
+      ></button>
+      <button
+        id="area"
+        class="esri-widget--button esri-interactive esri-icon-measure-area"
+        title="Area Measurement Tool"
+      ></button>
+      <button
+        id="clear"
+        class="esri-widget--button esri-interactive esri-icon-trash"
+        title="Clear Measurements"
+      ></button>
     </div>
 
-    <div id="layerBtn" class="tooltip">
-      <img src="pics/Layer.png" alt="Layer">
-      <div class="tooltip-text">Layers</div>
-    </div>
+    <div class="sidebar">
+      <a href="http://pgc.umn.edu" target="_blank">
+        <img src="pics/pgc.png" alt="Descriptive text" />
+      </a>
 
-    <div id="layerDropdown">
-      <div class="layer-option">
-        <!-- Master checkbox -->
-        <label for="masterCheckbox"><strong>Licensed Commercial Imagery</strong></label>
+      <div id="imagery" class="vertical-text">Imagery</div>
+      <div id="viewer" class="vertical-text">Viewer</div>
+      <hr class="line1" />
 
+      <hr class="line2" />
+      <div id="zoomInBtn" class="tooltip">
+        <img src="pics/PLUS.png" alt="Zoom In" />
+        <div class="tooltip-text">Zoom in</div>
+      </div>
+      <hr class="line2-5" />
+      <div id="zoomOutBtn" class="tooltip">
+        <img src="pics/MINUS.png" alt="Zoom Out" />
+        <div class="tooltip-text">Zoom out</div>
+      </div>
+
+      <div id="layerBtn" class="tooltip">
+        <img src="pics/Layer.png" alt="Layer" />
+        <div class="tooltip-text">Layers</div>
+      </div>
+
+      <div id="layerDropdown">
         <div class="layer-option">
-          <!-- Checkbox for Layer 2 -->
-          <input type="checkbox" id="layer2Checkbox">
-          <label for="layer2Checkbox">0.5m Antarctic Imagery Mosaic (<span
-              class="panchromatic-text">panchromatic</span>)</label>
+          <!-- Master checkbox -->
+          <label for="masterCheckbox"
+            ><strong>Licensed Commercial Imagery</strong></label
+          >
+
+          <div class="layer-option">
+            <!-- Checkbox for Layer 2 -->
+            <input type="checkbox" id="layer2Checkbox" />
+            <label for="layer2Checkbox"
+              >0.5m Antarctic Imagery Mosaic (<span class="panchromatic-text"
+                >panchromatic</span
+              >)</label
+            >
+          </div>
+
+          <div class="layer-option">
+            <!-- Checkbox for Layer 3 -->
+            <input type="checkbox" id="layer3Checkbox" />
+            <label for="layer3Checkbox"
+              >2m Antarctic Imagery Mosaic
+              <span class="rainbow-text"
+                >(<strong>multispectral</strong>)</span
+              ></label
+            >
+          </div>
         </div>
 
         <div class="layer-option">
-          <!-- Checkbox for Layer 3 -->
-          <input type="checkbox" id="layer3Checkbox">
-          <label for="layer3Checkbox">2m Antarctic Imagery Mosaic <span
-              class="rainbow-text">(<strong>multispectral</strong>)</span></label>
+          <!-- Master checkbox -->
+          <label for="dataOverlayCheckbox"
+            ><strong>Data & Overlay Layers</strong></label
+          >
+
+          <div class="layer-option">
+            <!-- Checkbox for Antarctic Composite Basemap -->
+            <input type="checkbox" id="AntCompBaseMapCheckbox" />
+            <label for="AntCompBaseMapCheckbox"
+              >Antarctic Composite Basemap</label
+            >
+          </div>
+
+          <div class="layer-option">
+            <!-- Checkbox for Additional Layer 7 -->
+            <input type="checkbox" id="layer7Checkbox" />
+            <label for="layer7Checkbox">USGS Sketch Maps</label>
+          </div>
+
+          <div class="layer-option">
+            <!-- Checkbox for Layer 1 -->
+            <input type="checkbox" id="layer1Checkbox" />
+            <label for="layer1Checkbox">USGS 1:50,000 Topo Map</label>
+          </div>
+
+          <div class="layer-option">
+            <!-- Checkbox for Additional Layer 5 -->
+            <input type="checkbox" id="layer5Checkbox" />
+            <label for="layer5Checkbox">USGS 1:250,000 Topographic Maps</label>
+          </div>
+
+          <div class="layer-option">
+            <!-- Checkbox for Additional Layer 6 -->
+            <input type="checkbox" id="layer6Checkbox" />
+            <label for="layer6Checkbox">USGS 1:500,000 Topographic Maps</label>
+          </div>
+
+          <div class="layer-option">
+            <!-- Checkbox for Additional Layer 4 -->
+            <input type="checkbox" id="layer4Checkbox" />
+            <label for="layer4Checkbox">McMurdo Dry Valleys LiDAR</label>
+          </div>
         </div>
       </div>
 
-      <div class="layer-option">
-        <!-- Master checkbox -->
-        <label for="dataOverlayCheckbox"><strong>Data & Overlay Layers</strong></label>
+      <hr class="line3" />
 
-        <div class="layer-option">
-          <!-- Checkbox for Antarctic Composite Basemap -->
-          <input type="checkbox" id="AntCompBaseMapCheckbox">
-          <label for="AntCompBaseMapCheckbox">Antarctic Composite Basemap</label>
-        </div>
-
-        <div class="layer-option">
-          <!-- Checkbox for Additional Layer 7 -->
-          <input type="checkbox" id="layer7Checkbox">
-          <label for="layer7Checkbox">USGS Sketch Maps</label>
-        </div>
-
-        <div class="layer-option">
-          <!-- Checkbox for Layer 1 -->
-          <input type="checkbox" id="layer1Checkbox">
-          <label for="layer1Checkbox">USGS 1:50,000 Topo Map</label>
-        </div>
-
-        <div class="layer-option">
-          <!-- Checkbox for Additional Layer 5 -->
-          <input type="checkbox" id="layer5Checkbox">
-          <label for="layer5Checkbox">USGS 1:250,000 Topographic Maps</label>
-        </div>
-
-        <div class="layer-option">
-          <!-- Checkbox for Additional Layer 6 -->
-          <input type="checkbox" id="layer6Checkbox">
-          <label for="layer6Checkbox">USGS 1:500,000 Topographic Maps</label>
-        </div>
-
-        <div class="layer-option">
-          <!-- Checkbox for Additional Layer 4 -->
-          <input type="checkbox" id="layer4Checkbox">
-          <label for="layer4Checkbox">McMurdo Dry Valleys LiDAR</label>
-        </div>
-      </div>
-    </div>
-
-
-    <hr class="line3">
-
-    <div id="maglass" class="tooltip">
-      <img src="pics/mag_glass.png" alt="Layer">
-      <div class="tooltip-text">Zoom to</div>
-    </div>
-
-    <div id="maglassDropdown">
-      <div class="zoom-option" onclick="openCoordinateWidget()">
-        <img src="pics/Coordinates.png" alt="Image 1"
-          style="margin-right: 10px; width: 30px; height: 30px; margin-top: 5px;">
-        <label for="ZoomtoCoordinates" style="position: relative; top: -10px;"><strong>Zoom to
-            Coordinates</strong></label>
+      <div id="maglass" class="tooltip">
+        <img src="pics/mag_glass.png" alt="Layer" />
+        <div class="tooltip-text">Zoom to</div>
       </div>
 
-      <div class="zoom-option" onclick="openModal('popularPlacesModal', event)">
-        <img src="pics/popular.png" alt="Image 2" style="margin-right: 10px; width: 30px; height: 30px; margin-top: 5px;">
-        <label for="ZoomtoPopularPlaces" style="position: relative; top: -9px;"><strong>Zoom to Popular
-            Places</strong></label>
-      </div>
-
-      <div id="coordinatesModal" class="modal" onclick="closeModal('coordinatesModal')">
-        <div class="modal-content" onclick="event.stopPropagation()">
-          <span class="close" onclick="closeModal('coordinatesModal')">&times;</span>
-          <p>Some text in the Coordinates Modal..</p>
+      <div id="maglassDropdown">
+        <div class="zoom-option" onclick="openCoordinateWidget()">
+          <img
+            src="pics/Coordinates.png"
+            alt="Image 1"
+            style="
+              margin-right: 10px;
+              width: 30px;
+              height: 30px;
+              margin-top: 5px;
+            "
+          />
+          <label for="ZoomtoCoordinates" style="position: relative; top: -10px"
+            ><strong>Zoom to Coordinates</strong></label
+          >
         </div>
-      </div>
-      
 
-      <div id="popularPlacesModal" class="modal" onclick="closeModal('popularPlacesModal')">
-        <div class="modal-content" onclick="event.stopPropagation()">
-            <span class="close" onclick="closeModal('popularPlacesModal')">&times;</span>
+        <div
+          class="zoom-option"
+          onclick="openModal('popularPlacesModal', event)"
+        >
+          <img
+            src="pics/popular.png"
+            alt="Image 2"
+            style="
+              margin-right: 10px;
+              width: 30px;
+              height: 30px;
+              margin-top: 5px;
+            "
+          />
+          <label for="ZoomtoPopularPlaces" style="position: relative; top: -9px"
+            ><strong>Zoom to Popular Places</strong></label
+          >
+        </div>
+
+        <div
+          id="coordinatesModal"
+          class="modal"
+          onclick="closeModal('coordinatesModal')"
+        >
+          <div class="modal-content" onclick="event.stopPropagation()">
+            <span class="close" onclick="closeModal('coordinatesModal')"
+              >&times;</span
+            >
+            <p>Some text in the Coordinates Modal..</p>
+          </div>
+        </div>
+
+        <div
+          id="popularPlacesModal"
+          class="modal"
+          onclick="closeModal('popularPlacesModal')"
+        >
+          <div class="modal-content" onclick="event.stopPropagation()">
+            <span class="close" onclick="closeModal('popularPlacesModal')"
+              >&times;</span
+            >
             <p><strong>Zoom to Popular Places</strong></p>
 
-    
-          <hr>
-          <div class = "cards-container">
-            <article class="card">
+            <hr />
+            <div class="cards-container">
+              <article class="card">
                 <img
-                    class="card__background"
-                    src="pics/mcmurdo.jpg"
-                    width="1920"
-                    height="2193"
+                  class="card__background"
+                  src="pics/mcmurdo.jpg"
+                  width="1920"
+                  height="2193"
                 />
                 <div class="card__content | flow">
-                    <div class="card__content--container | flow">
-                        <h2 class="card__title custom-h2">McMurdo Station</h2>
-                        <p class="card__description custom-p">
-                          McMurdo Station is the largest research facility in Antarctica, serving as a hub for scientific exploration and logistical support in the harsh Antarctic environment.
-                        </p>
-                    </div>
-                    <button id ='mcmurdo' class="card__button">Zoom to</button>
+                  <div class="card__content--container | flow">
+                    <h2 class="card__title custom-h2">McMurdo Station</h2>
+                    <p class="card__description custom-p">
+                      McMurdo Station is the largest research facility in
+                      Antarctica, serving as a hub for scientific exploration
+                      and logistical support in the harsh Antarctic environment.
+                    </p>
+                  </div>
+                  <button id="mcmurdo" class="card__button">Zoom to</button>
                 </div>
-            </article>
+              </article>
 
-            <article class="card">
-              <img
+              <article class="card">
+                <img
                   class="card__background"
                   src="pics/amundson.jpg"
                   width="1920"
                   height="2193"
-              />
-              <div class="card__content | flow">
+                />
+                <div class="card__content | flow">
                   <div class="card__content--container | flow">
-                      <h2 class="card__title custom-h2">Amundson-scott Station</h2>
-                      <p class="card__description custom-p">
-                        The Amundson-Scott South Pole Station is a U.S. research facility at the South Pole, conducting astronomy, meteorology, and geophysics data collection.
-                      </p>
+                    <h2 class="card__title custom-h2">
+                      Amundson-scott Station
+                    </h2>
+                    <p class="card__description custom-p">
+                      The Amundson-Scott South Pole Station is a U.S. research
+                      facility at the South Pole, conducting astronomy,
+                      meteorology, and geophysics data collection.
+                    </p>
                   </div>
-                  <button id = 'amundson' class="card__button">Zoom to</button>
-              </div>
-          </article>
+                  <button id="amundson" class="card__button">Zoom to</button>
+                </div>
+              </article>
 
-          <article class="card">
-            <img
-                class="card__background"
-                src="pics/palmer.jpg"
-                width="1920"
-                height="2193"
-            />
-            <div class="card__content | flow">
-                <div class="card__content--container | flow">
+              <article class="card">
+                <img
+                  class="card__background"
+                  src="pics/palmer.jpg"
+                  width="1920"
+                  height="2193"
+                />
+                <div class="card__content | flow">
+                  <div class="card__content--container | flow">
                     <h2 class="card__title custom-h2">Palmer Station</h2>
                     <p class="card__description custom-p">
-                      Palmer Station is a U.S. research facility in Antarctica, studying climate change and marine biology, situated on Anvers Island in the Southern Ocean. It's a vital outpost for Antarctic research.
+                      Palmer Station is a U.S. research facility in Antarctica,
+                      studying climate change and marine biology, situated on
+                      Anvers Island in the Southern Ocean. It's a vital outpost
+                      for Antarctic research.
                     </p>
+                  </div>
+                  <button id="palmer" class="card__button">Zoom to</button>
                 </div>
-                <button id = 'palmer' class="card__button">Zoom to</button>
+              </article>
+
+              <article class="card">
+                <img
+                  class="card__background"
+                  src="pics/byrd.jpg"
+                  width="1920"
+                  height="2193"
+                />
+                <div class="card__content | flow">
+                  <div class="card__content--container | flow">
+                    <h2 class="card__title custom-h2">Byrd Surface Camp</h2>
+                    <p class="card__description custom-p">
+                      The Byrd Surface Camp is a seasonal research camp located
+                      in West Antarctica, named after Admiral Richard E. Byrd.
+                      It's a key site for scientific studies in glaciology.
+                    </p>
+                  </div>
+                  <button id="byrdcamp" class="card__button">Zoom to</button>
+                </div>
+              </article>
+
+              <article class="card">
+                <img
+                  class="card__background"
+                  src="pics/shackleton.jpg"
+                  width="1920"
+                  height="2193"
+                />
+                <div class="card__content | flow">
+                  <div class="card__content--container | flow">
+                    <h2 class="card__title custom-h2">
+                      Shackleton Glacier Camp
+                    </h2>
+                    <p class="card__description custom-p">
+                      Shackleton Glacier Camp is a remote research outpost
+                      located in the vast, icy expanse of Shackleton Glacier,
+                      playing a crucial role in polar scientific research and
+                      exploration.
+                    </p>
+                  </div>
+                  <button id="shackleton" class="card__button">Zoom to</button>
+                </div>
+              </article>
+
+              <article class="card">
+                <img
+                  class="card__background"
+                  src="pics/wais.jpg"
+                  width="1920"
+                  height="2193"
+                />
+                <div class="card__content | flow">
+                  <div class="card__content--container | flow">
+                    <h2 class="card__title custom-h2">WAIS Divide</h2>
+                    <p class="card__description custom-p">
+                      WAIS Divide is a scientific research camp located in West
+                      Antarctica, specifically at the divide of the West
+                      Antarctic Ice Sheet (WAIS), dedicated to drilling ice
+                      cores to study climate history and ice sheet dynamics.
+                    </p>
+                  </div>
+                  <button id="WAIS" class="card__button">Zoom to</button>
+                </div>
+              </article>
+
+              <article class="card">
+                <img
+                  class="card__background"
+                  src="pics/peninsula.jpg"
+                  width="1920"
+                  height="2193"
+                />
+                <div class="card__content | flow">
+                  <div class="card__content--container | flow">
+                    <h2 class="card__title custom-h2">Antarctic Peninsula</h2>
+                    <p class="card__description custom-p">
+                      The Antarctic Peninsula is a rugged and ecologically
+                      diverse region, home to research stations and a rich array
+                      of wildlife, attracting scientists and nature enthusiasts
+                      alike.
+                    </p>
+                  </div>
+                  <button id="peninsula" class="card__button">Zoom to</button>
+                </div>
+              </article>
+
+              <article class="card">
+                <img
+                  class="card__background"
+                  src="pics/anvers.jpg"
+                  width="1920"
+                  height="2193"
+                />
+                <div class="card__content | flow">
+                  <div class="card__content--container | flow">
+                    <h2 class="card__title custom-h2">Anvers Island</h2>
+                    <p class="card__description custom-p">
+                      Anvers Island is a picturesque island off the coast of the
+                      Antarctic Peninsula, housing research stations studying
+                      climate change and marine ecosystems in its icy
+                      surroundings. This locale provides invaluable insights
+                      into polar environments.
+                    </p>
+                  </div>
+                  <button id="anvers" class="card__button">Zoom to</button>
+                </div>
+              </article>
+
+              <article class="card">
+                <img
+                  class="card__background"
+                  src="pics/marie.jpg"
+                  width="1920"
+                  height="2193"
+                />
+                <div class="card__content | flow">
+                  <div class="card__content--container | flow">
+                    <h2 class="card__title custom-h2">Marie Byrd Land</h2>
+                    <p class="card__description custom-p">
+                      Marie Byrd Land is a vast and remote region in Antarctica,
+                      named after the wife of explorer Richard E. Byrd, known
+                      for its expansive ice sheets, active volcanoes, and
+                      scientific research on glaciology and geology.
+                    </p>
+                  </div>
+                  <button id="marie" class="card__button">Zoom to</button>
+                </div>
+              </article>
+
+              <article class="card">
+                <img
+                  class="card__background"
+                  src="pics/dry.jpg"
+                  width="1920"
+                  height="2193"
+                />
+                <div class="card__content | flow">
+                  <div class="card__content--container | flow">
+                    <h2 class="card__title custom-h2">McMurdo Dry Valley</h2>
+                    <p class="card__description custom-p">
+                      Antarctica's McMurdo Dry Valleys, barren, ice-free
+                      regions, are essential for studying extreme environments
+                      and advancing astrobiology research efforts.
+                    </p>
+                  </div>
+                  <button id="dryvalley" class="card__button">Zoom to</button>
+                </div>
+              </article>
+
+              <article class="card">
+                <img
+                  class="card__background"
+                  src="pics/pine.jpg"
+                  width="1920"
+                  height="2193"
+                />
+                <div class="card__content | flow">
+                  <div class="card__content--container | flow">
+                    <h2 class="card__title custom-h2">Pine Island Glacier</h2>
+                    <p class="card__description custom-p">
+                      Pine Island Glacier is a dynamic, influential glacier in
+                      West Antarctica, studied extensively for its contribution
+                      to sea-level rise and ice sheet stability, critical to
+                      climate science.
+                    </p>
+                  </div>
+                  <button id="pine" class="card__button">Zoom to</button>
+                </div>
+              </article>
+
+              <article class="card">
+                <img
+                  class="card__background"
+                  src="pics/ross.jpg"
+                  width="1920"
+                  height="2193"
+                />
+                <div class="card__content | flow">
+                  <div class="card__content--container | flow">
+                    <h2 class="card__title custom-h2">Ross Island</h2>
+                    <p class="card__description custom-p">
+                      Ross Island is an Antarctic volcanic island with historic
+                      huts and research stations deeply involved in studying
+                      geology, biology, and other scientific disciplines,
+                      enriching our understanding of polar ecosystems.
+                    </p>
+                  </div>
+                  <button id="rossisland" class="card__button">Zoom to</button>
+                </div>
+              </article>
+
+              <article class="card">
+                <img
+                  class="card__background"
+                  src="pics/Taylor.png"
+                  width="1920"
+                  height="2193"
+                />
+                <div class="card__content | flow">
+                  <div class="card__content--container | flow">
+                    <h2 class="card__title custom-h2">Taylor Valley</h2>
+                    <p class="card__description custom-p">
+                      Taylor Valley, in Antarctica's McMurdo Dry Valleys, is an
+                      ice-free valley where scientists study extreme
+                      environments and the resilience of microbial life,
+                      expanding our knowledge of extremophiles.
+                    </p>
+                  </div>
+                  <button id="taylor" class="card__button">Zoom to</button>
+                </div>
+              </article>
+
+              <article class="card">
+                <img
+                  class="card__background"
+                  src="pics/victoria.jpg"
+                  width="1920"
+                  height="2193"
+                />
+                <div class="card__content | flow">
+                  <div class="card__content--container | flow">
+                    <h2 class="card__title custom-h2">Victoria Land</h2>
+                    <p class="card__description custom-p">
+                      Victoria Land, in Antarctica's Ross Sea region, is known
+                      for its expansive ice sheets, mountains, and research
+                      stations meticulously investigating climate, geology, and
+                      biology, enhancing polar science understanding.
+                    </p>
+                  </div>
+                  <button id="victoria" class="card__button">Zoom to</button>
+                </div>
+              </article>
+
+              <article class="card">
+                <img
+                  class="card__background"
+                  src="pics/vinson.jpg"
+                  width="1920"
+                  height="2193"
+                />
+                <div class="card__content | flow">
+                  <div class="card__content--container | flow">
+                    <h2 class="card__title custom-h2">Vinson Massif</h2>
+                    <p class="card__description custom-p">
+                      Vinson Massif, Antarctica's tallest peak in the Ellsworth
+                      Mountains, attracts climbers and researchers dedicated to
+                      studying glaciology and climate change, providing unique
+                      high-altitude insights.
+                    </p>
+                  </div>
+                  <button id="vinson" class="card__button">Zoom to</button>
+                </div>
+              </article>
             </div>
-        </article>
-
-        <article class="card">
-          <img
-              class="card__background"
-              src="pics/byrd.jpg"
-              width="1920"
-              height="2193"
-          />
-          <div class="card__content | flow">
-              <div class="card__content--container | flow">
-                  <h2 class="card__title custom-h2">Byrd Surface Camp</h2>
-                  <p class="card__description custom-p">
-                    The Byrd Surface Camp is a seasonal research camp located in West Antarctica, named after Admiral Richard E. Byrd. It's a key site for scientific studies in glaciology.
-                  </p>
-              </div>
-              <button id = 'byrdcamp' class="card__button">Zoom to</button>
           </div>
-      </article>
-
-      <article class="card">
-        <img
-            class="card__background"
-            src="pics/shackleton.jpg"
-            width="1920"
-            height="2193"
-        />
-        <div class="card__content | flow">
-            <div class="card__content--container | flow">
-                <h2 class="card__title custom-h2">Shackleton Glacier Camp</h2>
-                <p class="card__description custom-p">
-                  Shackleton Glacier Camp is a remote research outpost located in the vast, icy expanse of Shackleton Glacier, playing a crucial role in polar scientific research and exploration.
-                </p>
-            </div>
-            <button id = 'shackleton' class="card__button">Zoom to</button>
         </div>
-    </article>
+      </div>
 
-    <article class="card">
-      <img
-          class="card__background"
-          src="pics/wais.jpg"
-          width="1920"
-          height="2193"
-      />
-      <div class="card__content | flow">
-          <div class="card__content--container | flow">
-              <h2 class="card__title custom-h2">WAIS Divide</h2>
-              <p class="card__description custom-p">
-                WAIS Divide is a scientific research camp located in West Antarctica, specifically at the divide of the West Antarctic Ice Sheet (WAIS), dedicated to drilling ice cores to study climate history and ice sheet dynamics.
-              </p>
+      <hr class="line4" />
+      <div id="link" class="tooltip">
+        <img src="pics/link.png" alt="Layer" />
+        <div class="tooltip-text">Links</div>
+      </div>
+
+      <div id="LinkDropdown">
+        <div class="layer-option">
+          <label for="linkdropbox"><strong>Switch to</strong></label>
+
+          <div
+            class="layer-option"
+            onclick="window.open('arctic.html', '_blank')"
+          >
+            <img
+              src="pics/globe.png"
+              alt="globepic"
+              style="
+                margin-right: 10px;
+                width: 20px;
+                height: 20px;
+                margin-top: 5px;
+              "
+            />
+            <label for="arcticlink">Arctic Imagery Viewer</label>
           </div>
-          <button id = 'WAIS' class="card__button">Zoom to</button>
-      </div>
-  </article>
 
-  <article class="card">
-    <img
-        class="card__background"
-        src="pics/peninsula.jpg"
-        width="1920"
-        height="2193"
-    />
-    <div class="card__content | flow">
-        <div class="card__content--container | flow">
-            <h2 class="card__title custom-h2">Antarctic Peninsula</h2>
-            <p class="card__description custom-p">
-              The Antarctic Peninsula is a rugged and ecologically diverse region, home to research stations and a rich array of wildlife, attracting scientists and nature enthusiasts alike.
-            </p>
+          <div
+            class="layer-option"
+            onclick="window.open('world.html', '_blank')"
+          >
+            <img
+              src="pics/globe.png"
+              alt="globepic"
+              style="
+                margin-right: 10px;
+                width: 20px;
+                height: 20px;
+                margin-top: 5px;
+              "
+            />
+            <label for="worldlink">World Imagery Viewer</label>
+          </div>
+
+          <div
+            class="layer-option"
+            onclick="window.open('https://www.pgc.umn.edu/', '_blank')"
+          >
+            <img
+              src="pics/home.png"
+              alt="globepic"
+              style="
+                margin-right: 10px;
+                width: 20px;
+                height: 20px;
+                margin-top: 5px;
+              "
+            />
+            <label for="PGChomepage">PGC Homepage</label>
+          </div>
+
+          <div
+            class="layer-option"
+            onclick="window.open('index.html', '_blank')"
+          >
+            <img
+              src="pics/landing.png"
+              alt="globepic"
+              style="
+                margin-right: 10px;
+                width: 20px;
+                height: 20px;
+                margin-top: 5px;
+              "
+            />
+            <label for="Landingpage">Viewers Landing Page</label>
+          </div>
+
+          <div
+            class="layer-option"
+            onclick="window.open('https://users.pgc.umn.edu/password', '_blank')"
+          >
+            <img
+              src="pics/password.png"
+              alt="globepic"
+              style="
+                margin-right: 10px;
+                width: 20px;
+                height: 20px;
+                margin-top: 5px;
+              "
+            />
+            <label for="passwordlink">Password Reset</label>
+          </div>
+
+          <div
+            class="layer-option"
+            onclick="window.open('https://users.pgc.umn.edu/request', '_blank')"
+          >
+            <img
+              src="pics/account.png"
+              alt="globepic"
+              style="
+                margin-right: 10px;
+                width: 20px;
+                height: 20px;
+                margin-top: 5px;
+              "
+            />
+            <label for="Requestacclink">Request Account</label>
+          </div>
         </div>
-        <button id = 'peninsula' class="card__button">Zoom to</button>
-    </div>
-</article>
+      </div>
 
+      <hr class="line4-5" />
 
-  <article class="card">
-    <img
-        class="card__background"
-        src="pics/anvers.jpg"
-        width="1920"
-        height="2193"
-    />
-    <div class="card__content | flow">
-        <div class="card__content--container | flow">
-            <h2 class="card__title custom-h2">Anvers Island</h2>
-            <p class="card__description custom-p">
-              Anvers Island is a picturesque island off the coast of the Antarctic Peninsula, housing research stations studying climate change and marine ecosystems in its icy surroundings. This locale provides invaluable insights into polar environments.
-            </p>
+      <div id="ruler" class="tooltip">
+        <img src="pics/ruler.png" alt="Layer" />
+        <div class="tooltip-text">Measurement</div>
+      </div>
+
+      <div id="share" class="tooltip" onclick="openModal('Sharelinkmodal')">
+        <img src="pics/share.png" alt="Layer" />
+        <div class="tooltip-text">Share</div>
+      </div>
+
+      <div
+        id="Sharelinkmodal"
+        class="modal"
+        onclick="closeModal('Sharelinkmodal')"
+      >
+        <div class="modal-content" onclick="event.stopPropagation()">
+          <span class="close" onclick="closeModal('Sharelinkmodal')"
+            >&times;</span
+          >
+          <p>Share the current map extent</p>
+          <p class="url-display"></p>
+          <!-- This is where the URL will be displayed -->
+          <a id="emailButton" href="#">Email this link</a>
+          <!-- Here is your button -->
         </div>
-        <button id = 'anvers' class="card__button">Zoom to</button>
-    </div>
-</article>
-
-<article class="card">
-  <img
-      class="card__background"
-      src="pics/marie.jpg"
-      width="1920"
-      height="2193"
-  />
-  <div class="card__content | flow">
-      <div class="card__content--container | flow">
-          <h2 class="card__title custom-h2">Marie Byrd Land</h2>
-          <p class="card__description custom-p">
-            Marie Byrd Land is a vast and remote region in Antarctica, named after the wife of explorer Richard E. Byrd, known for its expansive ice sheets, active volcanoes, and scientific research on glaciology and geology.
-          </p>
       </div>
-      <button id = 'marie'  class="card__button">Zoom to</button>
-  </div>
-</article>
 
-<article class="card">
-  <img
-      class="card__background"
-      src="pics/dry.jpg"
-      width="1920"
-      height="2193"
-  />
-  <div class="card__content | flow">
-      <div class="card__content--container | flow">
-          <h2 class="card__title custom-h2">McMurdo Dry Valley</h2>
-          <p class="card__description custom-p">
-            Antarctica's McMurdo Dry Valleys, barren, ice-free regions, are essential for studying extreme environments and advancing astrobiology research efforts.
-          </p>
+      <hr class="line5" />
+
+      <div id="help" class="tooltip" onclick="openModal('helpmodal')">
+        <img src="pics/help.png" alt="Layer" />
+        <div class="tooltip-text">Help</div>
       </div>
-      <button id = 'dryvalley' class="card__button">Zoom to</button>
-  </div>
-</article>
 
-<article class="card">
-  <img
-      class="card__background"
-      src="pics/pine.jpg"
-      width="1920"
-      height="2193"
-  />
-  <div class="card__content | flow">
-      <div class="card__content--container | flow">
-          <h2 class="card__title custom-h2">Pine Island Glacier</h2>
-          <p class="card__description custom-p">
-            Pine Island Glacier is a dynamic, influential glacier in West Antarctica, studied extensively for its contribution to sea-level rise and ice sheet stability, critical to climate science.
-          </p>
-      </div>
-      <button id = 'pine' class="card__button">Zoom to</button>
-  </div>
-</article>
-
-<article class="card">
-  <img
-      class="card__background"
-      src="pics/ross.jpg"
-      width="1920"
-      height="2193"
-  />
-  <div class="card__content | flow">
-      <div class="card__content--container | flow">
-          <h2 class="card__title custom-h2">Ross Island</h2>
-          <p class="card__description custom-p">
-            Ross Island is an Antarctic volcanic island with historic huts and research stations deeply involved in studying geology, biology, and other scientific disciplines, enriching our understanding of polar ecosystems.
-          </p>
-      </div>
-      <button id = 'rossisland' class="card__button">Zoom to</button>
-  </div>
-</article>
-
-<article class="card">
-  <img
-      class="card__background"
-      src="pics/Taylor.png"
-      width="1920"
-      height="2193"
-  />
-  <div class="card__content | flow">
-      <div class="card__content--container | flow">
-          <h2 class="card__title custom-h2">Taylor Valley</h2>
-          <p class="card__description custom-p">
-            Taylor Valley, in Antarctica's McMurdo Dry Valleys, is an ice-free valley where scientists study extreme environments and the resilience of microbial life, expanding our knowledge of extremophiles.
-          </p>
-      </div>
-      <button id = 'taylor' class="card__button">Zoom to</button>
-  </div>
-</article>
-
-<article class="card">
-  <img
-      class="card__background"
-      src="pics/victoria.jpg"
-      width="1920"
-      height="2193"
-  />
-  <div class="card__content | flow">
-      <div class="card__content--container | flow">
-          <h2 class="card__title custom-h2">Victoria Land</h2>
-          <p class="card__description custom-p">
-            Victoria Land, in Antarctica's Ross Sea region, is known for its expansive ice sheets, mountains, and research stations meticulously investigating climate, geology, and biology, enhancing polar science understanding.
-          </p>
-      </div>
-      <button id = 'victoria' class="card__button">Zoom to</button>
-  </div>
-</article>
-
-<article class="card">
-  <img
-      class="card__background"
-      src="pics/vinson.jpg"
-      width="1920"
-      height="2193"
-  />
-  <div class="card__content | flow">
-      <div class="card__content--container | flow">
-          <h2 class="card__title custom-h2">Vinson Massif</h2>
-          <p class="card__description custom-p">
-            Vinson Massif, Antarctica's tallest peak in the Ellsworth Mountains, attracts climbers and researchers dedicated to studying glaciology and climate change, providing unique high-altitude insights.
-          </p>
-      </div>
-      <button id = 'vinson' class="card__button">Zoom to</button>
-  </div>
-</article>
-
-
-
-
-
-
-
+      <div id="helpmodal" class="modal" onclick="closeModal('helpmodal')">
+        <div class="modal-content" onclick="event.stopPropagation()">
+          <span class="close" onclick="closeModal('helpmodal')">&times;</span>
+          <h4>Common Issues</h4>
+          <dl>
+            <dt>I don't have an account</dt>
+            <dd>
+              You must have an account with the Polar Geospatial Center in order
+              to view the commercial high-resolution satellite imagery. If you
+              would like an account please visit the
+              <a href="http://users.pgc.umn.edu/request" target="_blank"
+                >Request New Acccount</a
+              >
+              page. Certain restrictions apply, view the
+              <a
+                href="http://repository.agic.umn.edu/website/docs/PGCAccountTermsAndConditions.pdf"
+                target="_blank"
+                >Terms &amp; Conditions</a
+              >
+              for more information.
+            </dd>
+            <dt>I'm unable to stay signed in</dt>
+            <dd>
+              Staying signed in requires a browser that supports
+              <a
+                href="http://www.w3schools.com/html/html5_webstorage.asp"
+                target="_blank"
+                >local storage</a
+              >
+              or
+              <a href="http://en.wikipedia.org/wiki/HTTP_cookie" target="_blank"
+                >cookies</a
+              >. You will be required to sign in again after 1 day of
+              inactivity.
+            </dd>
+            <dt>Satellite imagery loads slow</dt>
+            <dd>
+              Although the application is optimized to serve terabytes of
+              satellite imagery via the internet, slow internet connections can
+              cause images to have some latency.
+            </dd>
+            <dt>View image information</dt>
+            <dd>
+              Click anywhere on the map or image and a popup will display with
+              information on the image including Maxar Catalog ID, sensor, and
+              date.
+            </dd>
+            <dt>I want to suggest a feature</dt>
+            <dd>
+              Please send an email to the PGC Web Development Team at
+              <a
+                href="mailto:pgc@umn.edu?subject=Feature%20Suggestion:%20PGC%20Imagery%20Viewer"
+                target="_blank"
+                >pgc@umn.edu</a
+              >.
+            </dd>
+            <dt>I want to report a bug</dt>
+            <dd>
+              Please fill out
+              <a href="http://www.pgc.umn.edu/about/contact" target="_blank"
+                >this form</a
+              >
+              on the PGC website and select "Website problems or feedback" in
+              the "Reason for writing" field.
+            </dd>
+          </dl>
+          <h4>Credits</h4>
+          <dl>
+            <dt>Development</dt>
+            <dd>
+              <ul class="unstyled">
+                <li>Developed by Maochuan Wang---Mentored by Shane Loeffler</li>
+                <li>2023 Polar Geospatial Center, University of Minnesota</li>
+              </ul>
+            </dd>
+            <dt>Imagery Processing</dt>
+            <dd>
+              <ul class="unstyled">
+                <li>
+                  Satellite imagery processing by Claire Porter, Erik Husby,
+                  Jesse Bakker, Jim Klassen, Danny Im,
+                </li>
+                <li>Polar Geospatial Center, University of Minnesota</li>
+              </ul>
+            </dd>
+            <dt>Map Data</dt>
+            <dd>
+              <ul class="unstyled">
+                <li>
+                  WorldView-1, WorldView-2, WorldView-3, QuickBird, IKONOS
+                  imagery
+                  <a href="http://www.Maxar.com" target="_blank"
+                    >© Maxar, Inc.</a
+                  >
+                </li>
+                <li>
+                  <a href="http://lima.usgs.gov" target="_blank"
+                    >Landsat Image Mosaic of Antarctica (LIMA)</a
+                  >
+                  from <a href="http://www.usgs.gov" target="_blank">USGS</a>,
+                  <a href="http://www.nsf.gov" target="_blank">NSF</a>,
+                  <a href="http://www.nasa.gov" target="_blank">NASA</a>,
+                  <a href="http://www.antarctica.ac.uk/" target="_blank">BAS</a>
+                </li>
+                <li>
+                  Topographic maps from the USGS
+                  <a href="http://usarc.usgs.gov/" target="_blank"
+                    >United States Antarctic Resource Center (USARC)</a
+                  >
+                </li>
+              </ul>
+            </dd>
+            <dt>Built Using</dt>
+            <dd>
+              <ul class="unstyled">
+                <li>
+                  <a
+                    href="http://help.arcgis.com/en/webapi/javascript/arcgis/"
+                    target="_blank"
+                    >ArcGIS API for JavaScript</a
+                  >
+                </li>
+              </ul>
+            </dd>
+          </dl>
         </div>
-        
-        </div> 
-      </div>
-
-    </div>
-
-
-    <hr class="line4">
-    <div id="link" class="tooltip">
-      <img src="pics/link.png" alt="Layer">
-      <div class="tooltip-text">Links</div>
-    </div>
-
-    <div id="LinkDropdown">
-      <div class="layer-option">
-        
-        <label for="linkdropbox"><strong>Switch to</strong></label>
-
-        <div class="layer-option" onclick="window.open('arctic.html', '_blank')">
-          <img src="pics/globe.png" alt="globepic" style="margin-right: 10px; width: 20px; height: 20px; margin-top: 5px;">
-          <label for="arcticlink">Arctic Imagery Viewer</label>
-        </div>
-
-        <div class="layer-option" onclick="window.open('world.html', '_blank')">
-          <img src="pics/globe.png" alt="globepic" style="margin-right: 10px; width: 20px; height: 20px; margin-top: 5px;">
-          <label for = "worldlink">World Imagery Viewer</label>
-        </div>
-      
-        <div class="layer-option" onclick="window.open('https://www.pgc.umn.edu/', '_blank')">
-          <img src="pics/home.png" alt="globepic" style="margin-right: 10px; width: 20px; height: 20px; margin-top: 5px;">
-          <label for="PGChomepage">PGC Homepage</label>
-        </div>
-
-        <div class="layer-option" onclick="window.open('index.html', '_blank')">
-          <img src="pics/landing.png" alt="globepic" style="margin-right: 10px; width: 20px; height: 20px; margin-top: 5px;">
-          <label for="Landingpage">Viewers Landing Page</label>
-        </div>
-
-        <div class="layer-option" onclick="window.open('https://users.pgc.umn.edu/password', '_blank')">
-          <img src="pics/password.png" alt="globepic" style="margin-right: 10px; width: 20px; height: 20px; margin-top: 5px;">
-          <label for="passwordlink">Password Reset</label>
-        </div>
-
-        <div class="layer-option" onclick="window.open('https://users.pgc.umn.edu/request', '_blank')">
-          <img src="pics/account.png" alt="globepic" style="margin-right: 10px; width: 20px; height: 20px; margin-top: 5px;">
-          <label for="Requestacclink">Request Account</label>
-        </div>
-        
       </div>
     </div>
-
-    
-
-
-
-    <hr class="line4-5">
-    
-    <div id="ruler" class="tooltip">
-      <img src="pics/ruler.png" alt="Layer">
-      <div class="tooltip-text">Measurement</div>
-    </div>
-
-    <div id="share" class="tooltip" onclick="openModal('Sharelinkmodal')">
-      <img src="pics/share.png" alt="Layer">
-      <div class="tooltip-text">Share</div>
-    </div>
-
-
-    <div id="Sharelinkmodal" class="modal" onclick="closeModal('Sharelinkmodal')">
-      <div class="modal-content" onclick="event.stopPropagation()">
-        <span class="close" onclick="closeModal('Sharelinkmodal')">&times;</span>
-        <p>Share the current map extent</p>
-        <p class="url-display"></p> <!-- This is where the URL will be displayed -->
-        <a id="emailButton" href="#">Email this link</a> <!-- Here is your button -->
-      </div>
-    </div>
-    
-    
-
-
-    <hr class="line5">
-
-    <div id="help" class="tooltip" onclick = "openModal('helpmodal')">
-      <img src='pics/help.png' alt="Layer">
-      <div class="tooltip-text">Help</div>
-    </div>
-
-    <div id="helpmodal" class="modal" onclick="closeModal('helpmodal')">
-      <div class="modal-content" onclick="event.stopPropagation()">
-        <span class="close" onclick="closeModal('helpmodal')">&times;</span>
-        <h4>Common Issues</h4>
-                <dl>
-                  <dt>I don't have an account</dt>
-                  <dd>You must have an account with the Polar Geospatial Center in order to view the commercial high-resolution satellite imagery.  If you would like an account please visit the <a href="http://users.pgc.umn.edu/request" target="_blank">Request New Acccount</a> page.  Certain restrictions apply, view the <a href="http://repository.agic.umn.edu/website/docs/PGCAccountTermsAndConditions.pdf" target="_blank">Terms &amp; Conditions</a> for more information.</dd>
-                  <dt>I'm unable to stay signed in</dt>
-                  <dd>Staying signed in requires a browser that supports <a href="http://www.w3schools.com/html/html5_webstorage.asp" target="_blank">local storage</a> or <a href="http://en.wikipedia.org/wiki/HTTP_cookie" target="_blank">cookies</a>.  You will be required to sign in again after 1 day of inactivity.</dd>
-                  <dt>Satellite imagery loads slow</dt>
-                  <dd>Although the application is optimized to serve terabytes of satellite imagery via the internet, slow internet connections can cause images to have some latency.</dd>
-                  <dt>View image information</dt>
-                  <dd>Click anywhere on the map or image and a popup will display with information on the image including Maxar Catalog ID, sensor, and date.</dd>
-                  <dt>I want to suggest a feature</dt>
-                  <dd>Please send an email to the PGC Web Development Team at <a href="mailto:pgc@umn.edu?subject=Feature%20Suggestion:%20PGC%20Imagery%20Viewer" target="_blank">pgc@umn.edu</a>.</dd>
-                  <dt>I want to report a bug</dt>
-                  <dd>Please fill out <a href="http://www.pgc.umn.edu/about/contact" target="_blank">this form</a> on the PGC website and select "Website problems or feedback" in the "Reason for writing" field.</dd>
-                </dl>
-                <h4>Credits</h4>
-                <dl>
-                  <dt>Development</dt>
-                  <dd><ul class="unstyled">
-                    <li>Developed by Maochuan Wang---Mentored by Shane Loeffler</li>
-                    <li>2023 Polar Geospatial Center, University of Minnesota</li>
-                  </ul></dd>
-                  <dt>Imagery Processing</dt>
-                  <dd><ul class="unstyled">
-                    <li>Satellite imagery processing by Claire Porter, Erik Husby, Jesse Bakker, Jim Klassen, Danny Im,  </li>
-                    <li>Polar Geospatial Center, University of Minnesota</li>
-                  </ul></dd>
-                  <dt>Map Data</dt>
-                  <dd><ul class="unstyled">
-                    <li>WorldView-1, WorldView-2, WorldView-3, QuickBird, IKONOS imagery <a href="http://www.Maxar.com" target="_blank">© Maxar, Inc.</a></li>
-                    <li><a href="http://lima.usgs.gov" target="_blank">Landsat Image Mosaic of Antarctica (LIMA)</a> from <a href="http://www.usgs.gov" target="_blank">USGS</a>, <a href="http://www.nsf.gov" target="_blank">NSF</a>, <a href="http://www.nasa.gov" target="_blank">NASA</a>, <a href="http://www.antarctica.ac.uk/" target="_blank">BAS</a></li>
-                    <li>Topographic maps from the USGS <a href="http://usarc.usgs.gov/" target="_blank">United States Antarctic Resource Center (USARC)</a></li>
-                   </ul></dd>
-                  <dt>Built Using</dt>
-                  <dd><ul class="unstyled">
-                    <li><a href="http://help.arcgis.com/en/webapi/javascript/arcgis/" target="_blank">ArcGIS API for JavaScript</a></li>
-                   </ul></dd>
-                 </dl>
-      </div>
-    </div> 
-
-
-
-  </div>
-
-</body>
-
+  </body>
 </html>
