@@ -1,40 +1,40 @@
-function login() {
-    const keycloak = new Keycloak({
-        realm: "pgc",
-        "auth-server-url": "https://account.pgc.umn.edu/auth",
-        "ssl-required": "external",
-        clientId: "imagery-viewers",
-        "public-client": true,
-        "enable-cors": true,
-        "cors-allowed-methods": "POST, PUT, DELETE, GET, HEAD",
-        "cors-allowed-headers": "Access-Control-Allow-Origin, Origin, Accept, X-Requested-With, Content-Type, Access-Control-Request-Method, Access-Control-Request-Headers, Authorization",
-        "confidential-port": 0
-    });
+// function login() {
+//     const keycloak = new Keycloak({
+//         realm: "pgc",
+//         "auth-server-url": "https://account.pgc.umn.edu/auth",
+//         "ssl-required": "external",
+//         clientId: "imagery-viewers",
+//         "public-client": true,
+//         "enable-cors": true,
+//         "cors-allowed-methods": "POST, PUT, DELETE, GET, HEAD",
+//         "cors-allowed-headers": "Access-Control-Allow-Origin, Origin, Accept, X-Requested-With, Content-Type, Access-Control-Request-Method, Access-Control-Request-Headers, Authorization",
+//         "confidential-port": 0
+//     });
 
-    keycloak.init({checkLoginIframe: false}).then((authenticated) => {
-        if (!authenticated) {
-            keycloak.login();
-        } else {
-            window.keycloak = keycloak; // Assign keycloak to a global variable so it can be accessed later.
-            console.log(authenticated ? "authenticated" : "not authenticated");
+//     keycloak.init({checkLoginIframe: false}).then((authenticated) => {
+//         if (!authenticated) {
+//             keycloak.login();
+//         } else {
+//             window.keycloak = keycloak; // Assign keycloak to a global variable so it can be accessed later.
+//             console.log(authenticated ? "authenticated" : "not authenticated");
 
-            // Refresh the token every minute if it's valid
-            setInterval(() => {
-                if (!window.keycloak.isTokenExpired()) {
-                    window.keycloak.updateToken(30).then((refreshed) => {
-                        console.log("Token refreshed successfully");
-                    }).catch(() => {
-                        console.log("Error updating token");
-                    });
-                }
-            }, 60000); // 60000 milliseconds = 1 minute
-        }
-    }).catch(() => {
-        console.log("failed to initialize");
-    });
-}
+//             // Refresh the token every minute if it's valid
+//             setInterval(() => {
+//                 if (!window.keycloak.isTokenExpired()) {
+//                     window.keycloak.updateToken(30).then((refreshed) => {
+//                         console.log("Token refreshed successfully");
+//                     }).catch(() => {
+//                         console.log("Error updating token");
+//                     });
+//                 }
+//             }, 60000); // 60000 milliseconds = 1 minute
+//         }
+//     }).catch(() => {
+//         console.log("failed to initialize");
+//     });
+// }
 
-login();
+// login();
 
 require([
     "esri/config",
