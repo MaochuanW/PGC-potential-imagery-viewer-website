@@ -513,15 +513,111 @@ require([
         }
     };
 
+    // Popular places data
+    const popularPlaces = [
+        {
+            id: "toolik",
+            coordinates: [
+                -149.59427, 68.62765
+            ],
+            zoomLevel: 15
+        },
+        {
+            id: "thule",
+            coordinates: [
+                -68.71456, 76.52995
+            ],
+            zoomLevel: 13
+        },
+        {
+            id: "raven",
+            coordinates: [
+                -46.3000, 66.5000
+            ],
+            zoomLevel: 12
+        },
+        {
+            id: "neem",
+            coordinates: [
+                -50.0, 79.0
+            ],
+            zoomLevel: 12
+        }, {
+            id: "summit",
+            coordinates: [
+                -38.46041, 72.57969
+            ],
+            zoomLevel: 12
+        }, {
+            id: "barrow",
+            coordinates: [
+                -156.78861, 71.29056
+            ],
+            zoomLevel: 14
+        }, {
+            id: "northslope",
+            coordinates: [
+                -153.82207, 69.53351
+            ],
+            zoomLevel: 8
+        }, {
+            id: "southeast",
+            coordinates: [
+                -135.97524, 57.82791
+            ],
+            zoomLevel: 7
+        }, {
+            id: "kangerlussuaq",
+            coordinates: [
+                -50.69134, 67.00868
+            ],
+            zoomLevel: 14
+        }, {
+            id: "helheim",
+            coordinates: [
+                -38.199999, 66.3499986
+            ],
+            zoomLevel: 11
+        }, {
+            id: "jakobshavn",
+            coordinates: [
+                -49.54602, 69.12016
+            ],
+            zoomLevel: 11
+        }, {
+            id: "petermann",
+            coordinates: [
+                -59.4999, 80.49999
+            ],
+            zoomLevel: 11
+        }, {
+            id: "baffin",
+            coordinates: [
+                -69.67582, 67.86153
+            ],
+            zoomLevel: 9
+        }, {
+            id: "svalbard",
+            coordinates: [
+                20.34933, 78.71985
+            ],
+            zoomLevel: 13
+        }
+    ];
+
     // Function to zoom to popular place
-    function zoomToPopularPlace(coordinates) {
+    function zoomToPopularPlace(coordinates, zoomLevel) {
         console.log(coordinates);
-        view.goTo({center: coordinates, zoom: 15});
+        view.goTo({center: coordinates, zoom: zoomLevel});
         closeModal("popularPlacesModal");
     }
-    // Attach toggle popular place list function to button click event
-    document.getElementById("buck").addEventListener("click", function () {
-        zoomToPopularPlace([-0.1411, 51.501]);
+
+    // Attach event listeners to popular places
+    popularPlaces.forEach(place => {
+        const button = document.getElementById(place.id);
+        button.addEventListener("click", function () {
+            zoomToPopularPlace(place.coordinates, place.zoomLevel);
+        });
     });
 
     const tooltipButtons = document.querySelectorAll(".tooltip");

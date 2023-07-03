@@ -167,37 +167,265 @@
             <span class="close" onclick="closeModal('popularPlacesModal')"
               >&times;</span
             >
-            <p>Work in Progress....</p>
+            <p><strong>Zoom to Popular Places</strong></p>
 
-            <div id="popularPlaceList" class="popular-place-list">
-              <div>
+            <hr />
+            <div class="cards-container">
+              <article class="card">
                 <img
-                  src="pics/big-ben-icon.png"
-                  class="popular-place-icon"
-                  alt="Big Ben Icon"
+                  class="card__background"
+                  src="pics/toolik.jpeg"
+                  width="1920"
+                  height="2193"
                 />
-                <button onclick="zoomToPopularPlace([-0.1278, 51.5074])">
-                  Big Ben
-                </button>
-              </div>
-              <div>
+                <div class="card__content | flow">
+                  <div class="card__content--container | flow">
+                    <h2 class="card__title custom-h2">Toolik Station, Alaska</h2>
+                    <p class="card__description custom-p">
+                        Toolik Field Station in Alaska is a key arctic research facility for global change, providing support for various scientific studies in ecology and geophysics.
+                    </p>
+                  </div>
+                  <button id="toolik" class="card__button">Zoom to</button>
+                </div>
+              </article>
+
+              <article class="card">
                 <img
-                  src="pics/buckingham-palace-icon.png"
-                  class="popular-place-icon"
-                  alt="Buckingham Palace Icon"
+                  class="card__background"
+                  src="pics/thule.jpeg"
+                  width="1920"
+                  height="2193"
                 />
-                <button id="buck">Buckingham Palace</button>
-              </div>
-              <div>
+                <div class="card__content | flow">
+                  <div class="card__content--container | flow">
+                    <h2 class="card__title custom-h2">
+                      Thule air base, Greenland
+                    </h2>
+                    <p class="card__description custom-p">
+                      Thule Air Base is the United States Air Force's northernmost base, located 750 miles north of the Arctic Circle in Greenland. It serves crucial strategic and surveillance functions.
+                    </p>
+                  </div>
+                  <button id="thule" class="card__button">Zoom to</button>
+                </div>
+              </article>
+
+              <article class="card">
                 <img
-                  src="pics/great-wall-icon.png"
-                  class="popular-place-icon"
-                  alt="The Great Wall Icon"
+                  class="card__background"
+                  src="pics/raven.jpeg"
+                  width="1920"
+                  height="2193"
                 />
-                <button onclick="zoomToPopularPlace([116.5977, 40.4406])">
-                  The Great Wall
-                </button>
-              </div>
+                <div class="card__content | flow">
+                  <div class="card__content--container | flow">
+                    <h2 class="card__title custom-h2">Camp Raven</h2>
+                    <p class="card__description custom-p">
+                        Camp Raven, in Greenland's ice cap, is a U.S. cold-weather operations training site, crucial for snow-landing aircraft and for conducting climate research.
+                    </p>
+                  </div>
+                  <button id="raven" class="card__button">Zoom to</button>
+                </div>
+              </article>
+
+              <article class="card">
+                <img
+                  class="card__background"
+                  src="pics/neem.png"
+                  width="1920"
+                  height="2193"
+                />
+                <div class="card__content | flow">
+                  <div class="card__content--container | flow">
+                    <h2 class="card__title custom-h2">NEEM camp, Greenland</h2>
+                    <p class="card__description custom-p">
+                        NEEM Camp in Greenland is an international ice core research project site. Scientists drill deep into the ice to study climate history spanning hundreds of thousands of years.
+                    </p>
+                  </div>
+                  <button id="neem" class="card__button">Zoom to</button>
+                </div>
+              </article>
+
+              <article class="card">
+                <img
+                  class="card__background"
+                  src="pics/summit.jpeg"
+                  width="1920"
+                  height="2193"
+                />
+                <div class="card__content | flow">
+                  <div class="card__content--container | flow">
+                    <h2 class="card__title custom-h2">
+                      Summit Camp, Greenland
+                    </h2>
+                    <p class="card__description custom-p">
+                        Summit Camp is a year-round research station on the Greenland Ice Sheet. Scientists use it to study climate change, collecting data on ice cores and atmospheric conditions.
+                    </p>
+                  </div>
+                  <button id="summit" class="card__button">Zoom to</button>
+                </div>
+              </article>
+
+              <article class="card">
+                <img
+                  class="card__background"
+                  src="pics/barrow.jpeg"
+                  width="1920"
+                  height="2193"
+                />
+                <div class="card__content | flow">
+                  <div class="card__content--container | flow">
+                    <h2 class="card__title custom-h2">Barrow, Alaska</h2>
+                    <p class="card__description custom-p">
+                        Barrow, now known as Utqiaġvik since 2016, is the northernmost city in the United States, located in Alaska. It's a hub for Inupiat culture and Arctic research activities.
+                    </p>
+                  </div>
+                  <button id="barrow" class="card__button">Zoom to</button>
+                </div>
+              </article>
+
+              <article class="card">
+                <img
+                  class="card__background"
+                  src="pics/northslope.webp"
+                  width="1920"
+                  height="2193"
+                />
+                <div class="card__content | flow">
+                  <div class="card__content--container | flow">
+                    <h2 class="card__title custom-h2">North Slope, Alaska</h2>
+                    <p class="card__description custom-p">
+                        North Slope, Alaska, is a vast region that stretches across northern Alaska to the Arctic Ocean. It's home to the Inupiat people and is renowned for its significant oil reserves.
+                    </p>
+                  </div>
+                  <button id="northslope" class="card__button">Zoom to</button>
+                </div>
+              </article>
+
+              <article class="card">
+                <img
+                  class="card__background"
+                  src="pics/southeast.jpeg"
+                  width="1920"
+                  height="2193"
+                />
+                <div class="card__content | flow">
+                  <div class="card__content--container | flow">
+                    <h2 class="card__title custom-h2">Southeast Alaska</h2>
+                    <p class="card__description custom-p">
+                        Southeast Alaska is a picturesque region known for its temperate rainforest, abundant wildlife, glaciers, fjords, and the famous Inside Passage route.
+                    </p>
+                  </div>
+                  <button id="southeast" class="card__button">Zoom to</button>
+                </div>
+              </article>
+
+              <article class="card">
+                <img
+                  class="card__background"
+                  src="pics/kangerlussuaq.png"
+                  width="1920"
+                  height="2193"
+                />
+                <div class="card__content | flow">
+                  <div class="card__content--container | flow">
+                    <h2 class="card__title custom-h2">Kangerlussuaq, Greenland</h2>
+                    <p class="card__description custom-p">
+                        Kangerlussuaq is a small settlement in western Greenland, renowned for its large international airport, which serves as a major hub for travel in Greenland.
+                    </p>
+                  </div>
+                  <button id="kangerlussuaq" class="card__button">Zoom to</button>
+                </div>
+              </article>
+
+              <article class="card">
+                <img
+                  class="card__background"
+                  src="pics/helheim.jpeg"
+                  width="1920"
+                  height="2193"
+                />
+                <div class="card__content | flow">
+                  <div class="card__content--container | flow">
+                    <h2 class="card__title custom-h2">Helheim Glacier, Greenland</h2>
+                    <p class="card__description custom-p">
+                        Helheim Glacier, one of Greenland's largest and fastest, is crucial in ice loss studies due to its significant contribution to sea level rise.
+                    </p>
+                  </div>
+                  <button id="helheim" class="card__button">Zoom to</button>
+                </div>
+              </article>
+
+              <article class="card">
+                <img
+                  class="card__background"
+                  src="pics/jakobshavn.jpeg"
+                  width="1920"
+                  height="2193"
+                />
+                <div class="card__content | flow">
+                  <div class="card__content--container | flow">
+                    <h2 class="card__title custom-h2">Jakobshavn Isbrae</h2>
+                    <p class="card__description custom-p">
+                        Jakobshavn Isbræ, among the world's fastest glaciers, significantly contributes to global sea-level rise.                    </p>
+                  </div>
+                  <button id="jakobshavn" class="card__button">Zoom to</button>
+                </div>
+              </article>
+
+              <article class="card">
+                <img
+                  class="card__background"
+                  src="pics/petermann.jpeg"
+                  width="1920"
+                  height="2193"
+                />
+                <div class="card__content | flow">
+                  <div class="card__content--container | flow">
+                    <h2 class="card__title custom-h2">Petermann Glacier</h2>
+                    <p class="card__description custom-p">
+                        Petermann Glacier is noted for its large ice tongue, has highlighted climate change through significant calving events.
+                    </p>
+                  </div>
+                  <button id="petermann" class="card__button">Zoom to</button>
+                </div>
+              </article>
+
+              <article class="card">
+                <img
+                  class="card__background"
+                  src="pics/baffin.jpeg"
+                  width="1920"
+                  height="2193"
+                />
+                <div class="card__content | flow">
+                  <div class="card__content--container | flow">
+                    <h2 class="card__title custom-h2">Baffin Island, Canada</h2>
+                    <p class="card__description custom-p">
+                        Baffin Island is the largest island in Canada, located in the northeastern Arctic Ocean. It's known for its stunning landscapes, rich Inuit culture, and diverse wildlife.
+                    </p>
+                  </div>
+                  <button id="baffin" class="card__button">Zoom to</button>
+                </div>
+              </article>
+
+              <article class="card">
+                <img
+                  class="card__background"
+                  src="pics/svalbard.webp"
+                  width="1920"
+                  height="2193"
+                />
+                <div class="card__content | flow">
+                  <div class="card__content--container | flow">
+                    <h2 class="card__title custom-h2">Svalbard, Norway</h2>
+                    <p class="card__description custom-p">
+                        Svalbard is a Norwegian archipelago located in the Arctic Ocean. Known for its rugged terrain, glaciers, and polar bear population, it also hosts the Global Seed Vault.
+                    </p>
+                  </div>
+                  <button id="svalbard" class="card__button">Zoom to</button>
+                </div>
+              </article>
+
             </div>
           </div>
         </div>
