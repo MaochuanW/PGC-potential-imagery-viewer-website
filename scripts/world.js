@@ -159,6 +159,16 @@ require([
         }
     });
 
+    document.getElementById("hmaL8rgb").addEventListener("change", function () {
+        if (this.checked) { // If the checkbox is checked, show the layer
+            hmaL8rgb.visible = true;
+        } else { // If the checkbox is not checked, hide the layer
+            hmaL8rgb.visible = false;
+        }
+    });
+
+
+
 
     const spatialReference = new SpatialReference({wkid: 3857});
 
