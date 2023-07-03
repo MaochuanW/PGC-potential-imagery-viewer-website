@@ -471,15 +471,44 @@ require([
         }
     };
 
+    // Popular places data
+    const popularPlaces = [
+        {
+            id: "kathmandu",
+            coordinates: [
+                85.3206, 27.70169
+            ],
+            zoomLevel: 13
+        },
+        {
+            id: "southcamp",
+            coordinates: [
+                86.851323, 28.14277
+            ],
+            zoomLevel: 13
+        },
+        {
+            id: "mounteverest",
+            coordinates: [
+                86.922623, 27.986065
+            ],
+            zoomLevel: 13
+        },
+    ];
+
     // Function to zoom to popular place
-    function zoomToPopularPlace(coordinates) {
+    function zoomToPopularPlace(coordinates, zoomLevel) {
         console.log(coordinates);
-        view.goTo({center: coordinates, zoom: 15});
+        view.goTo({center: coordinates, zoom: zoomLevel});
         closeModal("popularPlacesModal");
     }
-    // Attach toggle popular place list function to button click event
-    document.getElementById("buck").addEventListener("click", function () {
-        zoomToPopularPlace([-0.1411, 51.501]);
+
+    // Attach event listeners to popular places
+    popularPlaces.forEach(place => {
+        const button = document.getElementById(place.id);
+        button.addEventListener("click", function () {
+            zoomToPopularPlace(place.coordinates, place.zoomLevel);
+        });
     });
 
     const tooltipButtons = document.querySelectorAll(".tooltip");
