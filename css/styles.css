@@ -60,6 +60,10 @@ body {
   margin-top: -30px;
 }
 
+.sidebar img.card__background{
+  margin-top:0;
+}
+
 #imagery {
   position: absolute;
   top: 89px;
@@ -833,6 +837,7 @@ hr.line5 {
   line-height: 1.5;
   color: var(--white);
   margin: 1rem 0;
+  margin-bottom:0;
   /* Adjust this */
 
 }
@@ -860,6 +865,8 @@ hr.line5 {
 .card .card__background {
   width: 100%;
   height: 100%;
+  object-fit: cover;
+
 }
 
 
@@ -867,7 +874,7 @@ hr.line5 {
   --flow-space: 0.9375rem;
   display: flex;
   flex-direction: column;
-  justify-content: center;
+  justify-content: space-evenly;
   align-self: flex-end;
   height: 100%;
   padding: 12% 1.25rem 1.875rem;
@@ -886,7 +893,6 @@ hr.line5 {
   position: relative;
   width: fit-content;
   width: -moz-fit-content;
-  /* Prefijo necesario para Firefox  */
 }
 
 .card__title::after {
@@ -935,6 +941,7 @@ hr.line5 {
 
   .card__background {
     transition: transform 500ms ease-in;
+    
   }
 
   .card__content--container> :not(.card__title),
