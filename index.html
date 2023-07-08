@@ -3,20 +3,42 @@
   <head>
     <title>Imagery Viewers landing page</title>
     <link rel="stylesheet" type="text/css" href="css/landingcss.css" />
+    <script src="scripts/landing.js"></script>
   </head>
   <body>
+
+
+        <!-- The Modal -->
+        <div id="pgcModal" class="modal" onclick="closeModal('pgcModal')">
+
+          <!-- Modal content -->
+          <!-- Modal content -->
+          <div class="modal-content" onclick="event.stopPropagation()">
+            <span class="close" onclick="closeModal('pgcModal')">&times;</span>
+            <h2>Do you have a PGC account?</h2>
+            <p>If you have a PGC account, click the login button to access the licensed data layer. If you do not have a PGC account, you can still enter the website but will not be able to see the licensed layers.</p>
+
+            <button id="loginButton" class="modal-button">Login</button>
+            <button id="continueButton" class="modal-button">Continue without login</button>
+          </div>
+
+    
+        </div>
+
+
+
     <div class="boxes">
       <div class="box">
         <img src="pics/thumb_antarctica.png" alt="Image description" />
         <h2>Antarctic Viewer</h2>
         <p>View the land of snow & ice of the southernmost continent.</p>
         <small>WGS84 Antarctica Polar Stereographic Projection</small>
-        <button onclick="location.href='antarctica.html';">
+        <button id="antarcticButton">
           Launch Antarctic
         </button>
-      </div>
-
-      <div class="box">
+    </div>
+    
+    <div class="box">
         <img src="pics/thumb_arctic.png" alt="Image description" />
         <h2>Arctic Viewer</h2>
         <p>
@@ -24,16 +46,17 @@
           Alaska.
         </p>
         <small>NSIDC Sea Ice Polar Stereographic Projection North</small>
-        <button onclick="location.href='arctic.html';">Launch Arctic</button>
-      </div>
-
-      <div class="box">
+        <button id="arcticButton">Launch Arctic</button>
+    </div>
+    
+    <div class="box">
         <img src="pics/thumb_world.png" alt="Image description" />
         <h2>World Viewer</h2>
         <p>View the snowcaps, ice fields, & glaciers throughout the world.</p>
         <small>WGS84 Web Mercator Projection</small>
-        <button onclick="location.href='world.html';">Launch World</button>
-      </div>
+        <button id="worldButton">Launch World</button>
+    </div>
+    
     </div>
 
     <div class="header">
