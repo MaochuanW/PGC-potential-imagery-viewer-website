@@ -5,11 +5,48 @@
     <link rel="stylesheet" type="text/css" href="css/landingcss.css" />
     <script src="scripts/landing.js"></script>
   </head>
+  <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.2/css/all.css">
   <body>
 
+    <div id="pgcModal" class="modal" onclick="closeModal('pgcModal')">
+
+      <div class="modal-content" onclick="event.stopPropagation()">
+        <span class="close" onclick="closeModal('pgcModal')">&times;</span>
+        <h4>ABOUT THE VIEWERS</h4>
+        <p>The Polar Geospatial Center's Imagery Viewers are web-based mapping applications for viewing high-resolution, commercial satellite imagery mosaics for polar regions. The three versions (Antarctica, the Arctic, and the World) are each in an appropriate map projection.</p>
+        <p>The PGC imagery mosaics are composed of hundreds of terabytes of orthorectified satellite imagery from the WorldView-1, WorldView-2, QuickBird-2, and GeoEye-1 sensors and mosaicked into one layer at 50-centimeter resolution. The Viewers also contain other layers — for example, lower-resolution satellite imagery basemaps, features & placenames, and aerial photography — which help users search and navigate the maps.</p>
+        <p>All imagery is © <span id="imageryCopyright">2023</span> Maxar, Inc. By using the viewers you are subject to the National Geospatial-Intelligence Agency (NGA) <a href="https://www.pgc.umn.edu/guides/commercial-imagery/usage-guidelines/" target="_blank">NextView License</a> and to the <a href="http://repository.agic.umn.edu/website/docs/PGCAccountTermsAndConditions.pdf" target="_blank">PGC Viewers Terms &amp; Conditions</a>. For attribution and citation, please see the <a href="https://www.pgc.umn.edu/guides/user-services/acknowledgement-policy/" target="_blank">PGC Acknowledgement Policy</a>.</p>
+        <p>The viewers are built using JavaScript, so no plugins are required for your browser. The PGC will continue to add &amp; improve imagery to the mosaics as we obtain it, but we understand there may be features or imagery you'd like to see added. <a href="mailto:pgc@umn.edu?subject=Viewer%20Question" target="_blank">Send us an email</a> to ask a question or suggest a feature.</p>
+        <h4>ACCOUNT MANAGEMENT</h4>
+        <p>Access to the secured & licensed layers in the Viewers is limited to polar federally-funded researchers with current awards, federal employees, or subcontractors. Funding sources include, but aren't limited to, the National Science Foundation (NSF) and National Aeronautics and Space Administration (NASA). Members of the DoD/IC and Antarctic/Arctic support personnel may also request access.</p>
+        <p>The links below are for new users to request a new account or change your password. The PGC will verify your funding source after you submit a request for an account.</p>
+        <br>
+        <p class ="aboutlink">
+          <i class="fa fa-user"></i>
+          <a href="https://users.pgc.umn.edu/request" target="_blank">Request A New Account</a>
+        </p>
+        <p class ="aboutlink">
+          <i class="fas fa-wrench"></i>
+          <a href="https://users.pgc.umn.edu/password" target="_blank">Change Your Password</a>
+        </p>
+        <p class ="aboutlink">
+          <i class="fas fa-envelope"></i>
+          <a href="mailto:pgc@umn.edu?subject=Viewer%20Question" target="_blank">Change Your Password</a>
+        </p>
+        <p class="aboutlink">
+          <a href="http://repository.agic.umn.edu/website/docs/PGCAccountTermsAndConditions.pdf" target="_blank">PGC Viewers Terms &amp; Conditions</a>
+        </p>
 
 
 
+      </div>
+
+    </div>
+
+    <div class="about-icon-container">
+      <img id="about-icon" src="pics/about.png" alt="About Icon" style="cursor:pointer;" onclick="openModal('pgcModal')"/>
+    </div>
+    
 
 
     <div class="boxes">
