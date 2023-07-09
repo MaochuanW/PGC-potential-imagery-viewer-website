@@ -168,12 +168,13 @@ require([
             layer1 = new TileLayer({url: "https://overlord.pgc.umn.edu/arcgis/rest/services/maps/ant_usgs_50k_topos/MapServer", title: "Layer 1"});
             addLayer(layer1, this);
     
-            view.goTo({
-                center: [
-                    162.382828, -77.689443
-                ],
-                zoom: 10
-            });
+            // Check the current zoom level
+            if (view.zoom < 10) {
+                view.goTo({
+                    center: [162.382828, -77.689443],
+                    zoom: 10
+                });
+            }
         } else {
             map.remove(layer1);
             currentFreeLayer = null;
@@ -181,6 +182,7 @@ require([
         }
         ensureLabelOnTop();
     });
+    
     
     document.getElementById("layer2Checkbox").addEventListener("change", function () {
         var layer3Checkbox = document.getElementById("layer3Checkbox");
@@ -271,12 +273,14 @@ require([
             addLayer(layer4, this);
 
             // Immediately zoom to the coordinates when layer is added
-            view.goTo({ // Define the longitude, latitude and zoom level
-                center: [
-                    162.382828, -77.689443
-                ],
-                zoom: 10
-            });
+            if (view.zoom < 10){
+                view.goTo({ // Define the longitude, latitude and zoom level
+                    center: [
+                        162.382828, -77.689443
+                    ],
+                    zoom: 10
+                });
+            }
 
         } else { // If the checkbox is not checked, remove the layer
             map.remove(layer4);
@@ -293,12 +297,14 @@ require([
             addLayer(layer5, this);
 
             // Zoom to the coordinates when layer is added
-            view.goTo({
-                center: [
-                    166.666664, -90.8499966
-                ],
-                zoom: 5
-            });
+            if (view.zoom < 5){
+                view.goTo({
+                    center: [
+                        166.666664, -90.8499966
+                    ],
+                    zoom: 5
+                });
+            }
         } else { // If the checkbox is not checked, remove the layer
             map.remove(layer5);
             currentFreeLayer = null;
@@ -335,12 +341,14 @@ require([
             addLayer(layer7, this);
 
             // Zoom to the coordinates when layer is added
-            view.goTo({
-                center: [
-                    166.666664, -90.8499966
-                ],
-                zoom: 5
-            });
+            if (view.zoom < 5){
+                view.goTo({
+                    center: [
+                        166.666664, -90.8499966
+                    ],
+                    zoom: 5
+                });
+            }
         } else { // If the checkbox is not checked, remove the layer
             map.remove(layer7);
             currentFreeLayer = null;
