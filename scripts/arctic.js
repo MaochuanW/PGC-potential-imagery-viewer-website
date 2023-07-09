@@ -9,42 +9,56 @@ function login() {
             "public-client": true,
             "enable-cors": true,
             "cors-allowed-methods": "POST, PUT, DELETE, GET, HEAD",
-            "cors-allowed-headers":
-            "Access-Control-Allow-Origin, Origin, Accept, X-Requested-With, Content-Type, Access-Control-Request-Method, Access-Control-Request-Headers, Authorization",
+            "cors-allowed-headers": "Access-Control-Allow-Origin, Origin, Accept, X-Requested-With, Content-Type, Access-Control-Request-Method, Access-Control-Request-Headers, Authorization",
             "confidential-port": 0,
         });
 
         keycloak
-            .init({ checkLoginIframe: false })
+            .init({ checkLoginIframe: false, onLoad: 'check-sso' }) // check if the user is already logged in
             .then((authenticated) => {
-            if (!authenticated) {
-                keycloak.login();
-            } else {
-                window.keycloak = keycloak; // Assign keycloak to a global variable so it can be accessed later.
-                console.log(authenticated ? "authenticated" : "not authenticated");
+                if (!authenticated) {
+                    keycloak.login();
+                } else {
+                    window.keycloak = keycloak; // Assign keycloak to a global variable so it can be accessed later.
+                    console.log(authenticated ? "authenticated" : "not authenticated");
 
-                // Refresh the token every minute if it's valid
-                setInterval(() => {
-                if (!window.keycloak.isTokenExpired()) {
-                    window.keycloak
-                    .updateToken(30)
-                    .then((refreshed) => {
-                        console.log("Token refreshed successfully");
-                    })
-                    .catch(() => {
-                        console.log("Error updating token");
+                    // Refresh the token every minute if it's valid
+                    setInterval(() => {
+                        if (!window.keycloak.isTokenExpired()) {
+                            window.keycloak
+                                .updateToken(30)
+                                .then((refreshed) => {
+                                    console.log("Token refreshed successfully");
+                                })
+                                .catch(() => {
+                                    console.log("Error updating token");
+                                });
+                        }
+                    }, 60000); // 60000 milliseconds = 1 minute
+
+                    // Add event listener for visibility change
+                    document.addEventListener('visibilitychange', function() {
+                        if (!document.hidden && window.keycloak && !window.keycloak.isTokenExpired()) {
+                            window.keycloak
+                                .updateToken(30)
+                                .then((refreshed) => {
+                                    console.log("Token refreshed successfully after coming back to tab");
+                                })
+                                .catch(() => {
+                                    console.log("Error updating token after coming back to tab");
+                                });
+                        }
                     });
                 }
-                }, 60000); // 60000 milliseconds = 1 minute
-            }
             })
             .catch(() => {
-            console.log("failed to initialize");
+                console.log("failed to initialize");
             });
     }
 }
 
 login();
+
 
 require([
     "esri/config",
