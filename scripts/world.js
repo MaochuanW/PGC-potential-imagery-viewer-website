@@ -102,37 +102,42 @@ require([
     let currentFreeLayer; // This will keep track of the current layer
     let currentCheckbox; // This will keep track of the current checkbox
 
-    function addLayer(layer, checkbox) { // If there is a current Free layer, remove it from the map
+    function addLayer(layer, checkbox) {
         if (currentFreeLayer) {
             map.remove(currentFreeLayer);
-            // Uncheck the current checkbox
             if (currentCheckbox) {
                 currentCheckbox.checked = false;
             }
         }
 
-        // Add the new layer to the map and set it as the current layer
         map.add(layer);
         currentFreeLayer = layer;
-        // Set the current checkbox
         currentCheckbox = checkbox;
     }
 
     const map = new Map({});
 
-    const labelbasemap = new TileLayer({url: "https://server.arcgisonline.com/ArcGIS/rest/services/Reference/World_Boundaries_and_Places/MapServer", title: "label basemap"});
+    const labelbasemap = new TileLayer({
+        url: "https://server.arcgisonline.com/ArcGIS/rest/services/Reference/World_Boundaries_and_Places/MapServer", 
+        title: "label basemap"
+    });
 
-    const worldbasemap = new TileLayer({url: "https://services.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer", title: "world Basemap"});
+    const worldbasemap = new TileLayer({
+        url: "https://services.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer", 
+        title: "world Basemap"
+    });
 
-    map.addMany([worldbasemap, labelbasemap]);
+    // Initialize hmaL8rgb layer
+    let hmaL8rgb = new ImageryLayer({
+        url: "https://web.overlord.pgc.umn.edu/arcgis/rest/services/fridge/md_pgc_comm_opt_mono_mosaic_pan_hma/ImageServer", 
+        title: "hmaL8rgb"
+    });
 
+    // Add the layers to the map, with labelbasemap added last to ensure it's on top
+    map.addMany([worldbasemap, hmaL8rgb, labelbasemap]);
 
     document.getElementById("EsriBasemapCheckbox").addEventListener("change", function () {
-        if (this.checked) { // If the checkbox is checked, show the layer
-            worldbasemap.visible = true;
-        } else { // If the checkbox is not checked, hide the layer
-            worldbasemap.visible = false;
-        }
+        worldbasemap.visible = this.checked;
     });
 
     // Set the checkbox to be checked by default
@@ -140,35 +145,20 @@ require([
     worldbasemap.visible = true;
 
     document.getElementById("EsriLabelBasemapCheckbox").addEventListener("change", function () {
-        if (this.checked) { // If the checkbox is checked, show the layer
-            labelbasemap.visible = true;
-        } else { // If the checkbox is not checked, hide the layer
-            labelbasemap.visible = false;
-        }
+        labelbasemap.visible = this.checked;
     });
 
     // Set the checkbox to be checked by default
     document.getElementById("EsriLabelBasemapCheckbox").checked = true;
-    labelbasemap.visible = true;
-
-
-    let hmaL8rgb;
+        labelbasemap.visible = true;
 
     document.getElementById("hmaL8rgb").addEventListener("change", function () {
-        if (this.checked) { // If the checkbox is checked, show the layer
-            hmaL8rgb = new ImageryLayer({url: "https://web.overlord.pgc.umn.edu/arcgis/rest/services/fridge/md_pgc_comm_opt_mono_mosaic_pan_hma/ImageServer", title: "hmaL8rgb"});
-            map.add(hmaL8rgb);
-
-        }
+        hmaL8rgb.visible = this.checked;
     });
 
-    document.getElementById("hmaL8rgb").addEventListener("change", function () {
-        if (this.checked) { // If the checkbox is checked, show the layer
-            hmaL8rgb.visible = true;
-        } else { // If the checkbox is not checked, hide the layer
-            hmaL8rgb.visible = false;
-        }
-    });
+    // Set the checkbox to be checked by default
+    document.getElementById("hmaL8rgb").checked = true;
+    hmaL8rgb.visible = true;
 
 
 
@@ -277,12 +267,11 @@ require([
 
 
     // Add event listener to capture map clicks
-    view.on("click", function (event) { // Check if the measurement tool is active
+    view.on("click", function (event) { 
         var isMeasurementToolActive = measurementWidget.activeTool !== null;
-
-        // Call cutline function with the clicked feature and currentLayer
-        // ONLY IF the measurement tool is not active
-        if (! isMeasurementToolActive && currentLayer) {
+    
+        // Check if the measurement tool is not active and hmaL8rgb is visible
+        if (!isMeasurementToolActive && hmaL8rgb.visible && currentLayer) {
             cutline(event.mapPoint, currentLayer);
         }
     });
