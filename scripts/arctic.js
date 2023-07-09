@@ -1,64 +1,61 @@
 function login() {
-    // Only initiate Keycloak if keycloakInitiated is true
-    if (sessionStorage.getItem('keycloakInitiated') === 'true') {
-        const keycloak = new Keycloak({
-            realm: "pgc",
-            "auth-server-url": "https://account.pgc.umn.edu/auth",
-            "ssl-required": "external",
-            clientId: "imagery-viewers",
-            "public-client": true,
-            "enable-cors": true,
-            "cors-allowed-methods": "POST, PUT, DELETE, GET, HEAD",
-            "cors-allowed-headers": "Access-Control-Allow-Origin, Origin, Accept, X-Requested-With, Content-Type, Access-Control-Request-Method, Access-Control-Request-Headers, Authorization",
-            "confidential-port": 0,
-        });
+    const keycloak = new Keycloak({
+        realm: "pgc",
+        "auth-server-url": "https://account.pgc.umn.edu/auth",
+        "ssl-required": "external",
+        clientId: "imagery-viewers",
+        "public-client": true,
+        "enable-cors": true,
+        "cors-allowed-methods": "POST, PUT, DELETE, GET, HEAD",
+        "cors-allowed-headers":
+            "Access-Control-Allow-Origin, Origin, Accept, X-Requested-With, Content-Type, Access-Control-Request-Method, Access-Control-Request-Headers, Authorization",
+        "confidential-port": 0,
+    });
 
-        keycloak
-            .init({ checkLoginIframe: false, onLoad: 'check-sso' }) // check if the user is already logged in
-            .then((authenticated) => {
-                if (!authenticated) {
+    keycloak
+        .init({ checkLoginIframe: false })
+        .then((authenticated) => {
+            if (!authenticated) {
+                // Display the login modal
+                const modal = document.getElementById("pgcModal");
+                modal.style.display = "block";
+
+                // Add click event listeners to the buttons
+                const loginButton = document.getElementById("loginButton");
+                const continueButton = document.getElementById("continueButton");
+
+                loginButton.addEventListener("click", () => {
                     keycloak.login();
-                } else {
-                    window.keycloak = keycloak; // Assign keycloak to a global variable so it can be accessed later.
-                    console.log(authenticated ? "authenticated" : "not authenticated");
+                });
 
-                    // Refresh the token every minute if it's valid
-                    setInterval(() => {
-                        if (!window.keycloak.isTokenExpired()) {
-                            window.keycloak
-                                .updateToken(30)
-                                .then((refreshed) => {
-                                    console.log("Token refreshed successfully");
-                                })
-                                .catch(() => {
-                                    console.log("Error updating token");
-                                });
-                        }
-                    }, 60000); // 60000 milliseconds = 1 minute
+                continueButton.addEventListener("click", () => {
+                    modal.style.display = "none";
+                });
+            } else {
+                window.keycloak = keycloak; // Assign keycloak to a global variable so it can be accessed later.
+                console.log(authenticated ? "authenticated" : "not authenticated");
 
-                    // Add event listener for visibility change
-                    document.addEventListener('visibilitychange', function() {
-                        if (!document.hidden && window.keycloak && !window.keycloak.isTokenExpired()) {
-                            window.keycloak
-                                .updateToken(30)
-                                .then((refreshed) => {
-                                    console.log("Token refreshed successfully after coming back to tab");
-                                })
-                                .catch(() => {
-                                    console.log("Error updating token after coming back to tab");
-                                });
-                        }
-                    });
-                }
-            })
-            .catch(() => {
-                console.log("failed to initialize");
-            });
-    }
+                // Refresh the token every minute if it's valid
+                setInterval(() => {
+                    if (!window.keycloak.isTokenExpired()) {
+                        window.keycloak
+                            .updateToken(30)
+                            .then((refreshed) => {
+                                console.log("Token refreshed successfully");
+                            })
+                            .catch(() => {
+                                console.log("Error updating token");
+                            });
+                    }
+                }, 60000); // 60000 milliseconds = 1 minute
+            }
+        })
+        .catch(() => {
+            console.log("failed to initialize");
+        });
 }
 
 login();
-
 
 require([
     "esri/config",

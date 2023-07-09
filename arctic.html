@@ -14,15 +14,13 @@
     />
     <script src="https://account.pgc.umn.edu/auth/js/keycloak.js"></script>
     <script src="https://js.arcgis.com/4.26/"></script>
-    <script src="scripts/arctic.js"></script>
+    
     
   </head>
 
   <body>
     <div id="pgcModal" class="modal" onclick="closeModal('pgcModal')">
 
-      <!-- Modal content -->
-      <!-- Modal content -->
       <div class="modal-content" onclick="event.stopPropagation()">
         <span class="close" onclick="closeModal('pgcModal')">&times;</span>
         <h2>Do you have a PGC account?</h2>
@@ -33,7 +31,7 @@
         <button id="loginButton" class="modal-button">Login</button>
         <button id="continueButton" class="modal-button">Explore without Login</button>
       </div>
-
+      <script src="scripts/arctic.js"></script>
 
     </div>
 
