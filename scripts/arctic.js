@@ -701,6 +701,16 @@ require([
         return url.toString();
     }
 
+    function updateUrl(view) {
+        var newUrl = createShareableUrl(view);
+        window.history.pushState({}, '', newUrl);
+    }
+
+    // Add event listener for 'extent' property
+    view.watch('extent', function(newValue, oldValue, property, object) {
+        updateUrl(object);
+    });
+    
     function openShareModal(map) {
         var url = createShareableUrl(map);
 
