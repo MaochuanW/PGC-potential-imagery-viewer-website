@@ -98,6 +98,10 @@ require([
         }
     });
 
+    function ensureLabelOnTop() {
+        map.remove(labelname);
+        map.add(labelname);
+    }
 
     const map = new Map({});
     const labelname = new MapImageLayer({url: "https://gis.ngdc.noaa.gov/arcgis/rest/services/arctic_ps/reference/MapServer", title: "country names"});
@@ -105,7 +109,13 @@ require([
 
     const arcticDEMbasemap = new TileLayer({url: "https://services.arcgisonline.com/arcgis/rest/services/Polar/Arctic_Imagery/MapServer", title: "ArcticDEM Basemap"});
 
-    map.addMany([arcticDEMbasemap, labelname]);
+    let panchromaticLayer = new ImageryLayer({
+        url: "https://web.overlord.pgc.umn.edu/arcgis/rest/services/fridge/md_pgc_comm_opt_mono_mosaic_pan_arc/ImageServer", 
+        title: "Panchromatic Layer", 
+        visible: true,
+    });
+
+    map.addMany([arcticDEMbasemap, panchromaticLayer, labelname]);
 
 
     document.getElementById("ArcticDEMcheckbox").addEventListener("change", function () {
@@ -172,10 +182,9 @@ require([
     document.getElementById("ArcticDEMcheckbox").checked = true;
     arcticDEMbasemap.visible = true;
 
-    // ImageryLayer for panchromatic layer
-    let panchromaticLayer = new ImageryLayer({
-        url: "https://web.overlord.pgc.umn.edu/arcgis/rest/services/fridge/md_pgc_comm_opt_mono_mosaic_pan_arc/ImageServer", title: "Panchromatic Layer", visible: false, // Initially invisible
-    });
+    // Set the checkbox to be checked by default
+    document.getElementById("panchromaticcheckbox").checked = true;
+    panchromaticLayer.visible = true;
 
     // FeatureLayer for cutline layer associated with panchromatic layer
     let panchromaticCutlineLayer = new FeatureLayer({
@@ -188,8 +197,7 @@ require([
         popupTemplate: popupTemplateAK
     });
 
-    map.add(panchromaticLayer);
-    // map.add(panchromaticCutlineLayer);
+
     map.add(flightlineLayer);
 
     // Variable to keep track of currently selected layer
@@ -200,33 +208,50 @@ require([
     let flightlineCheckbox = document.getElementById("flightlinecheckbox");
 
     // Event listener for panchromaticCheckbox
-    panchromaticCheckbox.addEventListener("change", function () {
-        if (this.checked) { // If panchromaticCheckbox is checked, make panchromatic and its cutline layers visible and hide flightline layer
+    panchromaticCheckbox.addEventListener("change", handlePanchromaticCheckboxChange);
+
+    function handlePanchromaticCheckboxChange() {
+        if (panchromaticCheckbox.checked) {
             panchromaticLayer.visible = true;
             panchromaticCutlineLayer.visible = true;
             flightlineLayer.visible = false;
             flightlineCheckbox.checked = false;
-            currentLayer = panchromaticCutlineLayer; // Update the currentLayer
-        } else { // If panchromaticCheckbox is unchecked, hide the panchromatic and its cutline layers
+            currentLayer = panchromaticCutlineLayer;
+        } else {
             panchromaticLayer.visible = false;
             panchromaticCutlineLayer.visible = false;
-            currentLayer = null; // Update the currentLayer
+            currentLayer = null;
         }
-    });
+        ensureLabelOnTop(); // Ensure label is always on top
+    }
 
     // Event listener for flightlineCheckbox
-    flightlineCheckbox.addEventListener("change", function () {
-        if (this.checked) { // If flightlineCheckbox is checked, make flightline layer visible and hide panchromatic and its cutline layers
+    flightlineCheckbox.addEventListener("change", handleFlightlineCheckboxChange);
+
+    function handleFlightlineCheckboxChange() {
+        if (flightlineCheckbox.checked) {
             flightlineLayer.visible = true;
             panchromaticLayer.visible = false;
             panchromaticCutlineLayer.visible = false;
             panchromaticCheckbox.checked = false;
-            currentLayer = flightlineLayer; // Update the currentLayer
-        } else { // If flightlineCheckbox is unchecked, hide the layer
+            currentLayer = flightlineLayer;
+        } else {
             flightlineLayer.visible = false;
-            currentLayer = null; // Update the currentLayer
+            currentLayer = null;
         }
-    });
+        ensureLabelOnTop(); // Ensure label is always on top
+    }
+
+    // If page loads with panchromaticCheckbox checked, manually call the handler
+    if (panchromaticCheckbox.checked) {
+        handlePanchromaticCheckboxChange();
+    }
+
+    // If page loads with flightlineCheckbox checked, manually call the handler
+    if (flightlineCheckbox.checked) {
+        handleFlightlineCheckboxChange();
+    }
+
 
 
     const spatialReference = new SpatialReference({wkid: 5936});
