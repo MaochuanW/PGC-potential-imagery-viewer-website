@@ -106,27 +106,27 @@ require([
 
     let currentFreeLayer; // This will keep track of the current layer
     let currentCheckbox; // This will keep track of the current checkbox
-
-    function addLayer(layer, checkbox) { // If there is a current Free layer, remove it from the map
+    
+    function addLayer(layer, checkbox) { 
         if (currentFreeLayer) {
             map.remove(currentFreeLayer);
-            // Uncheck the current checkbox
             if (currentCheckbox) {
                 currentCheckbox.checked = false;
             }
         }
-
-        // Add the new layer to the map and set it as the current layer
+    
         map.add(layer);
         currentFreeLayer = layer;
-        // Set the current checkbox
         currentCheckbox = checkbox;
     }
-
+    
     const map = new Map({});
-
-    const antlabel = new MapImageLayer({url: "https://gis.ngdc.noaa.gov/arcgis/rest/services/antarctic/reference/MapServer", title: "Antarctica label"});
-
+    
+    const antlabel = new MapImageLayer({
+        url: "https://gis.ngdc.noaa.gov/arcgis/rest/services/antarctic/reference/MapServer", 
+        title: "Antarctica label"
+    });
+    
     const AntCompBaseMap = new TileLayer({
         url: "https://overlord.pgc.umn.edu/arcgis/rest/services/imagery/ant_pgc_composite_mosaic/MapServer",
         title: "Antarctica Composite Basemap",
@@ -134,75 +134,94 @@ require([
             wkid: 3031
         }
     });
+    
+    let layer2 = new ImageryLayer({
+        url: "https://web.overlord.pgc.umn.edu/arcgis/rest/services/fridge/md_pgc_comm_opt_mono_mosaic_pan_ant/ImageServer",
+        title: "Layer 2"
+    });
+    
+    map.addMany([AntCompBaseMap, layer2, antlabel]); // Adding all three layers at once
+    
+    function ensureLabelOnTop() {
+        map.remove(antlabel);
+        map.add(antlabel);
+    }
 
-    map.addMany([AntCompBaseMap, antlabel]);
 
     document.getElementById("AntCompBaseMapCheckbox").addEventListener("change", function () {
-        if (this.checked) { // If the checkbox is checked, show the layer
+        if (this.checked) {
             AntCompBaseMap.visible = true;
-        } else { // If the checkbox is not checked, hide the layer
+        } else {
             AntCompBaseMap.visible = false;
         }
+        ensureLabelOnTop();
     });
-
-    // Set the checkbox to be checked by default
+    
     document.getElementById("AntCompBaseMapCheckbox").checked = true;
     AntCompBaseMap.visible = true;
-
-    let layer1,
-        layer2;
-
+    
+    
+    let layer1;
+    
     document.getElementById("layer1Checkbox").addEventListener("change", function () {
-        if (this.checked) { // If the checkbox is checked, show the layer
+        if (this.checked) {
             layer1 = new TileLayer({url: "https://overlord.pgc.umn.edu/arcgis/rest/services/maps/ant_usgs_50k_topos/MapServer", title: "Layer 1"});
             addLayer(layer1, this);
-
-            // Zoom to the coordinates when layer is added
+    
             view.goTo({
                 center: [
                     162.382828, -77.689443
                 ],
                 zoom: 10
             });
-        } else { // If the checkbox is not checked, remove the layer
+        } else {
             map.remove(layer1);
-            currentfreeLayer = null;
+            currentFreeLayer = null;
             currentCheckbox = null;
         }
+        ensureLabelOnTop();
     });
-
+    
     document.getElementById("layer2Checkbox").addEventListener("change", function () {
-        if (this.checked) { // If the checkbox is checked, show the layer
-            layer2 = new ImageryLayer({url: "https://web.overlord.pgc.umn.edu/arcgis/rest/services/fridge/md_pgc_comm_opt_mono_mosaic_pan_ant/ImageServer", title: "Layer 2"});
+        var layer3Checkbox = document.getElementById("layer3Checkbox");
+        if (this.checked) {
+            layer2.visible = true;
             map.add(layer2);
-
-            // Uncheck and remove layer3 if it's currently displayed
-            var layer3Checkbox = document.getElementById("layer3Checkbox");
+            
             if (layer3Checkbox.checked) {
                 layer3Checkbox.checked = false;
+                layer3.visible = false;
                 map.remove(layer3);
             }
-        } else { // If the checkbox is not checked, remove the layer
+        } else {
+            layer2.visible = false;
             map.remove(layer2);
         }
+        ensureLabelOnTop();
     });
-
+    
+    document.getElementById("layer2Checkbox").checked = true;
+    layer2.visible = true;
+    
     document.getElementById("layer3Checkbox").addEventListener("change", function () {
-        if (this.checked) { // If the checkbox is checked, show the layer
+        var layer2Checkbox = document.getElementById("layer2Checkbox");
+        if (this.checked) {
             layer3 = new ImageryLayer({url: "https://web.overlord.pgc.umn.edu/arcgis/rest/services/fridge/md_pgc_comm_opt_mono_mosaic_mul_ant/ImageServer", title: "Layer 3"});
             layer3.bandIds = [2, 1, 0];
             map.add(layer3);
-
-            // Uncheck and remove layer2 if it's currently displayed
-            var layer2Checkbox = document.getElementById("layer2Checkbox");
+    
             if (layer2Checkbox.checked) {
                 layer2Checkbox.checked = false;
+                layer2.visible = false;
                 map.remove(layer2);
             }
-        } else { // If the checkbox is not checked, remove the layer
+        } else {
+            layer3.visible = false;
             map.remove(layer3);
         }
+        ensureLabelOnTop();
     });
+    
 
 
     let layer4;
@@ -264,6 +283,7 @@ require([
             currentFreeLayer = null;
             currentCheckbox = null;
         }
+        ensureLabelOnTop();
     });
 
     let layer5;
@@ -284,6 +304,7 @@ require([
             currentFreeLayer = null;
             currentCheckbox = null;
         }
+        ensureLabelOnTop();
     });
 
     let layer6;
@@ -304,6 +325,7 @@ require([
             currentFreeLayer = null;
             currentCheckbox = null;
         }
+        ensureLabelOnTop();
     });
 
     let layer7;
@@ -324,6 +346,7 @@ require([
             currentFreeLayer = null;
             currentCheckbox = null;
         }
+        ensureLabelOnTop();
     });
 
 
@@ -339,7 +362,7 @@ require([
         center: [
             166.666664, -90.8499966
         ],
-        zoom: 4,
+        zoom: 5,
         container: "viewDiv",
         spatialReference,
         constraints: {
