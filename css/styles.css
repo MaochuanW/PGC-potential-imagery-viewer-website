@@ -1015,23 +1015,3 @@ hr.line5 {
   background-color: #45a049;
 }
 
-/* Styles for modal text */
-.modal-content h2 {
-  font-size: 20px;
-  margin-bottom: 10px;
-}
-
-.modal-content p {
-  font-size: 16px;
-  margin-bottom: 10px;
-}
-
-.modal-content small {
-  font-size: 14px;
-  color: #888;
-}
-
-.modal-content .close {
-  font-size: 1.5em;
-  padding: 5px;
-}
