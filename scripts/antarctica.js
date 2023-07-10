@@ -575,22 +575,31 @@ require([
 
                 // Build the content string
                 var content = `
-                <div style="font-size: 16px; color: black;">
-                <p><b>Catalog ID:</b> <a href="${
-                    attributes.browseurl
-                }" target="_blank" style="color: blue;">${
-                    attributes.cat_id
-                }</a></p>
-                <p><b>Sensor:</b> ${sensorLabel}</p>
-                <p><b>Date:</b> ${
-                    attributes.acqdate
-                }</p>
-                <p><b>Sun Elevation:</b> ${
-                    attributes.sun_elev
-                }</p>
-                <p><b>Off-Nadir Angle:</b> ${
-                    attributes.off_nadir
-                }</p>
+                <div style="font-family: Arial, sans-serif; color: #333; padding: 10px; border: 1px solid #ddd; border-radius: 5px; background-color: #f9f9f9;  align-items: center;">
+                    <div style="display: flex; flex-direction: column; width: 100%; margin-bottom: 10px;">
+                        <div style="background-color: #00897b; color: #fff; padding: 15px; border-radius: 5px; margin-bottom: 0px;">
+                            <p style="margin: 0; font-size: 14px; text-align: center;">Sensor</p>
+                            <p style="margin: 0; font-size: 16px; text-align: center;">${sensorLabel}</p>
+                        </div>
+                        <div style="background-color: #d81b60; color: #fff; padding: 15px; border-radius: 5px; margin-bottom: 0px;">
+                            <p style="margin: 0; font-size: 14px; text-align: center;">Date</p>\
+                            <p style="margin: 0; font-size: 16px; text-align: center;">${attributes.acqdate}</p>
+                        </div>
+                    </div>
+                    <div style="background-color: #0050b3; color: #fff; padding: 10px; border-radius: 5px; margin-bottom: 10px; width: 94%;">
+                        <p style="margin: 0; font-size: 14px; text-align: center;">Catalog ID</p>
+                        <a href="${attributes.browseurl}" target="_blank" style="color: #fff; text-decoration: none; font-size: 16px; display: block; text-align: center;">${attributes.cat_id}</a>
+                    </div>
+                    <div style="display: flex; flex-direction: column; width: 100%;">
+                        <div style="background-color: #fc6600; color: #fff; padding: 13px; border-radius: 5px; margin-bottom: 0px;">
+                            <p style="margin: 0; font-size: 14px; text-align: center;">Sun Elevation</p>
+                            <p style="margin: 0; font-size: 16px; text-align: center;">${parseFloat(attributes.sun_elev).toFixed(2)}%</p>
+                        </div>
+                        <div style="background-color: #6d4c41; color: #fff; padding: 13px; border-radius: 5px; margin-bottom: 0px;">
+                            <p style="margin: 0; font-size: 14px; text-align: center;">Off-Nadir Angle</p>
+                            <p style="margin: 0; font-size: 16px; text-align: center;">${parseFloat(attributes.off_nadir).toFixed(2)}%</p>
+                        </div>
+                    </div>
                 </div>
                 `;
 
@@ -863,7 +872,7 @@ require([
         updateUrl(object);
     });
 
-    
+
     function openShareModal(map) {
         var url = createShareableUrl(map);
 

@@ -531,23 +531,17 @@ hr.line5 {
   fill: #E4E4E4;
 }
 
+.esri-popup .esri-widget, .esri-popup .esri-view div {
+    background-color: #f9f9f9;  /* changes the background color */
+    border: 1px solid rgb(10, 10, 10)838;  /* changes the border */
+    box-shadow: 0px 0px 10px rgba(0,0,0,0.15);  /* adds a shadow around the popup */
+    border-radius: 20px;  /* rounds the corners */
+    max-width: 300px;  
+    max-height: 350px;  
+}
+
 .esri-popup .esri-popup__header-title {
-  color: rgb(3, 3, 3);
-  font-size: 17px;
-}
-
-.esri-popup .esri-popup__content {
-  color: green !important;
-  font-size: 16px !important;
-}
-
-.esri-popup .esri-popup__main-container {
-  width: 350px !important;
-  /* Adjust the desired width */
-  height: 264px !important;
-  /* Adjust the desired height */
-  max-width: none !important;
-  max-height: none !important;
+    color: #0050b3;  /* changes the color of the title */
 }
 
 
