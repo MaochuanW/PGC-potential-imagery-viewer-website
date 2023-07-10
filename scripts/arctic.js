@@ -458,7 +458,8 @@ require([
                     </div>
                     <div style="background-color: #0050b3; color: #fff; padding: 10px; border-radius: 5px; margin-bottom: 10px; width: 94%;">
                         <p style="margin: 0; font-size: 14px; text-align: center;">Catalog ID</p>
-                        <a href="${attributes.browseurl}" target="_blank" style="color: #fff; text-decoration: none; font-size: 16px; display: block; text-align: center;">${attributes.cat_id}</a>
+                        <a href="${attributes.browseurl}" target="_blank" style="color: #fff; text-decoration: underline; font-size: 16px; display: block; text-align: center;">${attributes.cat_id}</a>
+
                     </div>
                     <div style="display: flex; flex-direction: column; width: 100%;">
                         <div style="background-color: #fc6600; color: #fff; padding: 13px; border-radius: 5px; margin-bottom: 0px;">
