@@ -48,6 +48,20 @@ function login() {
                             });
                     }
                 }, 60000); // 60000 milliseconds = 1 minute
+
+                // Add event listener for visibility change
+                document.addEventListener('visibilitychange', function() {
+                    if (!document.hidden && window.keycloak && !window.keycloak.isTokenExpired()) {
+                        window.keycloak
+                            .updateToken(30)
+                            .then((refreshed) => {
+                                console.log("Token refreshed successfully after coming back to tab");
+                            })
+                            .catch(() => {
+                                console.log("Error updating token after coming back to tab");
+                            });
+                    }
+                });
             }
         })
         .catch(() => {
@@ -55,7 +69,8 @@ function login() {
         });
 }
 
-login(); 
+login();
+
 
 require([
     "esri/config",
