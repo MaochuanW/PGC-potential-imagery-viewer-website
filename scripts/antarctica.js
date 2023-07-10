@@ -164,7 +164,12 @@ require([
     
     let layer2 = new ImageryLayer({
         url: "https://web.overlord.pgc.umn.edu/arcgis/rest/services/fridge/md_pgc_comm_opt_mono_mosaic_pan_ant/ImageServer",
-        title: "Layer 2"
+        title: "Layer 2",
+        mosaicRule: {
+            "ascending": false,
+            "method": "none",
+            "opearation": "none"
+        }
     });
     
     map.addMany([AntCompBaseMap, layer2, antlabel]); // Adding all three layers at once
