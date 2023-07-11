@@ -146,11 +146,6 @@ require([
     let hmaL8rgb = new ImageryLayer({
         url: "https://web.overlord.pgc.umn.edu/arcgis/rest/services/fridge/md_pgc_comm_opt_mono_mosaic_pan_hma/ImageServer", 
         title: "hmaL8rgb",
-        mosaicRule: {
-            "ascending": false,
-            "method": "none",
-            "opearation": "none"
-        }
     });
 
     // Add the layers to the map, with labelbasemap added last to ensure it's on top

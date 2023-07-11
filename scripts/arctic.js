@@ -128,11 +128,6 @@ require([
         url: "https://web.overlord.pgc.umn.edu/arcgis/rest/services/fridge/md_pgc_comm_opt_mono_mosaic_pan_arc/ImageServer", 
         title: "Panchromatic Layer", 
         visible: true,
-        mosaicRule: {
-            "ascending": false,
-            "method": "none",
-            "opearation": "none"
-        }
     });
 
     map.addMany([arcticDEMbasemap, panchromaticLayer, labelname]);
