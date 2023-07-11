@@ -7,10 +7,23 @@ function login() {
         "public-client": true,
         "enable-cors": true,
         "cors-allowed-methods": "POST, PUT, DELETE, GET, HEAD",
-        "cors-allowed-headers":
-            "Access-Control-Allow-Origin, Origin, Accept, X-Requested-With, Content-Type, Access-Control-Request-Method, Access-Control-Request-Headers, Authorization",
+        "cors-allowed-headers": "Access-Control-Allow-Origin, Origin, Accept, X-Requested-With, Content-Type, Access-Control-Request-Method, Access-Control-Request-Headers, Authorization",
         "confidential-port": 0,
     });
+
+    function refreshTokenIfNeeded() {
+        if (window.keycloak.isTokenExpired()) { 
+            window.keycloak
+                .updateToken(70)  // Refresh the token immediately if it's expired
+                .then(() => {
+                    console.log("Token refreshed successfully");
+                })
+                .catch((error) => {
+                    console.log("Error updating token", error);
+                    window.keycloak.logout();
+                });
+        }
+    }
 
     keycloak
         .init({ checkLoginIframe: false })
@@ -36,41 +49,16 @@ function login() {
                 console.log(authenticated ? "authenticated" : "not authenticated");
 
                 // Refresh the token every minute if it's valid
-                setInterval(() => {
-                    if (!window.keycloak.isTokenExpired()) {
-                        window.keycloak
-                            .updateToken(30)
-                            .then((refreshed) => {
-                                console.log("Token refreshed successfully");
-                            })
-                            .catch(() => {
-                                console.log("Error updating token");
-                            });
-                    }
-                }, 60000); // 60000 milliseconds = 1 minute
-
-                // Add event listener for visibility change
-                document.addEventListener('visibilitychange', function() {
-                    if (!document.hidden && window.keycloak && !window.keycloak.isTokenExpired()) {
-                        window.keycloak
-                            .updateToken(30)
-                            .then((refreshed) => {
-                                console.log("Token refreshed successfully after coming back to tab");
-                            })
-                            .catch(() => {
-                                console.log("Error updating token after coming back to tab");
-                            });
-                    }
-                });
+                refreshTokenIfNeeded();
+                setInterval(refreshTokenIfNeeded, 60000); // 60000 milliseconds = 1 minute
             }
         })
-        .catch(() => {
-            console.log("failed to initialize");
+        .catch((error) => {
+            console.log("failed to initialize", error);
         });
 }
 
 login();
-
 
 
 
@@ -118,17 +106,18 @@ require([
             "https://web.overlord.pgc.umn.edu/arcgis/rest/services/elevation/ncalm_mdv_lidar_201415_1m/ImageServer"
         ],
 
-        // use the Before method to add token to query
-        before: function (params) { // Check if the token is expired or not
-            if (window.keycloak.isTokenExpired()) {
-                console.log("Token is expired");
-            } else {
-                params.requestOptions.headers = {
-                    Authorization: "Bearer " + window.keycloak.token
-                };
-            }
+        before: function (params) {
+        if (window.keycloak.isTokenExpired()) {
+            console.log("Token is expired, skipping request");
+            params.requestOptions.body = "";  // Empty the body to effectively skip the request
+        } else {
+            params.requestOptions.headers = {
+                Authorization: "Bearer " + window.keycloak.token
+            };
         }
-    });
+    }
+});
+
 
 
     let currentFreeLayer; // This will keep track of the current layer
