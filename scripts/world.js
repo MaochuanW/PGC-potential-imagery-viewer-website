@@ -36,7 +36,7 @@ function login() {
                 // Add click event listeners to the buttons
                 const loginButton = document.getElementById("loginButton");
                 const continueButton = document.getElementById("continueButton");
-
+                loadEsriConfig(authenticated)
                 loginButton.addEventListener("click", () => {
                     keycloak.login();
                 });
@@ -47,7 +47,7 @@ function login() {
             } else {
                 window.keycloak = keycloak; // Assign keycloak to a global variable so it can be accessed later.
                 console.log(authenticated ? "authenticated" : "not authenticated");
-
+                loadEsriConfig(authenticated)
                 // Refresh the token every minute if it's valid
                 refreshTokenIfNeeded();
                 setInterval(refreshTokenIfNeeded, 60000); // 60000 milliseconds = 1 minute
@@ -60,35 +60,38 @@ function login() {
 
 login();
 
+function loadEsriConfig(authenticated) {
 
-require([
-    "esri/config",
-    "esri/Map",
-    "esri/views/MapView",
-    "esri/layers/TileLayer",
-    "esri/widgets/LayerList",
-    "esri/widgets/Search",
-    "esri/widgets/ScaleBar",
-    "esri/layers/ImageryTileLayer",
-    "esri/layers/ImageryLayer",
-    "esri/widgets/Measurement",
-    "esri/layers/FeatureLayer",
-    "esri/PopupTemplate",
-    "esri/symbols/SimpleFillSymbol",
-    "esri/symbols/SimpleLineSymbol",
-    "esri/Color",
-    "esri/Graphic",
-    "esri/rest/support/Query",
-    "esri/layers/GraphicsLayer",
-    "esri/geometry/SpatialReference",
-    "esri/layers/support/TileInfo",
-    "esri/widgets/CoordinateConversion",
-    "esri/renderers/RasterStretchRenderer",
-    "esri/rest/support/AlgorithmicColorRamp",
-    "esri/rest/support/MultipartColorRamp",
-    "esri/layers/MapImageLayer",
-    "esri/layers/WMSLayer"
-], function (esriConfig, Map, MapView, TileLayer, LayerList, Search, ScaleBar, ImageryTileLayer, ImageryLayer, Measurement, FeatureLayer, PopupTemplate, SimpleFillSymbol, SimpleLineSymbol, Color, Graphic, Query, GraphicsLayer, SpatialReference, TileInfo, CoordinateConversion, RasterStretchRenderer, AlgorithmicColorRamp, MultipartColorRamp, MapImageLayer, WMSLayer) {
+    require([
+        "esri/config",
+        "esri/Map",
+        "esri/views/MapView",
+        "esri/layers/TileLayer",
+        "esri/widgets/LayerList",
+        "esri/widgets/Search",
+        "esri/widgets/ScaleBar",
+        "esri/layers/ImageryTileLayer",
+        "esri/layers/ImageryLayer",
+        "esri/widgets/Measurement",
+        "esri/layers/FeatureLayer",
+        "esri/PopupTemplate",
+        "esri/symbols/SimpleFillSymbol",
+        "esri/symbols/SimpleLineSymbol",
+        "esri/Color",
+        "esri/Graphic",
+        "esri/rest/support/Query",
+        "esri/layers/GraphicsLayer",
+        "esri/geometry/SpatialReference",
+        "esri/layers/support/TileInfo",
+        "esri/widgets/CoordinateConversion",
+        "esri/renderers/RasterStretchRenderer",
+        "esri/rest/support/AlgorithmicColorRamp",
+        "esri/rest/support/MultipartColorRamp",
+        "esri/layers/MapImageLayer",
+        "esri/layers/WMSLayer",
+        "esri/widgets/Sketch",
+        "esri/geometry/geometryEngine"
+    ], function (esriConfig, Map, MapView, TileLayer, LayerList, Search, ScaleBar, ImageryTileLayer, ImageryLayer, Measurement, FeatureLayer, PopupTemplate, SimpleFillSymbol, SimpleLineSymbol, Color, Graphic, Query, GraphicsLayer, SpatialReference, TileInfo, CoordinateConversion, RasterStretchRenderer, AlgorithmicColorRamp, MultipartColorRamp, MapImageLayer, WMSLayer, Sketch, geometryEngine) {
     esriConfig.apiKey = "AAPK5b378c5a659a47668b94785aee29f811CspcF_qvBERUKbwD9AiaNB94Ie4mbJyNQAgY6gskPznuqWXfm7PU_M1CZJdpDT3i";
     document.addEventListener('DOMContentLoaded', (event) => {
         view.when(function () {
@@ -290,6 +293,88 @@ require([
             cutline(event.mapPoint, currentLayer);
         }
     });
+
+    const graphicsLayer = new GraphicsLayer();
+    map.add(graphicsLayer);
+
+    const sketch = new Sketch({
+      layer: graphicsLayer,
+      view: view,
+      availableCreateTools: ["polyline", "polygon", "rectangle"],
+      creationMode: "update",
+      updateOnGraphicClick: true,
+      visibleElements: {
+        createTools: {
+          point: false,
+          circle: false
+        },
+        selectionTools:{
+          "lasso-selection": false,
+          "rectangle-selection":false,
+        },
+        settingsMenu: false,
+        undoRedoMenu: false
+      }
+    });
+
+    view.ui.add(sketch, "top-right");
+
+    const measurements = document.getElementById("measurements");
+    view.ui.add(measurements, "manual");
+
+    function getArea(polygon) {
+      const geodesicArea = geometryEngine.geodesicArea(polygon, "square-kilometers");
+      const planarArea = geometryEngine.planarArea(polygon, "square-kilometers");
+
+      measurements.innerHTML =
+      "<b>Geodesic area</b>:  " + geodesicArea.toFixed(2) + " km\xB2" + " |   <b>Planar area</b>: " + planarArea.toFixed(2) + "  km\xB2";
+
+    }
+
+    function getLength(line) {
+      const geodesicLength = geometryEngine.geodesicLength(line, "kilometers");
+      const planarLength = geometryEngine.planarLength(line, "kilometers");
+
+      measurements.innerHTML =
+        "<b>Geodesic length</b>:  " + geodesicLength.toFixed(2) + " km" + " |   <b>Planar length</b>: " + planarLength.toFixed(2) + "  km";
+
+    }
+
+    function switchType(geom) {
+      switch (geom.type) {
+        case "polygon":
+          getArea(geom);
+          break;
+        case "polyline":
+          getLength(geom);
+          break;
+        default:
+          console.log("No value found");
+      }
+    }
+
+    sketch.on("update", (e) => {
+        const geometry = e.graphics[0].geometry;
+
+        if (e.state === "start") {
+          switchType(geometry);
+        }
+
+        if (e.state === "complete") {
+          graphicsLayer.remove(graphicsLayer.graphics.getItemAt(0));
+          measurements.innerHTML = null;
+        }
+
+        if (
+          e.toolEventInfo &&
+          (e.toolEventInfo.type === "scale-stop" ||
+            e.toolEventInfo.type === "reshape-stop" ||
+            e.toolEventInfo.type === "move-stop")
+        ) {
+          switchType(geometry);
+        }
+    });
+
 
     // Function that delete cutline and popup window when user click outside map frame
     var viewContainer = view.container;
@@ -684,3 +769,4 @@ require([
         });
     };
 });
+}

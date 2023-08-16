@@ -87,8 +87,11 @@ require([
     "esri/rest/support/AlgorithmicColorRamp",
     "esri/rest/support/MultipartColorRamp",
     "esri/layers/MapImageLayer",
-    "esri/layers/WMSLayer"
-], function (esriConfig, Map, MapView, TileLayer, LayerList, Search, ScaleBar, ImageryTileLayer, ImageryLayer, Measurement, FeatureLayer, PopupTemplate, SimpleFillSymbol, SimpleLineSymbol, Color, Graphic, Query, GraphicsLayer, SpatialReference, TileInfo, CoordinateConversion, RasterStretchRenderer, AlgorithmicColorRamp, MultipartColorRamp, MapImageLayer, WMSLayer) {
+    "esri/layers/WMSLayer",
+    "esri/widgets/Sketch",
+    "esri/geometry/geometryEngine",
+    "esri/geometry/projection"
+], function (esriConfig, Map, MapView, TileLayer, LayerList, Search, ScaleBar, ImageryTileLayer, ImageryLayer, Measurement, FeatureLayer, PopupTemplate, SimpleFillSymbol, SimpleLineSymbol, Color, Graphic, Query, GraphicsLayer, SpatialReference, TileInfo, CoordinateConversion, RasterStretchRenderer, AlgorithmicColorRamp, MultipartColorRamp, MapImageLayer, WMSLayer, Sketch, geometryEngine,projection) {
     esriConfig.apiKey = "AAPK5b378c5a659a47668b94785aee29f811CspcF_qvBERUKbwD9AiaNB94Ie4mbJyNQAgY6gskPznuqWXfm7PU_M1CZJdpDT3i";
     document.addEventListener('DOMContentLoaded', (event) => {
         view.when(function () {
@@ -375,6 +378,100 @@ require([
             cutline(event.mapPoint, currentLayer);
         }
     });
+
+
+
+    const graphicsLayer = new GraphicsLayer();
+        map.add(graphicsLayer);
+
+        const sketch = new Sketch({
+          layer: graphicsLayer,
+          view: view,
+          availableCreateTools: ["polyline", "polygon", "rectangle"],
+          creationMode: "update",
+          updateOnGraphicClick: true,
+          visibleElements: {
+            createTools: {
+              point: false,
+              circle: false
+            },
+            selectionTools:{
+              "lasso-selection": false,
+              "rectangle-selection":false,
+            },
+            settingsMenu: false,
+            undoRedoMenu: false
+          }
+        });
+
+        view.ui.add(sketch, "top-right");
+
+        const measurements = document.getElementById("measurements");
+        view.ui.add(measurements, "manual");
+
+        function getArea(polygon) {
+            // Project the geometry to EPSG:4326
+            const geoPolygon = projection.project(polygon, { wkid: 4326 });
+            
+            // Calculate geodesic area
+            const geodesicArea = geometryEngine.geodesicArea(geoPolygon, "square-kilometers");
+            
+            measurements.innerHTML =
+              "<b>Geodesic area</b>: " + geodesicArea.toFixed(2) + " km\xB2";
+          }
+          
+          function getLength(line) {
+            // Project the geometry to EPSG:4326
+            const geoPolyline = projection.project(line, { wkid: 4326 });
+            
+            // Calculate geodesic length
+            const geodesicLength = geometryEngine.geodesicLength(geoPolyline, "kilometers");
+            
+            measurements.innerHTML =
+              "<b>Geodesic length</b>: " + geodesicLength.toFixed(2) + " km";
+          }
+          
+
+        function switchType(geom) {
+          switch (geom.type) {
+            case "polygon":
+              getArea(geom);
+              break;
+            case "polyline":
+              getLength(geom);
+              break;
+            default:
+              console.log("No value found");
+          }
+        }
+
+        sketch.on("update", (e) => {
+            const geometry = e.graphics[0].geometry;
+  
+            if (e.state === "start") {
+              switchType(geometry);
+            }
+  
+            if (e.state === "complete") {
+              graphicsLayer.remove(graphicsLayer.graphics.getItemAt(0));
+              measurements.innerHTML = null;
+            }
+  
+            if (
+              e.toolEventInfo &&
+              (e.toolEventInfo.type === "scale-stop" ||
+                e.toolEventInfo.type === "reshape-stop" ||
+                e.toolEventInfo.type === "move-stop")
+            ) {
+              switchType(geometry);
+            }
+        });
+
+      
+
+
+
+
 
     // Function that delete cutline and popup window when user click outside map frame
     var viewContainer = view.container;
