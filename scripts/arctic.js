@@ -873,7 +873,7 @@ require([
 
     // This code fixes the click problem for both sets of buttons and dropdown menus
 
-    window.onload = function () { // Ensure dropdowns and modals are hidden when page loads
+    //window.onload = function () { // Ensure dropdowns and modals are hidden when page loads
 
         var layerDropdown = document.getElementById("layerDropdown");
         var maglassDropdown = document.getElementById("maglassDropdown");
@@ -931,5 +931,5 @@ require([
 
 
         });
-    };
+    
 });

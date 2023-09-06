@@ -1064,7 +1064,7 @@ function setupMap(mapObj) {
 
     // This code fixes the click problem for both sets of buttons and dropdown menus
 
-    window.onload = function () {
+    //window.onload = function () {
       // Ensure dropdowns and modals are hidden when page loads
 
       var layerDropdown = document.getElementById("layerDropdown");
@@ -1135,6 +1135,6 @@ function setupMap(mapObj) {
           LinkDropdown.style.display = "none";
         }
       });
-    };
+    
   });
 }
