@@ -142,6 +142,85 @@ function setupMap(mapObj) {
 
     const map = new Map({});
 
+    // Create the PopupTemplate
+    const popupTemplatecomnap = { 
+      title: "Information",
+      content: [
+          {
+              type: "fields",
+              fieldInfos: [
+                  {
+                      fieldName: "photo_url",
+                      label: "URL for photo",
+                      format: {
+                          places: 0,
+                          digitSeparator: true
+                      }
+                  },
+                  {
+                      fieldName: "webcam_url",
+                      label: "Webcam URL",
+                      format: {
+                          places: 0,
+                          digitSeparator: true
+                      }
+                  },
+                  {
+                      fieldName: "english_name",
+                      label: "English Name",
+                      format: {
+                          places: 0,
+                          digitSeparator: true
+                      }
+                  },
+                  {
+                      fieldName: "official_name",
+                      label: "Official Name",
+                      format: {
+                          places: 0,
+                          digitSeparator: true
+                      }
+                  }, 
+                  {
+                      fieldName: "seasonality",
+                      label: "seasonality",
+                      format: {
+                          places: 0,
+                          digitSeparator: true
+                      }
+                  },
+                  {
+                    fieldName: "status",
+                    label: "status",
+                    format: {
+                        places: 0,
+                        digitSeparator: true
+                    }
+                  },
+                  {
+                    fieldName: "year_established",
+                    label: "year established",
+                    format: {
+                        places: 0,
+                        digitSeparator: true
+                    }
+                  },
+              ]
+          }
+      ]
+  };
+
+    const comnapRenderer = {
+
+      "type": "simple",
+        "symbol": {
+          "type": "picture-marker",
+          "url": "http://static.arcgis.com/images/Symbols/NPS/npsPictograph_0231b.png",
+          "width": "18px",
+          "height": "18px"
+        
+      }
+    }
     const antlabel = new MapImageLayer({
       url: "https://gis.ngdc.noaa.gov/arcgis/rest/services/antarctic/reference/MapServer",
       title: "Antarctica label",
@@ -372,12 +451,14 @@ function setupMap(mapObj) {
 
     let layer7;
     document
-      .getElementById("layer7Checkbox")
+      .getElementById("ComnapCheckbox")
       .addEventListener("change", function () {
         if (this.checked) {
           // If the checkbox is checked, show the layer
-          layer7 = new TileLayer({
-            url: "https://overlord.pgc.umn.edu/arcgis/rest/services/maps/ant_usgs_500k_sketch/MapServer",
+          layer7 = new FeatureLayer({
+            url: "https://overlord.pgc.umn.edu/arcgis/rest/services/reference/ant_comnap_antarctic_facilities/FeatureServer/0",
+            popupTemplate: popupTemplatecomnap,
+            renderer: comnapRenderer,
             title: "Layer 7",
           });
           addLayer(layer7, this);
@@ -413,7 +494,7 @@ function setupMap(mapObj) {
       spatialReference,
       constraints: {
         lods: lods,
-        snapToZoom: false,
+        snapToZoom: true,
       },
     });
 
@@ -448,63 +529,63 @@ function setupMap(mapObj) {
       }
     }
 
-    // Smooth zoom effect using mouse scroll
-    let accumulatedDeltaY = 0;
-    let zooming = false;
-    let scrollDirection = null; // Keep track of scroll direction
-    let zoomController = new AbortController(); // Controller to abort zooming
-    const zoomThreshold = 50; // Adjust the scroll delta threshold for zoom action
+    // // Smooth zoom effect using mouse scroll
+    // let accumulatedDeltaY = 0;
+    // let zooming = false;
+    // let scrollDirection = null; // Keep track of scroll direction
+    // let zoomController = new AbortController(); // Controller to abort zooming
+    // const zoomThreshold = 50; // Adjust the scroll delta threshold for zoom action
 
-    view.on("mouse-wheel", function (event) {
-      event.stopPropagation();
-      event.preventDefault();
+    // view.on("mouse-wheel", function (event) {
+    //   event.stopPropagation();
+    //   event.preventDefault();
 
-      const deltaY = event.deltaY;
-      const zoomFactor = 1;
-      // Adjust the zoom speed (smaller value for slower zoom-in)
+    //   const deltaY = event.deltaY;
+    //   const zoomFactor = 1;
+    //   // Adjust the zoom speed (smaller value for slower zoom-in)
 
-      // Check if the scroll direction has changed
-      const newScrollDirection = deltaY > 0 ? "down" : "up";
-      if (scrollDirection && newScrollDirection !== scrollDirection) {
-        zoomController.abort(); // Abort the ongoing zoom if scroll direction changes
-        zoomController = new AbortController(); // Instantiate a new controller for the next zoom
-        accumulatedDeltaY = deltaY; // Reset accumulatedDeltaY with the new deltaY
-      } else {
-        accumulatedDeltaY += deltaY; // Accumulate deltaY normally
-      }
-      scrollDirection = newScrollDirection; // Update the scroll direction
+    //   // Check if the scroll direction has changed
+    //   const newScrollDirection = deltaY > 0 ? "down" : "up";
+    //   if (scrollDirection && newScrollDirection !== scrollDirection) {
+    //     zoomController.abort(); // Abort the ongoing zoom if scroll direction changes
+    //     zoomController = new AbortController(); // Instantiate a new controller for the next zoom
+    //     accumulatedDeltaY = deltaY; // Reset accumulatedDeltaY with the new deltaY
+    //   } else {
+    //     accumulatedDeltaY += deltaY; // Accumulate deltaY normally
+    //   }
+    //   scrollDirection = newScrollDirection; // Update the scroll direction
 
-      if (!zooming && Math.abs(accumulatedDeltaY) >= zoomThreshold) {
-        zooming = true;
-        const zoomDirection = accumulatedDeltaY > 0 ? -1 : 1;
-        const zoomLevel = view.zoom + zoomDirection * zoomFactor;
+    //   if (!zooming && Math.abs(accumulatedDeltaY) >= zoomThreshold) {
+    //     zooming = true;
+    //     const zoomDirection = accumulatedDeltaY > 0 ? -1 : 1;
+    //     const zoomLevel = view.zoom + zoomDirection * zoomFactor;
 
-        view
-          .goTo(
-            {
-              zoom: zoomLevel,
-            },
-            {
-              duration: 150, // Adjust the animation duration as needed
-              easing: "linear", // Use linear easing for smoother zoom
-              signal: zoomController.signal, // Use signal to potentially cancel ongoing zoom actions
-            }
-          )
-          .then(() => {
-            zooming = false;
-          })
-          .catch((error) => {
-            if (error.name === "AbortError") {
-              // If it's an AbortError, we expect it, do nothing
-            } else {
-              console.error(error);
-            }
-            zooming = false;
-          });
+    //     view
+    //       .goTo(
+    //         {
+    //           zoom: zoomLevel,
+    //         },
+    //         {
+    //           duration: 150, // Adjust the animation duration as needed
+    //           easing: "linear", // Use linear easing for smoother zoom
+    //           signal: zoomController.signal, // Use signal to potentially cancel ongoing zoom actions
+    //         }
+    //       )
+    //       .then(() => {
+    //         zooming = false;
+    //       })
+    //       .catch((error) => {
+    //         if (error.name === "AbortError") {
+    //           // If it's an AbortError, we expect it, do nothing
+    //         } else {
+    //           console.error(error);
+    //         }
+    //         zooming = false;
+    //       });
 
-        accumulatedDeltaY = 0;
-      }
-    });
+    //     accumulatedDeltaY = 0;
+    //   }
+    // });
 
     document.getElementById("zoomInBtn").addEventListener("click", function () {
       let zoomLevel = view.zoom + 1;

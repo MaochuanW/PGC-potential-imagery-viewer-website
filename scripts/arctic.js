@@ -127,6 +127,7 @@ require([
 
     const arcticDEMbasemap = new TileLayer({url: "https://services.arcgisonline.com/arcgis/rest/services/Polar/Arctic_Imagery/MapServer", title: "ArcticDEM Basemap"});
 
+
     let panchromaticLayer = new ImageryLayer({
         url: "https://web.overlord.pgc.umn.edu/arcgis/rest/services/fridge/md_pgc_comm_opt_mono_mosaic_pan_arc/ImageServer", 
         title: "Panchromatic Layer", 
@@ -196,6 +197,59 @@ require([
         ]
     };
 
+    const popupTemplateAKpoint = {
+        title: "Information",
+        content: [
+            {
+                type: "media",
+                mediaInfos: [{
+                    type: "image",
+                    value: {
+                        sourceURL: "{url_thumb}"  // Use attribute value as source URL
+                    }
+                }]
+            },
+            {
+                type: "fields",
+                fieldInfos: [
+                    {
+                        fieldName: "url_prev",
+                        label: "Preview URL",
+                        format: {
+                            places: 0,
+                            digitSeparator: true
+                        }
+                    },
+                    {
+                        fieldName: "url_med",
+                        label: "URL (medium) resolution",
+                        format: {
+                            places: 0,
+                            digitSeparator: true
+                        }
+                    },
+                    {
+                        fieldName: "url_high",
+                        label: "URL (full) resolution",
+                        format: {
+                            places: 0,
+                            digitSeparator: true
+                        }
+                    }, 
+                    {
+                        fieldName: "acc_acq_da",
+                        label: "accquired date",
+                        format: {
+                            places: 0,
+                            digitSeparator: true
+                        }
+                    }
+                ]
+            }
+        ]
+    };
+    
+
     // Set the checkbox to be checked by default
     document.getElementById("ArcticDEMcheckbox").checked = true;
     arcticDEMbasemap.visible = true;
@@ -211,12 +265,16 @@ require([
 
     // FeatureLayer for flightline layer
     let flightlineLayer = new FeatureLayer({
-        url: "https://web.overlord.pgc.umn.edu/arcgis/rest/services/reference/ak_usgs_ahap_aerial_index/FeatureServer/1", title: "Flightline Layer", visible: false, // Initially invisible
+        url: "https://overlord.pgc.umn.edu/arcgis/rest/services/reference/ak_usgs_ahap_aerial_index/FeatureServer/1", title: "Flightline Layer", visible: false, 
         popupTemplate: popupTemplateAK
     });
 
+    let ahapcenterpoint = new FeatureLayer({
+        url: "https://overlord.pgc.umn.edu/arcgis/rest/services/reference/ak_usgs_ahap_aerial_index/FeatureServer/0", title: "photo center point layer", visible: false,
+        popupTemplate: popupTemplateAKpoint
+    })
 
-    map.add(flightlineLayer);
+    map.addMany([flightlineLayer, ahapcenterpoint]);
 
     // Variable to keep track of currently selected layer
     let currentLayer = null;
@@ -260,6 +318,8 @@ require([
         ensureLabelOnTop(); // Ensure label is always on top
     }
 
+   
+    
     // If page loads with panchromaticCheckbox checked, manually call the handler
     if (panchromaticCheckbox.checked) {
         handlePanchromaticCheckboxChange();
@@ -289,9 +349,39 @@ require([
         spatialReference,
         constraints: {
             lods: lods,
-            snapToZoom: false
+            snapToZoom: true
         }
     });
+
+    view.watch("zoom", function(newZoom) {
+        if (flightlineCheckbox.checked) {  // Check if flightlineCheckbox is checked
+            if (newZoom > 10) {
+                // If zoomed in beyond the threshold, show ahapcenterpoint and keep flightlinelayer visible
+                ahapcenterpoint.visible = true;
+                flightlineLayer.visible = true;
+            } else {
+                // If zoomed out below the threshold, hide ahapcenterpoint and keep flightlinelayer visible
+                ahapcenterpoint.visible = false;
+                flightlineLayer.visible = true;
+            }
+        } else {
+            // If flightlineCheckbox is not checked, make both layers invisible
+            ahapcenterpoint.visible = false;
+            flightlineLayer.visible = false;
+        }
+    
+    
+
+        //console.log("Zoom Level:", newZoom);
+        //console.log("Flightline Checkbox Checked:", flightlineCheckbox.checked);
+        //console.log("Ahapcenterpoint Visibility:", ahapcenterpoint.visible);
+        //console.log("FlightlineLayer Visibility:", flightlineLayer.visible);
+        //console.log("Zoom changed!");
+    });
+    
+
+
+
 
     let ccWidget = new CoordinateConversion({view: view, orientation: "expand-up"});
 
@@ -308,54 +398,7 @@ require([
         }
     }
 
-    // Smooth zoom effect using mouse scroll
-    let accumulatedDeltaY = 0;
-    let zooming = false;
-    let scrollDirection = null; // Keep track of scroll direction
-    let zoomController = new AbortController(); // Controller to abort zooming
-    const zoomThreshold = 50; // Adjust the scroll delta threshold for zoom action
-
-    view.on("mouse-wheel", function (event) {
-        event.stopPropagation();
-        event.preventDefault();
-
-        const deltaY = event.deltaY;
-        const zoomFactor = 1;
-        // Adjust the zoom speed (smaller value for slower zoom-in)
-
-        // Check if the scroll direction has changed
-        const newScrollDirection = deltaY > 0 ? 'down' : 'up';
-        if (scrollDirection && newScrollDirection !== scrollDirection) {
-            zoomController.abort(); // Abort the ongoing zoom if scroll direction changes
-            zoomController = new AbortController(); // Instantiate a new controller for the next zoom
-            accumulatedDeltaY = deltaY; // Reset accumulatedDeltaY with the new deltaY
-        } else {
-            accumulatedDeltaY += deltaY; // Accumulate deltaY normally
-        } scrollDirection = newScrollDirection; // Update the scroll direction
-
-        if (! zooming && Math.abs(accumulatedDeltaY) >= zoomThreshold) {
-            zooming = true;
-            const zoomDirection = accumulatedDeltaY > 0 ? -1 : 1;
-            const zoomLevel = view.zoom + zoomDirection * zoomFactor;
-
-            view.goTo({
-                zoom: zoomLevel
-            }, {
-                duration: 150, // Adjust the animation duration as needed
-                easing: "linear", // Use linear easing for smoother zoom
-                signal: zoomController.signal, // Use signal to potentially cancel ongoing zoom actions
-            }).then(() => {
-                zooming = false;
-            }).catch((error) => {
-                if (error.name === 'AbortError') { // If it's an AbortError, we expect it, do nothing
-                } else {
-                    console.error(error);
-                } zooming = false;
-            });
-
-            accumulatedDeltaY = 0;
-        }
-    });
+    
 
     document.getElementById("zoomInBtn").addEventListener("click", function () {
         let zoomLevel = view.zoom + 1;

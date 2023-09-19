@@ -198,7 +198,7 @@ function loadEsriConfig(authenticated) {
         spatialReference,
         constraints: {
             lods: lods,
-            snapToZoom: false
+            snapToZoom: true
         }
     });
 
@@ -217,54 +217,7 @@ function loadEsriConfig(authenticated) {
         }
     }
 
-    // Smooth zoom effect using mouse scroll
-    let accumulatedDeltaY = 0;
-    let zooming = false;
-    let scrollDirection = null; // Keep track of scroll direction
-    let zoomController = new AbortController(); // Controller to abort zooming
-    const zoomThreshold = 50; // Adjust the scroll delta threshold for zoom action
-
-    view.on("mouse-wheel", function (event) {
-        event.stopPropagation();
-        event.preventDefault();
-
-        const deltaY = event.deltaY;
-        const zoomFactor = 1;
-        // Adjust the zoom speed (smaller value for slower zoom-in)
-
-        // Check if the scroll direction has changed
-        const newScrollDirection = deltaY > 0 ? 'down' : 'up';
-        if (scrollDirection && newScrollDirection !== scrollDirection) {
-            zoomController.abort(); // Abort the ongoing zoom if scroll direction changes
-            zoomController = new AbortController(); // Instantiate a new controller for the next zoom
-            accumulatedDeltaY = deltaY; // Reset accumulatedDeltaY with the new deltaY
-        } else {
-            accumulatedDeltaY += deltaY; // Accumulate deltaY normally
-        } scrollDirection = newScrollDirection; // Update the scroll direction
-
-        if (! zooming && Math.abs(accumulatedDeltaY) >= zoomThreshold) {
-            zooming = true;
-            const zoomDirection = accumulatedDeltaY > 0 ? -1 : 1;
-            const zoomLevel = view.zoom + zoomDirection * zoomFactor;
-
-            view.goTo({
-                zoom: zoomLevel
-            }, {
-                duration: 150, // Adjust the animation duration as needed
-                easing: "linear", // Use linear easing for smoother zoom
-                signal: zoomController.signal, // Use signal to potentially cancel ongoing zoom actions
-            }).then(() => {
-                zooming = false;
-            }).catch((error) => {
-                if (error.name === 'AbortError') { // If it's an AbortError, we expect it, do nothing
-                } else {
-                    console.error(error);
-                } zooming = false;
-            });
-
-            accumulatedDeltaY = 0;
-        }
-    });
+    
 
     document.getElementById("zoomInBtn").addEventListener("click", function () {
         let zoomLevel = view.zoom + 1;

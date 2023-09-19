@@ -1019,3 +1019,11 @@ hr.line5 {
   
 }
 
+.esri-popup .esri-popup-content {
+  width: 400px !important;  /* Adjust the width as needed */
+}
+
+.esri-popup .esri-popup__main-container {
+  max-height: 500px !important;  /* Adjust the max height as needed */
+}
+
