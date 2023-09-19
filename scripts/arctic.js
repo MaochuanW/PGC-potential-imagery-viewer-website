@@ -213,6 +213,14 @@ require([
                 type: "fields",
                 fieldInfos: [
                     {
+                        fieldName: "acc_acq_da",
+                        label: "accquired date",
+                        format: {
+                            places: 0,
+                            digitSeparator: true
+                        }
+                    },
+                    {
                         fieldName: "url_prev",
                         label: "Preview URL",
                         format: {
@@ -231,14 +239,6 @@ require([
                     {
                         fieldName: "url_high",
                         label: "URL (full) resolution",
-                        format: {
-                            places: 0,
-                            digitSeparator: true
-                        }
-                    }, 
-                    {
-                        fieldName: "acc_acq_da",
-                        label: "accquired date",
                         format: {
                             places: 0,
                             digitSeparator: true
