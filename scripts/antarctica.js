@@ -260,6 +260,20 @@ function setupMap(mapObj) {
     document.getElementById("AntCompBaseMapCheckbox").checked = true;
     AntCompBaseMap.visible = true;
 
+    document
+      .getElementById("AntLabelCheckbox")
+      .addEventListener("change", function () {
+        if (this.checked) {
+          antlabel.visible = true;
+        } else {
+          antlabel.visible = false;
+        }
+        ensureLabelOnTop();
+      });
+
+    document.getElementById("AntLabelCheckbox").checked = true;
+    antlabel.visible = true;
+
     let layer1;
 
     document
@@ -425,12 +439,12 @@ function setupMap(mapObj) {
 
     let layer6;
     document
-      .getElementById("layer6Checkbox")
+      .getElementById("layer7Checkbox")
       .addEventListener("change", function () {
         if (this.checked) {
           // If the checkbox is checked, show the layer
           layer6 = new TileLayer({
-            url: "https://overlord.pgc.umn.edu/arcgis/rest/services/maps/ant_usgs_500k_topos/MapServer",
+            url: "https://overlord.pgc.umn.edu/arcgis/rest/services/maps/ant_usgs_500k_sketch/MapServer",
             title: "Layer 6",
           });
           addLayer(layer6, this);
