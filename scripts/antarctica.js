@@ -81,7 +81,6 @@ function setupMap(mapObj) {
     "esri/widgets/ScaleBar",
     "esri/layers/ImageryTileLayer",
     "esri/layers/ImageryLayer",
-    "esri/widgets/Measurement",
     "esri/layers/FeatureLayer",
     "esri/PopupTemplate",
     "esri/symbols/SimpleFillSymbol",
@@ -102,7 +101,7 @@ function setupMap(mapObj) {
     "esri/geometry/geometryEngine",
     "esri/geometry/projection",
     "esri/symbols/SimpleMarkerSymbol"
-], function (esriConfig, Map, MapView, TileLayer, LayerList, Search, ScaleBar, ImageryTileLayer, ImageryLayer, Measurement, FeatureLayer, PopupTemplate, SimpleFillSymbol, SimpleLineSymbol, Color, Graphic, Query, GraphicsLayer, SpatialReference, TileInfo, CoordinateConversion, RasterStretchRenderer, AlgorithmicColorRamp, MultipartColorRamp, MapImageLayer, WMSLayer, Sketch, geometryEngine,projection,SimpleMarkerSymbol) {
+], function (esriConfig, Map, MapView, TileLayer, LayerList, Search, ScaleBar, ImageryTileLayer, ImageryLayer, FeatureLayer, PopupTemplate, SimpleFillSymbol, SimpleLineSymbol, Color, Graphic, Query, GraphicsLayer, SpatialReference, TileInfo, CoordinateConversion, RasterStretchRenderer, AlgorithmicColorRamp, MultipartColorRamp, MapImageLayer, WMSLayer, Sketch, geometryEngine,projection,SimpleMarkerSymbol) {
     document.addEventListener("DOMContentLoaded", (event) => {
       view.when(function () {
         loadExtentFromUrl(view);
@@ -665,7 +664,7 @@ function setupMap(mapObj) {
     // Add event listener to capture map clicks
     view.on("click", function (event) {
       // Check if the measurement tool is active
-      var isMeasurementToolActive = measurementWidget.activeTool !== null;
+      var isMeasurementToolActive = sketch.activeTool !== null;
 
       // Call cutline function with the clicked feature and currentLayer
       // ONLY IF the measurement tool is not active
@@ -675,90 +674,91 @@ function setupMap(mapObj) {
     });
 
     const graphicsLayer = new GraphicsLayer();
-        map.add(graphicsLayer);
+    map.add(graphicsLayer);
 
-        const sketch = new Sketch({
-          layer: graphicsLayer,
-          view: view,
-          availableCreateTools: ["polyline", "polygon", "rectangle"],
-          creationMode: "update",
-          updateOnGraphicClick: true,
-          visibleElements: {
+    const sketch = new Sketch({
+        layer: graphicsLayer,
+        view: view,
+        availableCreateTools: ["polyline", "polygon", "rectangle"],
+        creationMode: "update",
+        updateOnGraphicClick: true,
+        visibleElements: {
             createTools: {
-              point: false,
-              circle: false
+                point: false,
+                circle: false
             },
             selectionTools:{
-              "lasso-selection": false,
-              "rectangle-selection":false,
+                "lasso-selection": false,
+                "rectangle-selection":false,
             },
             settingsMenu: false,
             undoRedoMenu: false
-          }
-        });
+        }
+    });
 
-        view.ui.add(sketch, "top-right");
+    const measurements = document.getElementById("measurements");
+    view.ui.add(measurements, "manual");
 
-        const measurements = document.getElementById("measurements");
-        view.ui.add(measurements, "manual");
+    function getArea(polygon) {
+        const geoPolygon = projection.project(polygon, { wkid: 4326 });
+        const geodesicArea = geometryEngine.geodesicArea(geoPolygon, "square-kilometers");
+        measurements.innerHTML = "<b>Geodesic area</b>: " + geodesicArea.toFixed(2) + " km\xB2";
+    }
 
-        function getArea(polygon) {
-            // Project the geometry to EPSG:4326
-            const geoPolygon = projection.project(polygon, { wkid: 4326 });
-            
-            // Calculate geodesic area
-            const geodesicArea = geometryEngine.geodesicArea(geoPolygon, "square-kilometers");
-            
-            measurements.innerHTML =
-              "<b>Geodesic area</b>: " + geodesicArea.toFixed(2) + " km\xB2";
-          }
-          
-          function getLength(line) {
-            // Project the geometry to EPSG:4326
-            const geoPolyline = projection.project(line, { wkid: 4326 });
-            
-            // Calculate geodesic length
-            const geodesicLength = geometryEngine.geodesicLength(geoPolyline, "kilometers");
-            
-            measurements.innerHTML =
-              "<b>Geodesic length</b>: " + geodesicLength.toFixed(2) + " km";
-          }
-          
+    function getLength(line) {
+        const geoPolyline = projection.project(line, { wkid: 4326 });
+        const geodesicLength = geometryEngine.geodesicLength(geoPolyline, "kilometers");
+        measurements.innerHTML = "<b>Geodesic length</b>: " + geodesicLength.toFixed(2) + " km";
+    }
 
-        function switchType(geom) {
-          switch (geom.type) {
+    function switchType(geom) {
+        switch (geom.type) {
             case "polygon":
-              getArea(geom);
-              break;
+                getArea(geom);
+                break;
             case "polyline":
-              getLength(geom);
-              break;
+                getLength(geom);
+                break;
             default:
-              console.log("No value found");
-          }
+                console.log("No value found");
+        }
+    }
+
+    sketch.on("update", (e) => {
+        const geometry = e.graphics[0].geometry;
+
+        if (e.state === "start") {
+            switchType(geometry);
         }
 
-        sketch.on("update", (e) => {
-            const geometry = e.graphics[0].geometry;
-  
-            if (e.state === "start") {
-              switchType(geometry);
-            }
-  
-            if (e.state === "complete") {
-              graphicsLayer.remove(graphicsLayer.graphics.getItemAt(0));
-              measurements.innerHTML = null;
-            }
-  
-            if (
-              e.toolEventInfo &&
-              (e.toolEventInfo.type === "scale-stop" ||
-                e.toolEventInfo.type === "reshape-stop" ||
-                e.toolEventInfo.type === "move-stop")
-            ) {
-              switchType(geometry);
-            }
-        });
+        if (e.state === "complete") {
+            graphicsLayer.remove(graphicsLayer.graphics.getItemAt(0));
+            measurements.innerHTML = null;
+        }
+
+        if (
+            e.toolEventInfo &&
+            (e.toolEventInfo.type === "scale-stop" ||
+            e.toolEventInfo.type === "reshape-stop" ||
+            e.toolEventInfo.type === "move-stop")
+        ) {
+            switchType(geometry);
+        }
+    });
+
+    // Ruler click event to toggle visibility
+    const ruler = document.getElementById("ruler");
+    let isWidgetVisible = false;
+
+    ruler.addEventListener("click", () => {
+        isWidgetVisible = !isWidgetVisible;
+        if (isWidgetVisible) {
+            view.ui.add(sketch, "top-right");
+        } else {
+            view.ui.remove(sketch);
+        }
+    });
+
 
     // Function that delete cutline and popup window when user click outside map frame
     var viewContainer = view.container;
@@ -882,58 +882,58 @@ function setupMap(mapObj) {
       });
     }
 
-    // Function to create a measurement tool
-    const distanceButton = document.getElementById("distance");
-    const areaButton = document.getElementById("area");
-    const clearButton = document.getElementById("clear");
+    // // Function to create a measurement tool
+    // const distanceButton = document.getElementById("distance");
+    // const areaButton = document.getElementById("area");
+    // const clearButton = document.getElementById("clear");
 
-    // Create a new instance of the Measurement widget
-    const measurementWidget = new Measurement({ view: view });
+    // // Create a new instance of the Measurement widget
+    // const measurementWidget = new Measurement({ view: view });
 
-    // Add the Measurement widget to the top-left corner of the view
-    view.ui.add(measurementWidget, "top-left");
+    // // Add the Measurement widget to the top-left corner of the view
+    // view.ui.add(measurementWidget, "top-left");
 
-    // Function to enable the measurement of distance
-    function distanceMeasurement() {
-      measurementWidget.activeTool = "distance";
-    }
+    // // Function to enable the measurement of distance
+    // function distanceMeasurement() {
+    //   measurementWidget.activeTool = "distance";
+    // }
 
-    // Function to enable the measurement of area
-    function areaMeasurement() {
-      measurementWidget.activeTool = "area";
-    }
+    // // Function to enable the measurement of area
+    // function areaMeasurement() {
+    //   measurementWidget.activeTool = "area";
+    // }
 
-    // Function to clear measurements
-    function clearMeasurements() {
-      measurementWidget.clear();
-    }
+    // // Function to clear measurements
+    // function clearMeasurements() {
+    //   measurementWidget.clear();
+    // }
 
-    distanceButton.addEventListener("click", function () {
-      distanceMeasurement();
-    });
+    // distanceButton.addEventListener("click", function () {
+    //   distanceMeasurement();
+    // });
 
-    areaButton.addEventListener("click", function () {
-      areaMeasurement();
-    });
+    // areaButton.addEventListener("click", function () {
+    //   areaMeasurement();
+    // });
 
-    clearButton.addEventListener("click", function () {
-      clearMeasurements();
-    });
+    // clearButton.addEventListener("click", function () {
+    //   clearMeasurements();
+    // });
 
-    // Get references to the ruler button and the toolbar div
-    var rulerButton = document.getElementById("ruler");
-    var toolbarDiv = document.getElementById("toolbarDiv");
+    // // Get references to the ruler button and the toolbar div
+    // var rulerButton = document.getElementById("ruler");
+    // var toolbarDiv = document.getElementById("toolbarDiv");
 
-    // Add a click event listener to the ruler button
-    rulerButton.addEventListener("click", function () {
-      // Toggle the visibility of the toolbar div
-      toolbarDiv.classList.toggle("show");
-    });
+    // // Add a click event listener to the ruler button
+    // rulerButton.addEventListener("click", function () {
+    //   // Toggle the visibility of the toolbar div
+    //   toolbarDiv.classList.toggle("show");
+    // });
 
-    document.querySelector("#ruler").addEventListener("click", function () {
-      let tooltipText = this.querySelector(".tooltip-text");
-      tooltipText.style.visibility = "hidden";
-    });
+    // document.querySelector("#ruler").addEventListener("click", function () {
+    //   let tooltipText = this.querySelector(".tooltip-text");
+    //   tooltipText.style.visibility = "hidden";
+    // });
 
     // Create a ScaleBar widget
     const scaleBar = new ScaleBar({ view: view, unit: "dual" });
