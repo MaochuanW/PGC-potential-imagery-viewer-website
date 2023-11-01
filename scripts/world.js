@@ -41,6 +41,19 @@ function login() {
                     keycloak.login();
                 });
 
+
+                document.addEventListener("DOMContentLoaded", function() {
+                    const divLoginButton = document.getElementById("login");
+                    if (divLoginButton) {
+                      divLoginButton.addEventListener("click", () => {
+                        console.log("Div clicked, trying to login...");
+                        keycloak.login();
+                      });
+                    } else {
+                      console.error("Div with id 'login' not found!");
+                    }
+                  });
+
                 continueButton.addEventListener("click", () => {
                     modal.style.display = "none";
                 });
@@ -113,6 +126,14 @@ function loadEsriConfig(authenticated) {
                     Authorization: "Bearer " + window.keycloak.token
                 };
             }
+        }
+    });
+
+    document.getElementById('logout').addEventListener('click', function() {
+        if (window.keycloak && window.keycloak.authenticated) {
+            window.keycloak.logout();
+        } else {
+            console.log('Not logged in or Keycloak instance is not available');
         }
     });
 
