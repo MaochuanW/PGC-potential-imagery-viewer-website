@@ -103,7 +103,11 @@ Before starting, ensure you have the following:
 TBD....
 
 ## Contributors List
-Maochuan Wang - Project author
-Shane Loeffler - Project mentor
-Danny Im - Soon to be project author
-Bryan Runck - Project contributor
+Maochuan Wang - Project author 
+
+Shane Loeffler - Project mentor 
+
+Danny Im - Soon to be project author 
+
+Bryan Runck - Project contributor 
+
