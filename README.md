@@ -97,3 +97,13 @@ Before starting, ensure you have the following:
     href="https://js.arcgis.com/4.26/esri/themes/light/main.css"
   />
   <script src="https://js.arcgis.com/4.26/"></script>
+
+## Funding Attributions
+
+TBD....
+
+## Contributors List
+Maochuan Wang - Project author
+Shane Loeffler - Project mentor
+Danny Im - Soon to be project author
+Bryan Runck - Project contributor
