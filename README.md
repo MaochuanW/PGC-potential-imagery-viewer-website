@@ -29,6 +29,10 @@ The primary goal of this project is to develop an interactive web application fo
 
 The PGC Antarctic Imagery Viewer is built using modern web technologies, integrating with mapping capabilities provided by the ArcGIS API for JavaScript. It is designed to be user-friendly, responsive, and feature-rich, providing to a wide range of users from scientific researchers to educational professionals and polar enthusiasts.
 
+### Flow Diagram
+![Code Flow Diagram](/pgc_viewer_flow_diagram.png)
+
+
 ### Key Features
 
 1. **Interactive Map Viewer**: The main component of this web application is an interactive map viewer, leveraging the ArcGIS API for JavaScript. This feature allows users to dynamically explore various layers of satellite imagery, providing insights into the world landscape. Users can zoom in for detailed views or pan across different regions to gain a broader perspective.
