@@ -53,13 +53,13 @@ The PGC Antarctic Imagery Viewer is built using modern web technologies, integra
 
 ## User Description
 
-The PGC Antarctic Imagery Viewer is designed for a diverse user base, including:
+The PGC Imagery Viewer is designed for a diverse user base, including:
 
 - **Researchers**: Scientists and academics conducting research in various fields such as climatology, geology, and biology, who require detailed and accurate geographical data.
 
-- **Educators**: Teachers and educational professionals seeking interactive tools to engage students in learning about Antarctic geography, environmental science, and polar research.
+- **Educators**: Teachers and educational professionals seeking interactive tools to engage students in learning about world geography, environmental science, and polar research.
 
-- **Polar Enthusiasts**: Individuals with a strong interest in polar regions, remote sensing technology, and geographic information systems, who desire a platform to explore and learn about Antarctica.
+- **Polar Enthusiasts**: Individuals with a strong interest in polar regions, remote sensing technology, and geographic information systems, who desire a platform to explore and learn about the Antarctica and Arctic.
 
 ## Building the viewer from Scratch
 
