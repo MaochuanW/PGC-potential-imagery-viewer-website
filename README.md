@@ -100,7 +100,6 @@ Before starting, ensure you have the following:
 
 ## Funding Attributions
 
-TBD....
 
 ## Contributors List
 Maochuan Wang - Project author 
