@@ -1,4 +1,4 @@
-# PGC-potential-imagery-viewer-website
+# PGC Imagery Mosaic Website App
 ## Introduction
 
 This github repo consists of the Polar Geospatial Center imagery mosaic viewer, an advanced web-based tool designed to offer an immersive and interactive experience in exploring the Antarctic, Arctic, and the World region. This application is a significant contribution to the field of geospatial science, providing high-resolution satellite imagery and a suite of interactive tools to enhance the understanding of one of the most remote and fascinating regions on Earth.
